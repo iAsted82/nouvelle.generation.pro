@@ -807,7 +807,7 @@ const ChildRegistrationForm: React.FC<ChildRegistrationFormProps> = ({ onSubmit,
                     <a href="#" className="text-blue-600 hover:text-blue-800 underline">
                       règlement intérieur
                     </a>{' '}
-                    de l'école et m'engage à le respecter
+                    de l'école et m\'engage à le respecter
                   </span>
                 </label>
                 {errors.acceptTerms && (
@@ -825,7 +825,7 @@ const ChildRegistrationForm: React.FC<ChildRegistrationFormProps> = ({ onSubmit,
                     <a href="#" className="text-blue-600 hover:text-blue-800 underline">
                       politique médicale
                     </a>{' '}
-                    de l'école et autorise les soins d'urgence si nécessaire
+                    de l'école et autorise les soins d\'urgence si nécessaire
                   </span>
                 </label>
                 {errors.acceptMedicalPolicy && (

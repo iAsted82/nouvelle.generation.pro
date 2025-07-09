@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Globe, BookOpen, Monitor, Users, UserCheck, Palette, Shield, Phone, Mail, MapPin, Clock, Calendar, Star, ArrowRight, CheckCircle, Camera, Play, Image as ImageIcon, Award, Heart, GraduationCap, Sparkles } from 'lucide-react';
 import AdminDashboard from './components/AdminDashboard';
+import FormManager from './components/Forms/FormManager';
 
 // Header Component
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
+  const [showForms, setShowForms] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,9 +60,17 @@ const Header = () => {
           </nav>
 
           {/* CTA Button */}
-          <button className="hidden md:block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 animate-pulse">
-            Inscrivez-vous maintenant
-          </button>
+          <div className="hidden md:flex items-center space-x-4">
+            <button 
+              onClick={() => setShowForms(true)}
+              className="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300"
+            >
+              Formulaires
+            </button>
+            <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 animate-pulse">
+              Inscrivez-vous maintenant
+            </button>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -85,6 +95,24 @@ const Header = () => {
                   {item.label}
                 </a>
               ))}
+              <button
+                onClick={() => {
+                  setShowAdmin(true);
+                  setIsMenuOpen(false);
+                }}
+                className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
+              >
+                Admin
+              </button>
+              <button
+                onClick={() => {
+                  setShowForms(true);
+                  setIsMenuOpen(false);
+                }}
+                className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
+              >
+                Formulaires
+              </button>
               <button className="mx-4 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full">
                 Inscrivez-vous maintenant
               </button>
@@ -92,6 +120,26 @@ const Header = () => {
           </div>
         )}
       </div>
+
+      {/* Forms Modal */}
+      {showForms && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              <button
+                onClick={() => setShowForms(false)}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full overflow-auto">
+              <FormManager />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Admin Dashboard Modal */}
       {showAdmin && (
@@ -126,6 +174,8 @@ const FloatingShape = ({ size, color, animationDelay, position }) => (
 
 // Hero Section
 const Hero = () => {
+  const [showForms, setShowForms] = useState(false);
+
   return (
     <section id="accueil" className="relative min-h-screen flex items-center bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50 overflow-hidden">
       {/* Floating Shapes */}
@@ -156,6 +206,13 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2">
                 <span>Inscrire mon enfant</span>
+                <ArrowRight className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={() => setShowForms(true)}
+                className="border-2 border-green-600 text-green-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-600 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2"
+              >
+                <span>Accéder aux formulaires</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
               <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2">
@@ -215,6 +272,26 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      {/* Forms Modal */}
+      {showForms && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              <button
+                onClick={() => setShowForms(false)}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full overflow-auto">
+              <FormManager />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
@@ -499,6 +576,8 @@ const Counter = ({ value, label, icon }) => {
 
 // Urgent Registration Section
 const UrgentRegistration = () => {
+  const [showForms, setShowForms] = useState(false);
+
   return (
     <section id="inscription" className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 relative overflow-hidden">
       {/* Background Animation */}
@@ -538,11 +617,37 @@ const UrgentRegistration = () => {
           <button className="bg-white text-blue-600 px-12 py-4 rounded-full text-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
             Demander un Rendez-vous Urgent
           </button>
+          <button 
+            onClick={() => setShowForms(true)}
+            className="mt-4 bg-gradient-to-r from-green-600 to-green-700 text-white px-12 py-4 rounded-full text-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105 block mx-auto"
+          >
+            Accéder aux Formulaires
+          </button>
           <p className="text-white/80 mt-4">
             Contactez-nous dès maintenant pour visiter notre nouveau campus
           </p>
         </div>
       </div>
+
+      {/* Forms Modal */}
+      {showForms && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              <button
+                onClick={() => setShowForms(false)}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full overflow-auto">
+              <FormManager />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
@@ -954,6 +1059,7 @@ const ImageUploader = ({ onImageUpload, placeholder, className = "" }) => {
 // Main App
 function App() {
   const [showAdminDashboard, setShowAdminDashboard] = useState(false);
+  const [showForms, setShowForms] = useState(false);
 
   // Check for admin access via URL parameter
   useEffect(() => {
@@ -961,10 +1067,18 @@ function App() {
     if (urlParams.get('admin') === 'true') {
       setShowAdminDashboard(true);
     }
+    // Check for forms access via URL parameter
+    if (urlParams.get('forms') === 'true') {
+      setShowForms(true);
+    }
   }, []);
 
   if (showAdminDashboard) {
     return <AdminDashboard />;
+  }
+
+  if (showForms) {
+    return <FormManager />;
   }
 
   return (
