@@ -1028,12 +1028,10 @@ const Footer = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <img 
-                  src="/logo-ngp.png" 
-                  alt="Logo Nouvelle Génération Pro" 
-                  className="w-8 h-8 object-contain"
-                  style={{ filter: 'hue-rotate(220deg) saturate(1.5) brightness(1.2)' }}
-                />
+                <div className="relative">
+                  <Globe className="w-8 h-8 text-blue-400 animate-spin" style={{ animationDuration: '8s' }} />
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
+                </div>
                 <div>
                   <h3 className="text-xl font-bold">NOUVELLE GÉNÉRATION PRO</h3>
                   <p className="text-gray-400">École Maternelle d'Excellence</p>
@@ -1079,12 +1077,6 @@ const Footer = () => {
                   >
                     Administration
                   </button>
-                  <span className="text-gray-600">•</span>
-                  <img 
-                    src="/logo-ngp.png" 
-                    alt="Logo Nouvelle Génération Pro" 
-                    className="w-4 h-4 object-contain opacity-50"
-                  />
                 </div>
               </div>
             </div>
