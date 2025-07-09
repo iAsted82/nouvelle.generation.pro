@@ -227,22 +227,6 @@ const FormManager: React.FC = () => {
   const [activeForm, setActiveForm] = useState<'appointment' | 'registration' | 'childRegistration' | 'contact' | 'completeRegistration'>('appointment');
   const [isLoading, setIsLoading] = useState(false);
   const db = DatabaseManager.getInstance();
-  const [completeRegistrationsCount, setCompleteRegistrationsCount] = useState(0);
-
-  // Charger le nombre d'inscriptions complètes
-  useEffect(() => {
-    const loadCompleteRegistrations = async () => {
-      try {
-        const data = await registrationService.getAllRegistrations();
-        setCompleteRegistrationsCount(data.users.length);
-      } catch (error) {
-        console.error('Erreur lors du chargement des inscriptions complètes:', error);
-        setCompleteRegistrationsCount(0);
-      }
-    };
-
-    loadCompleteRegistrations();
-  }, []);
 
   const handleAppointmentSubmit = async (data: any) => {
     setIsLoading(true);
@@ -428,7 +412,7 @@ const FormManager: React.FC = () => {
             </div>
             <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
               <h4 className="font-medium text-indigo-800 mb-2">Inscriptions Complètes</h4>
-              <p className="text-2xl font-bold text-indigo-600">{completeRegistrationsCount}</p>
+              <p className="text-2xl font-bold text-indigo-600">{registrationService.getAllRegistrations().then(data => data.users.length)}</p>
             </div>
           </div>
         </div>
