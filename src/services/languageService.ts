@@ -1124,6 +1124,222 @@ export const TRANSLATIONS = {
     'months.october': 'October',
     'months.november': 'November',
     'months.december': 'December'
+    // Hero section
+    'hero.title': 'مدرسة رياض الأطفال المتميزة',
+    'hero.subtitle': 'حيث ينمو كل طفل بثقة وإبداع',
+    'hero.cta.register': 'تسجيل طفلي مسبقاً',
+    'hero.cta.visit': 'زيارة المدرسة',
+    'hero.stats.years': 'سنوات من الخبرة',
+    'hero.stats.students': 'طلاب سعداء',
+    'hero.stats.activities': 'أنشطة إبداعية',
+    'hero.stats.satisfaction': 'رضا الوالدين',
+    
+    // About section
+    'about.title': 'مدرسة فريدة لطفلك',
+    'about.subtitle': 'اكتشف منهجنا التعليمي المبتكر',
+    'about.feature1.title': 'أساليب تعليمية مبتكرة',
+    'about.feature1.description': 'نستخدم أساليب حديثة وإبداعية لتحفيز تعلم كل طفل، مع احترام إيقاعه واهتماماته.',
+    'about.feature2.title': 'بيئة آمنة ومحفزة',
+    'about.feature2.description': 'تم تصميم مساحاتنا لتعزيز الإنجاز والإبداع والاستقلالية في بيئة راعية وآمنة.',
+    'about.feature3.title': 'فريق تعليمي ذو خبرة',
+    'about.feature3.description': 'محترفون شغوفون، مدربون على أحدث الأساليب التعليمية، يدعمون كل طفل في تطوره.',
+    'about.feature4.title': 'متابعة شخصية',
+    'about.feature4.description': 'كل طفل يستفيد من دعم فردي لتطوير مواهبه وتجاوز صعوباته.',
+    'about.feature5.title': 'أنشطة إبداعية ورياضية',
+    'about.feature5.description': 'برنامج غني بالأنشطة الفنية والموسيقية والرياضية لتطوير جميع مواهب الطفل.',
+    'about.feature6.title': 'التحضير للمدرسة الابتدائية',
+    'about.feature6.description': 'نحضر طلابنا بفعالية لدخولهم المدرسة الابتدائية بأساليب تعلم مناسبة.',
+    
+    // Programs section
+    'programs.title': 'برامجنا التعليمية',
+    'programs.subtitle': 'مسارات مناسبة لكل عمر',
+    'programs.petite.title': 'القسم الصغير',
+    'programs.petite.age': '3-4 سنوات',
+    'programs.petite.description': 'التنشئة الاجتماعية الأولى، تطوير اللغة واكتشاف الأنشطة الإبداعية.',
+    'programs.petite.features': 'التكيف اللطيف • الإيقاظ الحسي • الألعاب التعليمية • المهارات الحركية الدقيقة',
+    'programs.moyenne.title': 'القسم المتوسط',
+    'programs.moyenne.age': '4-5 سنوات',
+    'programs.moyenne.description': 'تطوير الاستقلالية، بداية التعلم الأساسي.',
+    'programs.moyenne.features': 'الرسم • ما قبل الرياضيات • التعبير الشفوي • الأنشطة اليدوية',
+    'programs.grande.title': 'القسم الكبير',
+    'programs.grande.age': '5-6 سنوات',
+    'programs.grande.description': 'التحضير لدخول المدرسة الابتدائية، تعزيز المكتسبات.',
+    'programs.grande.features': 'ما قبل القراءة • ما قبل الكتابة • المنطق • تحضير الابتدائي',
+    
+    // Gallery section
+    'gallery.title': 'اكتشف مدرستنا بالصور',
+    'gallery.subtitle': 'انغمس في عالم الجيل الجديد المحترف',
+    'gallery.tabs.facilities': 'مرافقنا',
+    'gallery.tabs.activities': 'الأنشطة',
+    'gallery.tabs.events': 'الأحداث',
+    'gallery.tabs.staff': 'فريقنا',
+    'gallery.facilities.classroom': 'فصل دراسي حديث',
+    'gallery.facilities.playground': 'ملعب آمن',
+    'gallery.facilities.library': 'مكتبة الأطفال',
+    'gallery.facilities.canteen': 'مقصف مجهز',
+    'gallery.facilities.garden': 'حديقة تعليمية',
+    'gallery.facilities.computer': 'غرفة الحاسوب',
+    'gallery.activities.art': 'ورشة فنون إبداعية',
+    'gallery.activities.music': 'الإيقاظ الموسيقي',
+    'gallery.activities.sport': 'نشاط رياضي',
+    'gallery.activities.reading': 'وقت القراءة',
+    'gallery.activities.cooking': 'ورشة طبخ',
+    'gallery.activities.science': 'اكتشاف علمي',
+    'gallery.events.graduation': 'حفل التخرج',
+    'gallery.events.festival': 'مهرجان ثقافي',
+    'gallery.events.sports': 'يوم رياضي',
+    'gallery.events.exhibition': 'معرض الأعمال',
+    'gallery.events.celebration': 'احتفال نهاية العام',
+    'gallery.events.parents': 'اجتماع الأولياء والمعلمين',
+    'gallery.staff.director': 'المديرة',
+    'gallery.staff.teacher1': 'معلمة القسم الصغير',
+    'gallery.staff.teacher2': 'معلمة القسم المتوسط',
+    'gallery.staff.teacher3': 'معلمة القسم الكبير',
+    'gallery.staff.assistant': 'مساعدة تعليمية',
+    'gallery.staff.nurse': 'ممرضة المدرسة',
+    
+    // School life section
+    'school-life.title': 'الحياة المدرسية في الجيل الجديد المحترف',
+    'school-life.subtitle': 'يوم مليء بالاكتشافات',
+    'school-life.daily.title': 'يوم نموذجي',
+    'school-life.daily.description': 'يوم منظم جيداً يتناوب بين التعلم واللعب والراحة.',
+    'school-life.daily.8h': 'استقبال الأطفال',
+    'school-life.daily.8h30': 'أنشطة تعليمية',
+    'school-life.daily.10h': 'استراحة ووجبة خفيفة',
+    'school-life.daily.10h30': 'ورش إبداعية',
+    'school-life.daily.12h': 'غداء وراحة',
+    'school-life.daily.14h': 'إيقاظ واكتشافات',
+    'school-life.daily.15h30': 'أنشطة حرة',
+    'school-life.daily.16h': 'انتهاء الدروس',
+    'school-life.meals.title': 'الإطعام',
+    'school-life.meals.description': 'وجبات متوازنة محضرة بعناية، مناسبة للاحتياجات الغذائية للأطفال.',
+    'school-life.meals.feature1': 'وجبات عضوية ومحلية',
+    'school-life.meals.feature2': 'قوائم متوازنة',
+    'school-life.meals.feature3': 'مراعاة الحساسية',
+    'school-life.meals.feature4': 'تعليم غذائي',
+    'school-life.safety.title': 'الأمان والرفاهية',
+    'school-life.safety.description': 'أمان أطفالكم هو أولويتنا المطلقة.',
+    'school-life.safety.feature1': 'مراقبة مستمرة',
+    'school-life.safety.feature2': 'معدات آمنة',
+    'school-life.safety.feature3': 'موظفون مدربون',
+    'school-life.safety.feature4': 'بروتوكولات طوارئ',
+    
+    // Registration section
+    'registration.title': 'التسجيل 2025-2026: أماكن محدودة',
+    'registration.subtitle': 'احجز مكان طفلك الآن',
+    'registration.deadline': 'موعد نهاية التسجيل',
+    'registration.places': 'أماكن متاحة',
+    'registration.requirements.title': 'شروط التسجيل',
+    'registration.requirements.age': 'العمر المطلوب حسب القسم',
+    'registration.requirements.docs': 'وثائق إلزامية',
+    'registration.requirements.visit': 'زيارة المدرسة',
+    'registration.requirements.payment': 'رسوم التسجيل',
+    'registration.process.title': 'عملية التسجيل',
+    'registration.process.step1': 'تسجيل مسبق عبر الإنترنت',
+    'registration.process.step2': 'موعد شخصي',
+    'registration.process.step3': 'مراجعة الملف',
+    'registration.process.step4': 'تأكيد نهائي',
+    'registration.cta.register': 'سجل الآن',
+    'registration.cta.info': 'طلب معلومات',
+    
+    // News section
+    'news.title': 'مدرستنا تتطور',
+    'news.subtitle': 'اكتشف أحدث أخبارنا',
+    'news.new-playground.title': 'ملعب جديد',
+    'news.new-playground.date': 'يناير 2025',
+    'news.new-playground.description': 'تركيب ملعب جديد حديث وآمن لسعادة الأطفال العظيمة.',
+    'news.digital-tools.title': 'أدوات رقمية',
+    'news.digital-tools.date': 'ديسمبر 2024',
+    'news.digital-tools.description': 'دمج أدوات رقمية تعليمية لإثراء تجربة التعلم.',
+    'news.partnership.title': 'شراكة موسيقية',
+    'news.partnership.date': 'نوفمبر 2024',
+    'news.partnership.description': 'شراكة جديدة مع مدرسة الموسيقى في سلا لدورات الإيقاظ الموسيقي.',
+    'news.read-more': 'اقرأ المزيد',
+    
+    // Contact section
+    'contact.title': 'اتصل بنا',
+    'contact.subtitle': 'نحن هنا للإجابة على أسئلتك',
+    'contact.info.title': 'معلومات الاتصال',
+    'contact.info.address': 'العنوان',
+    'contact.info.phone': 'الهاتف',
+    'contact.info.email': 'البريد الإلكتروني',
+    'contact.info.hours': 'الساعات',
+    'contact.info.hours.school': 'المدرسة',
+    'contact.info.hours.office': 'المكتب',
+    'contact.form.title': 'نموذج الاتصال',
+    'contact.form.name': 'الاسم الكامل',
+    'contact.form.email': 'البريد الإلكتروني',
+    'contact.form.phone': 'الهاتف',
+    'contact.form.subject': 'الموضوع',
+    'contact.form.message': 'الرسالة',
+    'contact.form.send': 'إرسال الرسالة',
+    'contact.form.success': 'تم إرسال رسالتك بنجاح!',
+    'contact.form.error': 'خطأ في إرسال الرسالة.',
+    
+    // Footer
+    'footer.about.title': 'حول',
+    'footer.about.description': 'مدرسة رياض أطفال متميزة تقدم بيئة تعليمية محفزة وراعية.',
+    'footer.quick-links.title': 'روابط سريعة',
+    'footer.quick-links.about': 'حول',
+    'footer.quick-links.programs': 'البرامج',
+    'footer.quick-links.admissions': 'القبول',
+    'footer.quick-links.gallery': 'المعرض',
+    'footer.quick-links.contact': 'الاتصال',
+    'footer.services.title': 'الخدمات',
+    'footer.services.registration': 'التسجيل',
+    'footer.services.visit': 'زيارة',
+    'footer.services.appointment': 'موعد',
+    'footer.services.forms': 'نماذج',
+    'footer.services.support': 'دعم',
+    'footer.contact.title': 'الاتصال',
+    'footer.contact.address': 'إقامة الصفاء 4، سلا',
+    'footer.contact.phone': '05 37 00 00 00',
+    'footer.contact.email': 'info@nouvellegeneration.pro',
+    'footer.rights': 'جميع الحقوق محفوظة.',
+    'footer.privacy': 'سياسة الخصوصية',
+    'footer.terms': 'شروط الاستخدام',
+    'footer.legal': 'الإشعارات القانونية',
+    
+    // Common elements
+    'common.more': 'تعلم المزيد',
+    'common.close': 'إغلاق',
+    'common.next': 'التالي',
+    'common.previous': 'السابق',
+    'common.view-all': 'عرض الكل',
+    'common.back': 'العودة',
+    'common.loading': 'جاري التحميل...',
+    'common.error': 'خطأ',
+    'common.success': 'نجح',
+    'common.required': 'مطلوب',
+    'common.optional': 'اختياري',
+    'common.save': 'حفظ',
+    'common.cancel': 'إلغاء',
+    'common.confirm': 'تأكيد',
+    'common.yes': 'نعم',
+    'common.no': 'لا',
+    'common.search': 'بحث',
+    'common.filter': 'تصفية',
+    'common.sort': 'ترتيب',
+    'common.refresh': 'تحديث',
+    'common.export': 'تصدير',
+    'common.import': 'استيراد',
+    'common.edit': 'تحرير',
+    'common.delete': 'حذف',
+    'common.add': 'إضافة',
+    'common.create': 'إنشاء',
+    'common.update': 'تحديث',
+    'common.download': 'تحميل',
+    'common.upload': 'رفع',
+    'common.print': 'طباعة',
+    'common.copy': 'نسخ',
+    'common.paste': 'لصق',
+    'common.cut': 'قص',
+    'common.select': 'اختيار',
+    'common.deselect': 'إلغاء الاختيار',
+    'common.select-all': 'اختيار الكل',
+    'common.clear': 'مسح',
+    'common.reset': 'إعادة تعيين',
+    'common.apply': 'تطبيق'
   }
 };
 
@@ -1166,6 +1382,7 @@ class LanguageService {
   setLanguage(language: Language): void {
     this.currentLanguage = language;
     this.saveLanguage();
+    this.notifyListeners();
     this.updateDocumentDirection();
     this.notifyListeners();
   }
@@ -1184,9 +1401,17 @@ class LanguageService {
   }
 
   t(key: string, fallback?: string): string {
-    return this.translate(key, fallback);
+    return translation || fallback || this.translateFallback(key) || key;
   }
 
+  private translateFallback(key: string): string | undefined {
+    // Try French as fallback
+    if (this.currentLanguage !== 'fr') {
+      return TRANSLATIONS.fr[key];
+    }
+    return undefined;
+  }
+  
   isRTL(): boolean {
     return this.getLanguageConfig().direction === 'rtl';
   }
@@ -1198,6 +1423,17 @@ class LanguageService {
     };
   }
 
+  private notifyListeners(): void {
+    this.listeners.forEach(listener => listener(this.currentLanguage));
+  }
+  
+  subscribe(listener: (language: Language) => void): () => void {
+    this.listeners.push(listener);
+    return () => {
+      this.listeners = this.listeners.filter(l => l !== listener);
+    };
+  }
+  
   private notifyListeners(): void {
     this.listeners.forEach(listener => listener(this.currentLanguage));
   }
