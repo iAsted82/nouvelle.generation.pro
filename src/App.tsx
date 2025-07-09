@@ -1,6 +1,3 @@
-Here's the fixed version with all missing closing brackets added:
-
-```typescript
 import React, { useState, useEffect } from 'react';
 import { 
   Menu, 
@@ -87,4 +84,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-```
