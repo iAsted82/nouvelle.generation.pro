@@ -51,7 +51,7 @@ const Header = () => {
           <div className="flex items-center space-x-2 flex-shrink-0">
             <div className="relative flex items-center">
               <img 
-                src="/Photoroom_20250708_233005.PNG" 
+                src="/logo-ngp.png" 
                 alt="Logo Nouvelle Génération Pro" 
                 className="w-10 h-10 lg:w-12 lg:h-12 object-contain transition-transform duration-300 hover:scale-105"
                 style={{ 
@@ -160,7 +160,14 @@ const Header = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              <div className="flex items-center space-x-3">
+                <img 
+                  src="/logo-ngp.png" 
+                  alt="Logo Nouvelle Génération Pro" 
+                  className="w-8 h-8 object-contain"
+                />
+                <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              </div>
               <button
                 onClick={() => setShowForms(false)}
                 className="text-gray-500 hover:text-gray-700 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded"
@@ -180,7 +187,14 @@ const Header = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl w-full max-w-6xl h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
+              <div className="flex items-center space-x-3">
+                <img 
+                  src="/logo-ngp.png" 
+                  alt="Logo Nouvelle Génération Pro" 
+                  className="w-8 h-8 object-contain"
+                />
+                <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
+              </div>
               <button
                 onClick={() => setShowAdmin(false)}
                 className="text-gray-500 hover:text-gray-700 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded"
@@ -222,6 +236,22 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-6 animate-fadeInUp">
+            {/* Logo Hero - Version grande */}
+            <div className="flex items-center space-x-4 mb-4">
+              <img 
+                src="/logo-ngp.png" 
+                alt="Logo Nouvelle Génération Pro" 
+                className="w-16 h-16 md:w-20 md:h-20 object-contain"
+                style={{ 
+                  filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15))',
+                  margin: '8px'
+                }}
+              />
+              <div className="text-blue-600 font-bold text-2xl md:text-3xl">
+                NOUVELLE GÉNÉRATION PRO
+              </div>
+            </div>
+            
             <div className="space-y-4">
               <h1 className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">
                 La Maternelle qui 
@@ -292,7 +322,18 @@ const Hero = () => {
                         loading="lazy"
                       />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800">Nouvelle Génération Pro</h3>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <img 
+                        src="/logo-ngp.png" 
+                        alt="Logo Nouvelle Génération Pro" 
+                        className="w-8 h-8 object-contain"
+                        style={{ 
+                          filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+                          margin: '2px'
+                        }}
+                      />
+                      <h3 className="text-2xl font-bold text-gray-800">Nouvelle Génération Pro</h3>
+                    </div>
                     <p className="text-gray-600">Excellence éducative depuis 2009</p>
                   </div>
                   
@@ -318,7 +359,14 @@ const Hero = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              <div className="flex items-center space-x-3">
+                <img 
+                  src="/logo-ngp.png" 
+                  alt="Logo Nouvelle Génération Pro" 
+                  className="w-8 h-8 object-contain"
+                />
+                <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              </div>
               <button
                 onClick={() => setShowForms(false)}
                 className="text-gray-500 hover:text-gray-700 p-2"
@@ -649,7 +697,7 @@ const UrgentRegistration = () => {
           <Counter 
             value={1} 
             label="École centralisée moderne" 
-            icon={<Globe className="w-8 h-8 text-white" />}
+            icon={<img src="/logo-ngp.png" alt="Logo" className="w-8 h-8 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />}
           />
         </div>
 
@@ -677,7 +725,14 @@ const UrgentRegistration = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              <div className="flex items-center space-x-3">
+                <img 
+                  src="/logo-ngp.png" 
+                  alt="Logo Nouvelle Génération Pro" 
+                  className="w-8 h-8 object-contain"
+                />
+                <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+              </div>
               <button
                 onClick={() => setShowForms(false)}
                 className="text-gray-500 hover:text-gray-700 p-2"
@@ -704,7 +759,12 @@ const InfoSection = () => {
           <div className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-orange-500">
             <div className="flex items-start space-x-4">
               <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <Globe className="w-6 h-6 text-orange-600" />
+                <img 
+                  src="/logo-ngp.png" 
+                  alt="Logo Nouvelle Génération Pro" 
+                  className="w-6 h-6 object-contain"
+                  style={{ filter: 'hue-rotate(25deg) saturate(1.2)' }}
+                />
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">🏫 Notre École Évolue</h3>
@@ -968,7 +1028,12 @@ const Footer = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Globe className="w-8 h-8 text-blue-400" />
+                <img 
+                  src="/logo-ngp.png" 
+                  alt="Logo Nouvelle Génération Pro" 
+                  className="w-8 h-8 object-contain"
+                  style={{ filter: 'hue-rotate(220deg) saturate(1.5) brightness(1.2)' }}
+                />
                 <div>
                   <h3 className="text-xl font-bold">NOUVELLE GÉNÉRATION PRO</h3>
                   <p className="text-gray-400">École Maternelle d'Excellence</p>
@@ -1007,12 +1072,20 @@ const Footer = () => {
                 <p className="mt-2 text-sm">École maternelle moderne • Éducation bilingue • Valeurs culturelles marocaines</p>
               </div>
               <div className="mt-4 md:mt-0">
-                <button
-                  onClick={() => setShowAdmin(true)}
-                  className="text-xs text-gray-500 hover:text-gray-400 transition-colors"
-                >
-                  Administration
-                </button>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setShowAdmin(true)}
+                    className="text-xs text-gray-500 hover:text-gray-400 transition-colors"
+                  >
+                    Administration
+                  </button>
+                  <span className="text-gray-600">•</span>
+                  <img 
+                    src="/logo-ngp.png" 
+                    alt="Logo Nouvelle Génération Pro" 
+                    className="w-4 h-4 object-contain opacity-50"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1024,10 +1097,17 @@ const Footer = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl w-full max-w-6xl h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
+              <div className="flex items-center space-x-3">
+                <img 
+                  src="/logo-ngp.png" 
+                  alt="Logo Nouvelle Génération Pro" 
+                  className="w-8 h-8 object-contain"
+                />
+                <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
+              </div>
               <button
                 onClick={() => setShowAdmin(false)}
-                className="text-gray-500 hover:text-gray-700 p-2"
+                className="text-gray-500 hover:text-gray-700 p-2 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded"
               >
                 <X className="w-6 h-6" />
               </button>
