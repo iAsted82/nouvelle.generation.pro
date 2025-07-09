@@ -190,15 +190,15 @@ const AdminAuth: React.FC<{ onLogin: (credentials: any) => void }> = ({ onLogin 
 
     // Simulation d'authentification
     setTimeout(() => {
-      if (credentials.username === 'admin' && credentials.password === 'nouvelle2025') {
+      if (credentials.username === 'info@nouvellegeneration.pro' && credentials.password === 'Karima1982*') {
         onLogin({
           id: '1',
           name: 'Administrateur',
           role: 'admin',
-          email: 'admin@nouvellegenerationpro.ma'
+          email: 'info@nouvellegeneration.pro'
         });
       } else {
-        setError('Nom d\'utilisateur ou mot de passe incorrect');
+        setError('Email ou mot de passe incorrect');
       }
       setIsLoading(false);
     }, 1000);
@@ -219,14 +219,14 @@ const AdminAuth: React.FC<{ onLogin: (credentials: any) => void }> = ({ onLogin 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nom d'utilisateur
+                Email
               </label>
               <input
-                type="text"
+                type="email"
                 value={credentials.username}
                 onChange={(e) => setCredentials({...credentials, username: e.target.value})}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Entrez votre nom d'utilisateur"
+                placeholder="Entrez votre email"
                 required
               />
             </div>
@@ -271,6 +271,9 @@ const AdminAuth: React.FC<{ onLogin: (credentials: any) => void }> = ({ onLogin 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-500">
               Accès restreint aux administrateurs autorisés
+            </p>
+            <p className="text-xs text-gray-400 mt-2">
+              Informations sécurisées - Ne partagez jamais vos identifiants
             </p>
           </div>
         </div>
