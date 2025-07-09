@@ -656,7 +656,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800">Email</h4>
-                    <p className="text-gray-600">info@nouvellegenerationpro.ma</p>
+                    <p className="text-gray-600">info@nouvellegeneration.pro</p>
                   </div>
                 </div>
 
@@ -838,7 +838,7 @@ const Footer = () => {
                 <p>📍 Résidence Essafa 4, Salé</p>
                 <p>📞 05 37 00 00 00</p>
                 <p>📱 WhatsApp disponible</p>
-                <p>✉️ info@nouvellegenerationpro.ma</p>
+                <p>✉️ info@nouvellegeneration.pro</p>
               </div>
             </div>
             
