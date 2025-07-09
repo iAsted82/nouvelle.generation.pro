@@ -55,13 +55,6 @@ const Header = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
-            <button
-              onClick={() => setShowAdmin(true)}
-              className="text-gray-700 hover:text-blue-600 transition-colors relative group"
-            >
-              Admin
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
           </nav>
 
           {/* CTA Button */}
@@ -92,15 +85,6 @@ const Header = () => {
                   {item.label}
                 </a>
               ))}
-              <button
-                onClick={() => {
-                  setShowAdmin(true);
-                  setIsMenuOpen(false);
-                }}
-                className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
-              >
-                Admin
-              </button>
               <button className="mx-4 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full">
                 Inscrivez-vous maintenant
               </button>
@@ -341,18 +325,6 @@ const Gallery = () => {
       description: "Ateliers créatifs et expression artistique",
       type: "arts",
       placeholder: "Enfants en atelier peinture et arts"
-    },
-    {
-      title: "Lecture et Découverte",
-      description: "Coin lecture avec livres bilingues",
-      type: "reading",
-      placeholder: "Bibliothèque avec livres arabe-français"
-    },
-    {
-      title: "Équipe Pédagogique",
-      description: "Nos enseignants dévoués et bienveillants",
-      type: "teachers",
-      placeholder: "Enseignants avec enfants en activité"
     }
   ];
 
@@ -369,7 +341,7 @@ const Gallery = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {galleryItems.map((item, index) => (
             <div key={index} className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="aspect-video overflow-hidden">
@@ -839,50 +811,86 @@ const Contact = () => {
 
 // Footer
 const Footer = () => {
+  const [showAdmin, setShowAdmin] = useState(false);
+
   return (
-    <footer className="bg-gray-800 text-white py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <Globe className="w-8 h-8 text-blue-400" />
-              <div>
-                <h3 className="text-xl font-bold">NOUVELLE GÉNÉRATION PRO</h3>
-                <p className="text-gray-400">École Maternelle d'Excellence</p>
+    <>
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <Globe className="w-8 h-8 text-blue-400" />
+                <div>
+                  <h3 className="text-xl font-bold">NOUVELLE GÉNÉRATION PRO</h3>
+                  <p className="text-gray-400">École Maternelle d'Excellence</p>
+                </div>
+              </div>
+              <p className="text-gray-400">
+                Depuis 2009, nous accompagnons les enfants dans leur développement avec passion et professionnalisme, 
+                en respectant les valeurs culturelles marocaines.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Contact</h4>
+              <div className="space-y-2 text-gray-400">
+                <p>📍 Résidence Essafa 4, Salé</p>
+                <p>📞 05 37 00 00 00</p>
+                <p>📱 WhatsApp disponible</p>
+                <p>✉️ info@nouvellegenerationpro.ma</p>
               </div>
             </div>
-            <p className="text-gray-400">
-              Depuis 2009, nous accompagnons les enfants dans leur développement avec passion et professionnalisme, 
-              en respectant les valeurs culturelles marocaines.
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Contact</h4>
-            <div className="space-y-2 text-gray-400">
-              <p>📍 Résidence Essafa 4, Salé</p>
-              <p>📞 05 37 00 00 00</p>
-              <p>📱 WhatsApp disponible</p>
-              <p>✉️ info@nouvellegenerationpro.ma</p>
+            
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Horaires</h4>
+              <div className="space-y-2 text-gray-400">
+                <p>Lundi - Vendredi: 8h00 - 18h00</p>
+                <p>Samedi: 9h00 - 13h00</p>
+                <p>(sur rendez-vous uniquement)</p>
+              </div>
             </div>
           </div>
           
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Horaires</h4>
-            <div className="space-y-2 text-gray-400">
-              <p>Lundi - Vendredi: 8h00 - 18h00</p>
-              <p>Samedi: 9h00 - 13h00</p>
-              <p>(sur rendez-vous uniquement)</p>
+          <div className="border-t border-gray-700 mt-8 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="text-center md:text-left text-gray-400">
+                <p>&copy; 2025 Nouvelle Génération Pro. Tous droits réservés.</p>
+                <p className="mt-2 text-sm">École maternelle moderne • Éducation bilingue • Valeurs culturelles marocaines</p>
+              </div>
+              <div className="mt-4 md:mt-0">
+                <button
+                  onClick={() => setShowAdmin(true)}
+                  className="text-xs text-gray-500 hover:text-gray-400 transition-colors"
+                >
+                  Administration
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2025 Nouvelle Génération Pro. Tous droits réservés.</p>
-          <p className="mt-2 text-sm">École maternelle moderne • Éducation bilingue • Valeurs culturelles marocaines</p>
+      </footer>
+
+      {/* Admin Dashboard Modal */}
+      {showAdmin && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-6xl h-[90vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
+              <button
+                onClick={() => setShowAdmin(false)}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full overflow-auto">
+              <AdminDashboard />
+            </div>
+          </div>
         </div>
-      </div>
-    </footer>
+      )}
+    </>
   );
 };
 
