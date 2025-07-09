@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Globe, BookOpen, Monitor, Users, UserCheck, Palette, Shield, Phone, Mail, MapPin, Clock, Calendar, Star, ArrowRight, CheckCircle, Camera, Play, Image as ImageIcon, Award, Heart, GraduationCap, Sparkles } from 'lucide-react';
 import AdminDashboard from './components/AdminDashboard';
 import FormManager from './components/Forms/FormManager';
+import LanguageSelector from './components/LanguageSelector';
+import { languageService } from './services/languageService';
 
 // Header Component
 const Header = () => {
@@ -9,6 +11,17 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [showForms, setShowForms] = useState(false);
+  const [language, setLanguage] = useState(languageService.getCurrentLanguage());
+
+  // Subscribe to language changes
+  useEffect(() => {
+    const unsubscribe = languageService.subscribe((lang) => {
+      setLanguage(lang);
+    });
+    return unsubscribe;
+  }, []);
+
+  const t = (key: string, fallback?: string) => languageService.translate(key, fallback);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,12 +41,12 @@ const Header = () => {
   }, [isMenuOpen]);
 
   const navItems = [
-    { href: '#accueil', label: 'Accueil' },
-    { href: '#methodes', label: 'Nos Méthodes' },
-    { href: '#galerie', label: 'Notre École' },
-    { href: '#vie-scolaire', label: 'Vie Scolaire' },
-    { href: '#inscription', label: 'Inscription' },
-    { href: '#contact', label: 'Contact' }
+    { href: '#accueil', label: t('nav.home', 'Accueil') },
+    { href: '#methodes', label: t('nav.methods', 'Nos Méthodes') },
+    { href: '#galerie', label: t('nav.gallery', 'Notre École') },
+    { href: '#vie-scolaire', label: t('nav.school.life', 'Vie Scolaire') },
+    { href: '#inscription', label: t('nav.registration', 'Inscription') },
+    { href: '#contact', label: t('nav.contact', 'Contact') }
   ];
 
   const handleNavClick = (href) => {
@@ -61,8 +74,12 @@ const Header = () => {
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg lg:text-xl font-bold text-gray-800">NOUVELLE GÉNÉRATION</h1>
-              <p className="text-xs lg:text-sm text-orange-500 font-medium">PRO</p>
+              <h1 className="text-lg lg:text-xl font-bold text-gray-800">
+                {t('school.name', 'NOUVELLE GÉNÉRATION PRO')}
+              </h1>
+              <p className="text-xs lg:text-sm text-orange-500 font-medium">
+                {t('school.subtitle', 'École Maternelle d\'Excellence')}
+              </p>
             </div>
           </div>
 
@@ -81,17 +98,18 @@ const Header = () => {
 
           {/* Desktop CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
+            <LanguageSelector variant="compact" />
             <button 
               onClick={() => setShowForms(true)}
               className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 xl:px-6 py-2 rounded-full hover:shadow-lg hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm xl:text-base"
             >
-              Formulaires
+              {t('nav.forms', 'Formulaires')}
             </button>
             <button 
               onClick={() => handleNavClick('#inscription')}
               className="btn-primary bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 xl:px-6 py-2 rounded-full hover:shadow-lg hover:scale-105 transition-all duration-200 animate-pulse focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm xl:text-base"
             >
-              Inscrivez-vous maintenant
+              {t('cta.register.now', 'Inscrivez-vous maintenant')}
             </button>
           </div>
 
@@ -99,7 +117,7 @@ const Header = () => {
           <button
             className="lg:hidden text-gray-700 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded touch-target"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-label={isMenuOpen ? t('nav.close.menu', 'Fermer le menu') : t('nav.open.menu', 'Ouvrir le menu')}
             aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -130,6 +148,9 @@ const Header = () => {
                 
                 {/* Mobile Actions */}
                 <div className="mt-4 px-4 space-y-3">
+                  <div className="flex justify-center mb-4">
+                    <LanguageSelector />
+                  </div>
                   <button
                     onClick={() => {
                       setShowForms(true);
@@ -137,7 +158,7 @@ const Header = () => {
                     }}
                     className="w-full bg-green-600 text-white px-4 py-3 rounded-full hover:bg-green-700 transition-colors touch-target focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                   >
-                    Formulaires
+                    {t('nav.forms', 'Formulaires')}
                   </button>
                   <button 
                     onClick={() => {
@@ -146,7 +167,7 @@ const Header = () => {
                     }}
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-full hover:shadow-lg transition-all duration-200 touch-target focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   >
-                    Inscrivez-vous maintenant
+                    {t('cta.register.now', 'Inscrivez-vous maintenant')}
                   </button>
                 </div>
               </nav>
@@ -166,7 +187,7 @@ const Header = () => {
                   alt="Logo Nouvelle Génération Pro" 
                   className="w-8 h-8 object-contain"
                 />
-                <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
+                <h2 className="text-2xl font-bold text-gray-800">{t('forms.title', 'Système de Formulaires')}</h2>
               </div>
               <button
                 onClick={() => setShowForms(false)}
@@ -193,7 +214,7 @@ const Header = () => {
                   alt="Logo Nouvelle Génération Pro" 
                   className="w-8 h-8 object-contain"
                 />
-                <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
+                <h2 className="text-2xl font-bold text-gray-800">{t('admin.access', 'Accès Administration')}</h2>
               </div>
               <button
                 onClick={() => setShowAdmin(false)}
@@ -223,6 +244,16 @@ const FloatingShape = ({ size, color, animationDelay, position }) => (
 // Hero Section
 const Hero = () => {
   const [showForms, setShowForms] = useState(false);
+  const [language, setLanguage] = useState(languageService.getCurrentLanguage());
+
+  useEffect(() => {
+    const unsubscribe = languageService.subscribe((lang) => {
+      setLanguage(lang);
+    });
+    return unsubscribe;
+  }, []);
+
+  const t = (key: string, fallback?: string) => languageService.translate(key, fallback);
 
   return (
     <section id="accueil" className="relative min-h-screen flex items-center bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50 overflow-hidden">
@@ -248,21 +279,21 @@ const Hero = () => {
                 }}
               />
               <div className="text-blue-600 font-bold text-2xl md:text-3xl">
-                NOUVELLE GÉNÉRATION PRO
+                {t('school.name', 'NOUVELLE GÉNÉRATION PRO')}
               </div>
             </div>
             
             <div className="space-y-4">
               <h1 className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">
-                La Maternelle qui 
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600"> Fait la Différence</span>
+                {t('hero.title.part1', 'La Maternelle qui')}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600"> {t('hero.title.part2', 'Fait la Différence')}</span>
               </h1>
               <div className="flex items-center space-x-2 text-2xl md:text-3xl text-orange-500 font-semibold">
                 <Calendar className="w-8 h-8" />
-                <span>Inscriptions Ouvertes 2025-2026</span>
+                <span>{t('hero.registration.open', 'Inscriptions Ouvertes 2025-2026')}</span>
               </div>
               <p className="text-xl text-gray-600 leading-relaxed">
-                Une école maternelle moderne qui respecte les valeurs culturelles marocaines. Éducation bilingue arabe-français dans un environnement bienveillant et stimulant.
+                {t('hero.description', 'Une école maternelle moderne avec enseignement trilingue (français, arabe, anglais) et pédagogie innovante. Classes limitées à 15 élèves dans un environnement bienveillant et stimulant.')}
               </p>
             </div>
 
@@ -272,14 +303,14 @@ const Hero = () => {
                 onClick={() => document.querySelector('#inscription')?.scrollIntoView({ behavior: 'smooth' })}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
               >
-                <span>Inscrire mon enfant</span>
+                <span>{t('cta.register.child', 'Inscrire mon enfant')}</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => setShowForms(true)}
                 className="border-2 border-green-600 text-green-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-600 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2"
               >
-                <span>Accéder aux formulaires</span>
+                <span>{t('cta.access.forms', 'Accéder aux formulaires')}</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
               <button 
@@ -287,7 +318,7 @@ const Hero = () => {
                 className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2"
               >
                 <Camera className="w-5 h-5" />
-                <span>Découvrir notre école</span>
+                <span>{t('cta.discover.school', 'Découvrir notre école')}</span>
               </button>
             </div>
 
@@ -295,15 +326,15 @@ const Hero = () => {
             <div className="flex items-center space-x-6 pt-4">
               <div className="flex items-center space-x-2">
                 <Award className="w-5 h-5 text-yellow-500 fill-current" />
-                <span className="text-gray-600">École certifiée</span>
+                <span className="text-gray-600">{t('trust.certified', 'École certifiée')}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-gray-600">15 ans d'expérience</span>
+                <span className="text-gray-600">{t('trust.experience', '15 ans d\'expérience')}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Heart className="w-5 h-5 text-red-500 fill-current" />
-                <span className="text-gray-600">Approche bienveillante</span>
+                <span className="text-gray-600">{t('trust.caring', 'Approche bienveillante')}</span>
               </div>
             </div>
           </div>
@@ -332,19 +363,19 @@ const Hero = () => {
                           margin: '2px'
                         }}
                       />
-                      <h3 className="text-2xl font-bold text-gray-800">Nouvelle Génération Pro</h3>
+                      <h3 className="text-2xl font-bold text-gray-800">{t('school.name', 'Nouvelle Génération Pro')}</h3>
                     </div>
-                    <p className="text-gray-600">Excellence éducative depuis 2009</p>
+                    <p className="text-gray-600">{t('school.since', 'Excellence éducative depuis 2009')}</p>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div className="bg-blue-50 rounded-xl p-4">
                       <div className="text-2xl font-bold text-blue-600">30</div>
-                      <div className="text-sm text-gray-600">Places restantes</div>
+                      <div className="text-sm text-gray-600">{t('info.places.remaining', 'Places restantes')}</div>
                     </div>
                     <div className="bg-orange-50 rounded-xl p-4">
                       <div className="text-2xl font-bold text-orange-600">15</div>
-                      <div className="text-sm text-gray-600">Enfants/classe max</div>
+                      <div className="text-sm text-gray-600">{t('info.children.per.class', 'Enfants/classe max')}</div>
                     </div>
                   </div>
                 </div>
@@ -402,36 +433,47 @@ const FeatureCard = ({ icon, title, description, delay }) => (
 
 // Features Section
 const Features = () => {
+  const [language, setLanguage] = useState(languageService.getCurrentLanguage());
+
+  useEffect(() => {
+    const unsubscribe = languageService.subscribe((lang) => {
+      setLanguage(lang);
+    });
+    return unsubscribe;
+  }, []);
+
+  const t = (key: string, fallback?: string) => languageService.translate(key, fallback);
+
   const features = [
     {
       icon: <BookOpen className="w-6 h-6 text-white" />,
-      title: "Éducation Bilingue",
-      description: "Apprentissage en arabe et français pour préparer l'avenir de votre enfant dans un contexte multiculturel."
+      title: t('features.bilingual.title', 'Éducation Bilingue'),
+      description: t('features.bilingual.description', 'Apprentissage en arabe et français pour préparer l\'avenir de votre enfant dans un contexte multiculturel.')
     },
     {
       icon: <Monitor className="w-6 h-6 text-white" />,
-      title: "Technologie Moderne",
-      description: "Tableaux interactifs et outils numériques adaptés aux jeunes enfants pour un apprentissage ludique."
+      title: t('features.technology.title', 'Technologie Moderne'),
+      description: t('features.technology.description', 'Tableaux interactifs et outils numériques adaptés aux jeunes enfants pour un apprentissage ludique.')
     },
     {
       icon: <UserCheck className="w-6 h-6 text-white" />,
-      title: "Équipe Qualifiée",
-      description: "Enseignants formés aux méthodes pédagogiques modernes et aux valeurs culturelles marocaines."
+      title: t('features.qualified.title', 'Équipe Qualifiée'),
+      description: t('features.qualified.description', 'Enseignants formés aux méthodes pédagogiques modernes et aux valeurs culturelles marocaines.')
     },
     {
       icon: <Users className="w-6 h-6 text-white" />,
-      title: "Classes Réduites",
-      description: "Maximum 15 enfants par classe pour un accompagnement personnalisé de chaque élève."
+      title: t('features.small.classes.title', 'Classes Réduites'),
+      description: t('features.small.classes.description', 'Maximum 15 enfants par classe pour un accompagnement personnalisé de chaque élève.')
     },
     {
       icon: <Palette className="w-6 h-6 text-white" />,
-      title: "Activités Enrichissantes",
-      description: "Arts, musique, théâtre, sport et activités culturelles pour développer tous les talents."
+      title: t('features.activities.title', 'Activités Enrichissantes'),
+      description: t('features.activities.description', 'Arts, musique, théâtre, sport et activités culturelles pour développer tous les talents.')
     },
     {
       icon: <Shield className="w-6 h-6 text-white" />,
-      title: "Environnement Sécurisé",
-      description: "Espace moderne, propre et organisé avec une sécurité renforcée pour la tranquillité des parents."
+      title: t('features.secure.title', 'Environnement Sécurisé'),
+      description: t('features.secure.description', 'Espace moderne, propre et organisé avec une sécurité renforcée pour la tranquillité des parents.')
     }
   ];
 
@@ -440,11 +482,11 @@ const Features = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-800 mb-6">
-            Pourquoi Choisir 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600"> Nouvelle Génération Pro</span>
+            {t('features.why.choose', 'Pourquoi Choisir')}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600"> {t('school.name', 'Nouvelle Génération Pro')}</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Une approche pédagogique moderne qui respecte les valeurs culturelles et spirituelles marocaines.
+            {t('features.description', 'Une approche pédagogique moderne qui respecte les valeurs culturelles et spirituelles marocaines.')}
           </p>
         </div>
 

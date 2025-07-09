@@ -55,6 +55,61 @@ export const TRANSLATIONS = {
     'common.yes': 'Oui',
     'common.no': 'Non',
     
+    // Navigation
+    'nav.home': 'Accueil',
+    'nav.methods': 'Nos Méthodes',
+    'nav.gallery': 'Notre École',
+    'nav.school.life': 'Vie Scolaire',
+    'nav.registration': 'Inscription',
+    'nav.contact': 'Contact',
+    'nav.forms': 'Formulaires',
+    'nav.open.menu': 'Ouvrir le menu',
+    'nav.close.menu': 'Fermer le menu',
+    
+    // Hero Section
+    'hero.title.part1': 'La Maternelle qui',
+    'hero.title.part2': 'Fait la Différence',
+    'hero.registration.open': 'Inscriptions Ouvertes 2025-2026',
+    'hero.description': 'Une école maternelle moderne avec enseignement trilingue (français, arabe, anglais) et pédagogie innovante. Classes limitées à 15 élèves dans un environnement bienveillant et stimulant.',
+    
+    // CTA Buttons
+    'cta.register.now': 'Inscrivez-vous maintenant',
+    'cta.register.child': 'Inscrire mon enfant',
+    'cta.access.forms': 'Accéder aux formulaires',
+    'cta.discover.school': 'Découvrir notre école',
+    
+    // Trust Indicators
+    'trust.certified': 'École certifiée',
+    'trust.experience': '15 ans d\'expérience',
+    'trust.caring': 'Approche bienveillante',
+    
+    // Info Cards
+    'info.places.remaining': 'Places restantes',
+    'info.children.per.class': 'Enfants/classe max',
+    
+    // Features
+    'features.why.choose': 'Pourquoi Choisir',
+    'features.description': 'Une approche pédagogique moderne qui respecte les valeurs culturelles et spirituelles marocaines.',
+    'features.bilingual.title': 'Éducation Bilingue',
+    'features.bilingual.description': 'Apprentissage en arabe et français pour préparer l\'avenir de votre enfant dans un contexte multiculturel.',
+    'features.technology.title': 'Technologie Moderne',
+    'features.technology.description': 'Tableaux interactifs et outils numériques adaptés aux jeunes enfants pour un apprentissage ludique.',
+    'features.qualified.title': 'Équipe Qualifiée',
+    'features.qualified.description': 'Enseignants formés aux méthodes pédagogiques modernes et aux valeurs culturelles marocaines.',
+    'features.small.classes.title': 'Classes Réduites',
+    'features.small.classes.description': 'Maximum 15 enfants par classe pour un accompagnement personnalisé de chaque élève.',
+    'features.activities.title': 'Activités Enrichissantes',
+    'features.activities.description': 'Arts, musique, théâtre, sport et activités culturelles pour développer tous les talents.',
+    'features.secure.title': 'Environnement Sécurisé',
+    'features.secure.description': 'Espace moderne, propre et organisé avec une sécurité renforcée pour la tranquillité des parents.',
+    
+    // Forms and Admin
+    'forms.title': 'Système de Formulaires',
+    'admin.access': 'Accès Administration',
+    
+    // School Info
+    'school.since': 'Excellence éducative depuis 2009',
+    
     // Auth
     'auth.login': 'Connexion',
     'auth.logout': 'Déconnexion',
@@ -183,6 +238,61 @@ export const TRANSLATIONS = {
     'common.yes': 'نعم',
     'common.no': 'لا',
     
+    // Navigation
+    'nav.home': 'الرئيسية',
+    'nav.methods': 'طرق التعليم',
+    'nav.gallery': 'مدرستنا',
+    'nav.school.life': 'الحياة المدرسية',
+    'nav.registration': 'التسجيل',
+    'nav.contact': 'اتصل بنا',
+    'nav.forms': 'النماذج',
+    'nav.open.menu': 'فتح القائمة',
+    'nav.close.menu': 'إغلاق القائمة',
+    
+    // Hero Section
+    'hero.title.part1': 'الروضة التي',
+    'hero.title.part2': 'تحدث الفرق',
+    'hero.registration.open': 'التسجيل مفتوح 2025-2026',
+    'hero.description': 'روضة أطفال حديثة مع تعليم ثلاثي اللغات (العربية، الفرنسية، الإنجليزية) وتربية مبتكرة. فصول محدودة بـ 15 طفل في بيئة مريحة ومحفزة.',
+    
+    // CTA Buttons
+    'cta.register.now': 'سجل الآن',
+    'cta.register.child': 'سجل طفلي',
+    'cta.access.forms': 'الوصول للنماذج',
+    'cta.discover.school': 'اكتشف مدرستنا',
+    
+    // Trust Indicators
+    'trust.certified': 'مدرسة معتمدة',
+    'trust.experience': '15 سنة خبرة',
+    'trust.caring': 'نهج عطوف',
+    
+    // Info Cards
+    'info.places.remaining': 'الأماكن المتبقية',
+    'info.children.per.class': 'طفل/فصل كحد أقصى',
+    
+    // Features
+    'features.why.choose': 'لماذا تختار',
+    'features.description': 'نهج تعليمي حديث يحترم القيم الثقافية والروحية المغربية.',
+    'features.bilingual.title': 'تعليم ثنائي اللغة',
+    'features.bilingual.description': 'تعلم باللغة العربية والفرنسية لتحضير مستقبل طفلك في سياق متعدد الثقافات.',
+    'features.technology.title': 'تقنية حديثة',
+    'features.technology.description': 'سبورات تفاعلية وأدوات رقمية مناسبة للأطفال الصغار للتعلم التفاعلي.',
+    'features.qualified.title': 'فريق مؤهل',
+    'features.qualified.description': 'معلمون مدربون على الطرق التعليمية الحديثة والقيم الثقافية المغربية.',
+    'features.small.classes.title': 'فصول صغيرة',
+    'features.small.classes.description': 'بحد أقصى 15 طفل لكل فصل لمتابعة شخصية لكل طالب.',
+    'features.activities.title': 'أنشطة مثرية',
+    'features.activities.description': 'فنون، موسيقى، مسرح، رياضة وأنشطة ثقافية لتطوير جميع المواهب.',
+    'features.secure.title': 'بيئة آمنة',
+    'features.secure.description': 'مكان حديث، نظيف ومنظم مع أمان معزز لراحة الوالدين.',
+    
+    // Forms and Admin
+    'forms.title': 'نظام النماذج',
+    'admin.access': 'الوصول للإدارة',
+    
+    // School Info
+    'school.since': 'التميز التعليمي منذ 2009',
+    
     // Auth
     'auth.login': 'تسجيل الدخول',
     'auth.logout': 'تسجيل الخروج',
@@ -310,6 +420,61 @@ export const TRANSLATIONS = {
     'common.confirm': 'Confirm',
     'common.yes': 'Yes',
     'common.no': 'No',
+    
+    // Navigation
+    'nav.home': 'Home',
+    'nav.methods': 'Our Methods',
+    'nav.gallery': 'Our School',
+    'nav.school.life': 'School Life',
+    'nav.registration': 'Registration',
+    'nav.contact': 'Contact',
+    'nav.forms': 'Forms',
+    'nav.open.menu': 'Open menu',
+    'nav.close.menu': 'Close menu',
+    
+    // Hero Section
+    'hero.title.part1': 'The Kindergarten that',
+    'hero.title.part2': 'Makes the Difference',
+    'hero.registration.open': 'Registration Open 2025-2026',
+    'hero.description': 'A modern kindergarten with trilingual education (French, Arabic, English) and innovative pedagogy. Classes limited to 15 students in a caring and stimulating environment.',
+    
+    // CTA Buttons
+    'cta.register.now': 'Register Now',
+    'cta.register.child': 'Register My Child',
+    'cta.access.forms': 'Access Forms',
+    'cta.discover.school': 'Discover Our School',
+    
+    // Trust Indicators
+    'trust.certified': 'Certified School',
+    'trust.experience': '15 years experience',
+    'trust.caring': 'Caring Approach',
+    
+    // Info Cards
+    'info.places.remaining': 'Places Remaining',
+    'info.children.per.class': 'Children/class max',
+    
+    // Features
+    'features.why.choose': 'Why Choose',
+    'features.description': 'A modern pedagogical approach that respects Moroccan cultural and spiritual values.',
+    'features.bilingual.title': 'Bilingual Education',
+    'features.bilingual.description': 'Learning in Arabic and French to prepare your child\'s future in a multicultural context.',
+    'features.technology.title': 'Modern Technology',
+    'features.technology.description': 'Interactive boards and digital tools adapted to young children for playful learning.',
+    'features.qualified.title': 'Qualified Team',
+    'features.qualified.description': 'Teachers trained in modern pedagogical methods and Moroccan cultural values.',
+    'features.small.classes.title': 'Small Classes',
+    'features.small.classes.description': 'Maximum 15 children per class for personalized support of each student.',
+    'features.activities.title': 'Enriching Activities',
+    'features.activities.description': 'Arts, music, theater, sports and cultural activities to develop all talents.',
+    'features.secure.title': 'Secure Environment',
+    'features.secure.description': 'Modern, clean and organized space with enhanced security for parents\' peace of mind.',
+    
+    // Forms and Admin
+    'forms.title': 'Forms System',
+    'admin.access': 'Admin Access',
+    
+    // School Info
+    'school.since': 'Educational excellence since 2009',
     
     // Auth
     'auth.login': 'Login',
