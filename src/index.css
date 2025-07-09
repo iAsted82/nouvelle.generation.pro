@@ -265,3 +265,34 @@ textarea:focus {
   width: 300px;
   height: 300px;
 }
+
+/* Logo styles - optimisations pour le logo de l'école */
+.school-logo {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Assurer que le logo reste proportionnel sur tous les écrans */
+@media (max-width: 640px) {
+  .school-logo {
+    max-height: 40px;
+    max-width: 40px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .school-logo {
+    max-height: 44px;
+    max-width: 44px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .school-logo {
+    max-height: 48px;
+    max-width: 48px;
+  }
+}

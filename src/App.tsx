@@ -49,9 +49,16 @@ const Header = () => {
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
           <div className="flex items-center space-x-2 flex-shrink-0">
-            <div className="relative">
-              <Globe className="w-8 h-8 text-blue-600 animate-spin" style={{ animationDuration: '8s' }} />
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
+            <div className="relative flex items-center">
+              <img 
+                src="/Photoroom_20250708_233005.PNG" 
+                alt="Logo Nouvelle Génération Pro" 
+                className="w-10 h-10 lg:w-12 lg:h-12 object-contain transition-transform duration-300 hover:scale-105"
+                style={{ 
+                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+                  margin: '4px' // Marge de sécurité de 4px autour du logo
+                }}
+              />
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg lg:text-xl font-bold text-gray-800">NOUVELLE GÉNÉRATION</h1>
