@@ -305,6 +305,16 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Fermer le menu mobile lors du clic en dehors
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMenuOpen && !(event.target as Element).closest('.mobile-menu-container')) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isMenuOpen]);
   const navItems = [
     { href: '#accueil', label: 'Accueil' },
     { href: '#methodes', label: 'Nos Méthodes' },
@@ -326,45 +336,47 @@ const Header = () => {
     <header className={`fixed w-full z-50 transition-all duration-300 ${
       isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
     }`}>
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => smoothScroll('#accueil')}>
+          <div className="flex items-center space-x-3 flex-shrink-0">
             <div className="relative">
-              <Globe className="w-8 h-8 text-blue-600 animate-spin" style={{ animationDuration: '8s' }} />
+              <Globe className="w-8 h-8 lg:w-10 lg:h-10 text-blue-600 animate-spin" style={{ animationDuration: '8s' }} />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-800">NOUVELLE GÉNÉRATION</h1>
-              <p className="text-sm text-orange-500 font-medium">PRO</p>
+              <h1 className="text-lg lg:text-xl font-bold text-gray-800 leading-tight">NOUVELLE GÉNÉRATION</h1>
+              <p className="text-xs lg:text-sm text-orange-500 font-medium">PRO</p>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navItems.map((item) => (
               <button
                 key={item.href}
                 onClick={() => smoothScroll(item.href)}
-                className="text-gray-700 hover:text-blue-600 transition-colors relative group"
+                className="text-gray-700 hover:text-blue-600 transition-all duration-200 relative group py-2 px-1 text-sm xl:text-base font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
               >
                 {item.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
             <button 
               onClick={() => setShowForms(true)}
-              className="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300"
+              className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 xl:px-6 py-2 xl:py-2.5 rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300 text-sm xl:text-base font-medium focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
               Formulaires
             </button>
             <button 
+              onClick={() => window.location.href = '#inscription'}
               onClick={() => setShowRegistration(true)}
               className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 animate-pulse"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 xl:px-6 py-2 xl:py-2.5 rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300 animate-pulse text-sm xl:text-base font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               Inscrivez-vous maintenant
             </button>
@@ -372,32 +384,56 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-gray-700"
+            className="lg:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mobile-menu-container"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t animate-slideDown">
-            <nav className="flex flex-col py-4">
+        <div className={`lg:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t transition-all duration-300 ease-in-out mobile-menu-container ${
+          isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+        }`}>
+          <nav className="flex flex-col py-2">
               {navItems.map((item) => (
                 <button
                   key={item.href}
                   onClick={() => smoothScroll(item.href)}
-                  className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
+                  className="px-6 py-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 border-l-4 border-transparent hover:border-blue-500 text-base font-medium focus:outline-none focus:bg-blue-50 focus:text-blue-600 focus:border-blue-500"
                 >
                   {item.label}
                 </button>
               ))}
+              
+              {/* Mobile Menu Actions */}
+              <div className="px-6 py-4 space-y-3 border-t border-gray-100 bg-gray-50">
+                <button
+                  onClick={() => {
+                    setShowForms(true);
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 text-base font-medium focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                >
+                  Accéder aux formulaires
+                </button>
+                <button
+                  onClick={() => {
+                    window.location.href = '#inscription';
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 text-base font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  Inscrivez-vous maintenant
+                </button>
               <button
                 onClick={() => {
                   setShowAdmin(true);
                   setIsMenuOpen(false);
                 }}
-                className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
+                className="w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-800 transition-colors text-sm"
               >
                 Admin
               </button>
@@ -407,21 +443,9 @@ const Header = () => {
                   setIsMenuOpen(false);
                 }}
                 className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
-              >
-                Formulaires
-              </button>
-              <button 
-                onClick={() => {
-                  setShowRegistration(true);
-                  setIsMenuOpen(false);
-                }}
-                className="mx-4 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full"
-              >
-                Inscrivez-vous maintenant
-              </button>
-            </nav>
-          </div>
-        )}
+              </div>
+          </nav>
+        </div>
       </div>
 
       {/* Registration Modal */}
@@ -446,13 +470,14 @@ const Header = () => {
 
       {/* Forms Modal */}
       {showForms && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
               <button
                 onClick={() => setShowForms(false)}
-                className="text-gray-500 hover:text-gray-700 p-2"
+                className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
+                aria-label="Fermer"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -466,13 +491,14 @@ const Header = () => {
 
       {/* Admin Dashboard Modal */}
       {showAdmin && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl w-full max-w-6xl h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
               <button
                 onClick={() => setShowAdmin(false)}
-                className="text-gray-500 hover:text-gray-700 p-2"
+                className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
+                aria-label="Fermer"
               >
                 <X className="w-6 h-6" />
               </button>
