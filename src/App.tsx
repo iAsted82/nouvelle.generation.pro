@@ -72,25 +72,23 @@ const Header = () => {
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
           <div className="flex items-center space-x-2 flex-shrink-0">
-              {t('gallery.title', 'Découvrez Notre École en Images')}
-              <img 
-                src="/logo-ngp.png" 
-              {t('gallery.subtitle', 'Plongez dans l\'univers de Nouvelle Génération Pro')}
-                className="w-10 h-10 lg:w-12 lg:h-12 object-contain transition-transform duration-300 hover:scale-105"
-                style={{ 
-                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
-                  margin: '4px' // Marge de sécurité de 4px autour du logo
-                }}
-              />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-lg lg:text-xl font-bold text-gray-800">
-                {t('school.name', 'NOUVELLE GÉNÉRATION PRO')}
-              </h1>
-              <p className="text-xs lg:text-sm text-orange-500 font-medium">
-                {t('school.subtitle', 'École Maternelle d\'Excellence')}
-              {t('gallery.tabs.facilities', 'Nos Installations')}
-            </div>
+            <img 
+              src="/logo-ngp.png" 
+              alt="Logo Nouvelle Génération Pro" 
+              className="w-10 h-10 lg:w-12 lg:h-12 object-contain transition-transform duration-300 hover:scale-105"
+              style={{ 
+                filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+                margin: '4px' // Marge de sécurité de 4px autour du logo
+              }}
+            />
+          </div>
+          <div className="hidden sm:block">
+            <h1 className="text-lg lg:text-xl font-bold text-gray-800">
+              {t('school.name', 'NOUVELLE GÉNÉRATION PRO')}
+            </h1>
+            <p className="text-xs lg:text-sm text-orange-500 font-medium">
+              {t('school.subtitle', 'École Maternelle d\'Excellence')}
+            </p>
           </div>
 
           {/* Desktop Navigation */}
