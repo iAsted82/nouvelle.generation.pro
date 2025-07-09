@@ -156,9 +156,9 @@ export const TRANSLATIONS = {
     // School info
     'school.name': 'Nouvelle Génération Pro',
     'school.subtitle': 'École Maternelle d\'Excellence',
-    'school.experience': '15 ans d\'expérience',
+    'school.experience': 'Enseignement trilingue - Pédagogie innovante',
     'school.location': 'Résidence Essafa 4, Salé',
-    'school.phone': '05 37 00 00 00',
+    'school.phone': '+212 626330800',
     'school.email': 'info@nouvellegeneration.pro'
   },
   
@@ -284,9 +284,9 @@ export const TRANSLATIONS = {
     // School info
     'school.name': 'الجيل الجديد برو',
     'school.subtitle': 'روضة أطفال للتميز',
-    'school.experience': '15 سنة خبرة',
+    'school.experience': 'تعليم ثلاثي اللغات - تربية مبتكرة',
     'school.location': 'إقامة الصفا 4، سلا',
-    'school.phone': '05 37 00 00 00',
+    'school.phone': '+212 626330800',
     'school.email': 'info@nouvellegeneration.pro'
   },
   
@@ -412,9 +412,9 @@ export const TRANSLATIONS = {
     // School info
     'school.name': 'New Generation Pro',
     'school.subtitle': 'Excellence Kindergarten',
-    'school.experience': '15 years experience',
+    'school.experience': 'Trilingual education - Innovative pedagogy',
     'school.location': 'Residence Essafa 4, Salé',
-    'school.phone': '05 37 00 00 00',
+    'school.phone': '+212 626330800',
     'school.email': 'info@nouvellegeneration.pro'
   }
 };
