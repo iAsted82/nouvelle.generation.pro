@@ -1,3 +1,6 @@
+Here's the fixed version with all missing closing brackets added:
+
+```typescript
 import React, { useState, useEffect } from 'react';
 import { 
   Menu, 
@@ -49,18 +52,17 @@ import AdminAuth from './components/AdminAuth';
 const App: React.FC = () => {
   // ... [rest of the code remains unchanged until the footer section]
 
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <>
-                <p className="text-gray-400 text-sm">
-                  © 2025 {t('school.name', 'Nouvelle Génération Pro')}. {t('footer.rights', 'Tous droits réservés.')}
-                </p>
-                <div className="flex space-x-6 text-sm text-gray-400">
-                  <a href="#" className="hover:text-white transition-colors">{t('footer.privacy', 'Politique de confidentialité')}</a>
-                  <a href="#" className="hover:text-white transition-colors">{t('footer.terms', 'Conditions d\'utilisation')}</a>
-                  <a href="#" className="hover:text-white transition-colors">{t('footer.legal', 'Mentions légales')}</a>
-                </div>
-              </>
+              <p className="text-gray-400 text-sm">
+                © 2025 {t('school.name', 'Nouvelle Génération Pro')}. {t('footer.rights', 'Tous droits réservés.')}
+              </p>
+              <div className="flex space-x-6 text-sm text-gray-400">
+                <a href="#" className="hover:text-white transition-colors">{t('footer.privacy', 'Politique de confidentialité')}</a>
+                <a href="#" className="hover:text-white transition-colors">{t('footer.terms', 'Conditions d\'utilisation')}</a>
+                <a href="#" className="hover:text-white transition-colors">{t('footer.legal', 'Mentions légales')}</a>
+              </div>
             </div>
+          </div>
+        </div>
       </footer>
 
       {/* Admin Modal */}
@@ -85,3 +87,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+```
