@@ -17,6 +17,16 @@ const Header = () => {
   useEffect(() => {
     const unsubscribe = languageService.subscribe((lang) => {
       setLanguage(lang);
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [newsletter, setNewsletter] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
     });
     return unsubscribe;
   }, []);
@@ -1188,6 +1198,34 @@ function App() {
     return <FormManager />;
   }
 
+  // Handle contact form submission
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactStatus('sending');
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setContactStatus('success');
+    setContactForm({ name: '', email: '', phone: '', subject: '', message: '' });
+    
+    setTimeout(() => setContactStatus('idle'), 3000);
+  };
+
+  // Handle newsletter subscription
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNewsletterStatus('sending');
+    
+    // Simulate subscription
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    setNewsletterStatus('success');
+    setNewsletter('');
+    
+    setTimeout(() => setNewsletterStatus('idle'), 3000);
+  };
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -1199,8 +1237,716 @@ function App() {
       <InfoSection />
       <Contact />
       <Footer />
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* School Info */}
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <img 
+                  src="/logo-ngp.png" 
+                  alt="Logo Nouvelle Génération Pro" 
+                  className="w-8 h-8 object-contain"
+                />
+                <h3 className="text-xl font-bold">{t('school.name')}</h3>
+              </div>
+              <p className="text-gray-300 mb-4">{t('footer.about.description')}</p>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <Youtube className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-lg font-semibold mb-4">{t('footer.quick.links')}</h4>
+              <ul className="space-y-2">
+                <li><a href="#home" className="text-gray-300 hover:text-white transition-colors">{t('nav.home')}</a></li>
+                <li><a href="#methods" className="text-gray-300 hover:text-white transition-colors">{t('nav.methods')}</a></li>
+                <li><a href="#gallery" className="text-gray-300 hover:text-white transition-colors">{t('nav.gallery')}</a></li>
+                <li><a href="#school-life" className="text-gray-300 hover:text-white transition-colors">{t('nav.school.life')}</a></li>
+                <li><a href="#registration" className="text-gray-300 hover:text-white transition-colors">{t('nav.registration')}</a></li>
+                <li><a href="#contact" className="text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a></li>
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div>
+              <h4 className="text-lg font-semibold mb-4">{t('footer.contact.info')}</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li className="flex items-center space-x-2">
+                  <LocationIcon className="w-4 h-4" />
+                  <span>{t('school.location')}</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4" />
+                  <span>{t('school.phone')}</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4" />
+                  <span>{t('school.email')}</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Newsletter */}
+            <div>
+              <h4 className="text-lg font-semibold mb-4">{t('footer.newsletter.title')}</h4>
+              <p className="text-gray-300 mb-4">{t('footer.newsletter.description')}</p>
+              <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+                <input
+                  type="email"
+                  value={newsletter}
+                  onChange={(e) => setNewsletter(e.target.value)}
+                  className="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder={t('footer.newsletter.email')}
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={newsletterStatus === 'sending'}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2 disabled:opacity-50"
+                >
+                  {newsletterStatus === 'sending' ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>{t('footer.newsletter.subscribe')}</span>
+                    </>
+                  )}
+                </button>
+                {newsletterStatus === 'success' && (
+                  <p className="text-green-400 text-sm">{t('footer.newsletter.success')}</p>
+                )}
+              </form>
+            </div>
+          </div>
+
+          {/* Bottom Footer */}
+          <div className="border-t border-gray-700 mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="text-gray-400 text-sm">
+                © 2025 {t('school.name')}. {t('footer.copyright')}
+              </div>
+              <div className="flex space-x-6 mt-4 md:mt-0">
+                <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+                  {t('footer.privacy')}
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+                  {t('footer.terms')}
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+                  {t('footer.cookies')}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
 
 export default App;
+
+        {/* Gallery Section */}
+        <section id="gallery" className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                {t('gallery.title')}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                {t('gallery.subtitle')}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Gallery Item 1 */}
+              <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <img
+                  src="https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg?auto=compress&cs=tinysrgb&w=500"
+                  alt={t('gallery.classroom.title')}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-semibold mb-2">{t('gallery.classroom.title')}</h3>
+                    <p className="text-sm text-gray-200">{t('gallery.classroom.description')}</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Camera className="w-5 h-5 text-white" />
+                </div>
+              </div>
+
+              {/* Gallery Item 2 */}
+              <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <img
+                  src="https://images.pexels.com/photos/8613195/pexels-photo-8613195.jpeg?auto=compress&cs=tinysrgb&w=500"
+                  alt={t('gallery.playground.title')}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-semibold mb-2">{t('gallery.playground.title')}</h3>
+                    <p className="text-sm text-gray-200">{t('gallery.playground.description')}</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Camera className="w-5 h-5 text-white" />
+                </div>
+              </div>
+
+              {/* Gallery Item 3 */}
+              <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <img
+                  src="https://images.pexels.com/photos/8613317/pexels-photo-8613317.jpeg?auto=compress&cs=tinysrgb&w=500"
+                  alt={t('gallery.activities.title')}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-semibold mb-2">{t('gallery.activities.title')}</h3>
+                    <p className="text-sm text-gray-200">{t('gallery.activities.description')}</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Camera className="w-5 h-5 text-white" />
+                </div>
+              </div>
+
+              {/* Gallery Item 4 */}
+              <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <img
+                  src="https://images.pexels.com/photos/8613254/pexels-photo-8613254.jpeg?auto=compress&cs=tinysrgb&w=500"
+                  alt={t('gallery.library.title')}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-semibold mb-2">{t('gallery.library.title')}</h3>
+                    <p className="text-sm text-gray-200">{t('gallery.library.description')}</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Camera className="w-5 h-5 text-white" />
+                </div>
+              </div>
+
+              {/* Gallery Item 5 */}
+              <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <img
+                  src="https://images.pexels.com/photos/8613066/pexels-photo-8613066.jpeg?auto=compress&cs=tinysrgb&w=500"
+                  alt={t('gallery.cafeteria.title')}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-semibold mb-2">{t('gallery.cafeteria.title')}</h3>
+                    <p className="text-sm text-gray-200">{t('gallery.cafeteria.description')}</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Camera className="w-5 h-5 text-white" />
+                </div>
+              </div>
+
+              {/* Gallery Item 6 */}
+              <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <img
+                  src="https://images.pexels.com/photos/8613028/pexels-photo-8613028.jpeg?auto=compress&cs=tinysrgb&w=500"
+                  alt={t('gallery.garden.title')}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-semibold mb-2">{t('gallery.garden.title')}</h3>
+                    <p className="text-sm text-gray-200">{t('gallery.garden.description')}</p>
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Camera className="w-5 h-5 text-white" />
+                </div>
+              </div>
+            </div>
+
+            {/* Gallery Actions */}
+            <div className="text-center mt-12">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2">
+                  <Image className="w-5 h-5" />
+                  <span>{t('gallery.view.more')}</span>
+                </button>
+                <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2">
+                  <Play className="w-5 h-5" />
+                  <span>{t('gallery.virtual.tour')}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* School Life Section */}
+        <section id="school-life" className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                {t('school.life.title')}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                {t('school.life.subtitle')}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Schedule */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                  <TimeIcon className="w-6 h-6 mr-3 text-blue-600" />
+                  {t('school.life.schedule.title')}
+                </h3>
+                <p className="text-gray-600 mb-8">{t('school.life.schedule.description')}</p>
+
+                <div className="space-y-6">
+                  {/* Schedule Items */}
+                  {[
+                    { key: 'morning', time: t('school.life.morning.time'), title: t('school.life.morning.title'), description: t('school.life.morning.description') },
+                    { key: 'learning', time: t('school.life.learning.time'), title: t('school.life.learning.title'), description: t('school.life.learning.description') },
+                    { key: 'break', time: t('school.life.break.time'), title: t('school.life.break.title'), description: t('school.life.break.description') },
+                    { key: 'workshop', time: t('school.life.workshop.time'), title: t('school.life.workshop.title'), description: t('school.life.workshop.description') },
+                    { key: 'lunch', time: t('school.life.lunch.time'), title: t('school.life.lunch.title'), description: t('school.life.lunch.description') },
+                    { key: 'rest', time: t('school.life.rest.time'), title: t('school.life.rest.title'), description: t('school.life.rest.description') },
+                    { key: 'afternoon', time: t('school.life.afternoon.time'), title: t('school.life.afternoon.title'), description: t('school.life.afternoon.description') },
+                    { key: 'departure', time: t('school.life.departure.time'), title: t('school.life.departure.title'), description: t('school.life.departure.description') }
+                  ].map((item, index) => (
+                    <div key={item.key} className="flex items-start space-x-4">
+                      <div className="w-20 text-sm font-medium text-blue-600 flex-shrink-0 mt-1">
+                        {item.time}
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-800 mb-1">{item.title}</h4>
+                        <p className="text-gray-600 text-sm">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Testimonials */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                  <Quote className="w-6 h-6 mr-3 text-purple-600" />
+                  Témoignages
+                </h3>
+
+                <div className="space-y-6">
+                  {[
+                    { quote: t('school.life.testimonial.parent1'), name: t('school.life.testimonial.parent1.name') },
+                    { quote: t('school.life.testimonial.parent2'), name: t('school.life.testimonial.parent2.name') },
+                    { quote: t('school.life.testimonial.parent3'), name: t('school.life.testimonial.parent3.name') }
+                  ].map((testimonial, index) => (
+                    <div key={index} className="bg-gray-50 p-6 rounded-xl border-l-4 border-purple-500">
+                      <p className="text-gray-700 italic mb-4">{testimonial.quote}</p>
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                          <User className="w-5 h-5 text-purple-600" />
+                        </div>
+                        <div className="ml-3">
+                          <p className="font-semibold text-gray-800">{testimonial.name}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Registration Section */}
+        <section id="registration" className="py-20 bg-gradient-to-r from-orange-50 to-red-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                {t('registration.title')}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                {t('registration.subtitle')}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Registration Stats */}
+              <div className="bg-white p-6 rounded-2xl shadow-lg">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-orange-600 mb-2">25</div>
+                  <div className="text-gray-600 mb-4">{t('registration.places.available')}</div>
+                  <div className="text-sm text-gray-500">{t('registration.places.remaining')}</div>
+                </div>
+              </div>
+
+              {/* Important Dates */}
+              <div className="bg-white p-6 rounded-2xl shadow-lg">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">{t('registration.deadline')}</span>
+                    <span className="font-semibold text-red-600">{t('registration.deadline.date')}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">{t('registration.start.date')}</span>
+                    <span className="font-semibold text-green-600">{t('registration.start.date.value')}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="bg-gradient-to-r from-orange-500 to-red-500 p-6 rounded-2xl shadow-lg text-white">
+                <div className="text-center">
+                  <h3 className="text-xl font-bold mb-4">{t('cta.register.child')}</h3>
+                  <button
+                    onClick={() => setActiveSection('forms')}
+                    className="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                  >
+                    {t('cta.register.now')}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Registration Process */}
+            <div className="mt-16">
+              <h3 className="text-2xl font-bold text-gray-800 mb-8 text-center">
+                {t('registration.process.title')}
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {[
+                  { step: '1', title: t('registration.process.step1'), description: t('registration.process.step1.description') },
+                  { step: '2', title: t('registration.process.step2'), description: t('registration.process.step2.description') },
+                  { step: '3', title: t('registration.process.step3'), description: t('registration.process.step3.description') },
+                  { step: '4', title: t('registration.process.step4'), description: t('registration.process.step4.description') }
+                ].map((item, index) => (
+                  <div key={index} className="text-center">
+                    <div className="w-16 h-16 bg-orange-500 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                      {item.step}
+                    </div>
+                    <h4 className="font-semibold text-gray-800 mb-2">{item.title}</h4>
+                    <p className="text-gray-600 text-sm">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Requirements & Fees */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16">
+              {/* Requirements */}
+              <div className="bg-white p-6 rounded-2xl shadow-lg">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                  <FileText className="w-6 h-6 mr-3 text-blue-600" />
+                  {t('registration.requirements.title')}
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    t('registration.requirements.birth.certificate'),
+                    t('registration.requirements.vaccination'),
+                    t('registration.requirements.medical'),
+                    t('registration.requirements.photos'),
+                    t('registration.requirements.residence'),
+                    t('registration.requirements.id')
+                  ].map((requirement, index) => (
+                    <li key={index} className="flex items-center space-x-3">
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <span className="text-gray-700">{requirement}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Fees */}
+              <div className="bg-white p-6 rounded-2xl shadow-lg">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                  <DollarSign className="w-6 h-6 mr-3 text-green-600" />
+                  {t('registration.fees.title')}
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    { item: t('registration.fees.registration'), price: currencyService.format(500) },
+                    { item: t('registration.fees.monthly'), price: currencyService.format(2500) },
+                    { item: t('registration.fees.materials'), price: currencyService.format(300) },
+                    { item: t('registration.fees.meals'), price: currencyService.format(800) }
+                  ].map((fee, index) => (
+                    <div key={index} className="flex items-center justify-between">
+                      <span className="text-gray-700">{fee.item}</span>
+                      <span className="font-semibold text-gray-800">{fee.price}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 p-3 bg-green-50 rounded-lg">
+                  <p className="text-sm text-green-700">{t('registration.fees.payment')}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* News Section */}
+        <section id="news" className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                {t('news.title')}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                {t('news.subtitle')}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { key: '1', category: t('news.category.pedagogy'), date: t('news.1.date') },
+                { key: '2', category: t('news.category.events'), date: t('news.2.date') },
+                { key: '3', category: t('news.category.health'), date: t('news.3.date') },
+                { key: '4', category: t('news.category.events'), date: t('news.4.date') }
+              ].map((news, index) => (
+                <article key={news.key} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                        {news.category}
+                      </span>
+                      <time className="text-sm text-gray-500">{news.date}</time>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-3">
+                      {t(`news.${news.key}.title`)}
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      {t(`news.${news.key}.excerpt`)}
+                    </p>
+                    <button className="text-blue-600 hover:text-blue-800 font-semibold flex items-center space-x-2">
+                      <span>{t('news.read.more')}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2 mx-auto">
+                <Newspaper className="w-5 h-5" />
+                <span>{t('news.all')}</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                {t('contact.title')}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                {t('contact.subtitle')}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* Contact Info */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                  {t('contact.info.title')}
+                </h3>
+
+                <div className="space-y-6">
+                  {/* Address */}
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <LocationIcon className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">{t('contact.address.title')}</h4>
+                      <p className="text-gray-600">{t('school.location')}</p>
+                    </div>
+                  </div>
+
+                  {/* Phone */}
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                      <Phone className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">{t('contact.emergency.title')}</h4>
+                      <p className="text-gray-600">{t('school.phone')}</p>
+                      <p className="text-sm text-gray-500">{t('contact.emergency.hours')}</p>
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Mail className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">Email</h4>
+                      <p className="text-gray-600">{t('school.email')}</p>
+                    </div>
+                  </div>
+
+                  {/* Hours */}
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <Clock className="w-6 h-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">{t('contact.hours.title')}</h4>
+                      <div className="text-gray-600 space-y-1">
+                        <p>{t('contact.hours.monday.friday')}: {t('contact.hours.morning')} - {t('contact.hours.afternoon')}</p>
+                        <p>{t('contact.hours.saturday')}: {t('contact.hours.saturday.time')}</p>
+                        <p>{t('contact.hours.sunday')}: {t('contact.hours.closed')}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Social Media */}
+                <div className="mt-8">
+                  <h4 className="font-semibold text-gray-800 mb-4">{t('contact.social.title')}</h4>
+                  <div className="flex space-x-4">
+                    <a href="#" className="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors">
+                      <Facebook className="w-5 h-5" />
+                    </a>
+                    <a href="#" className="w-10 h-10 bg-pink-600 text-white rounded-lg flex items-center justify-center hover:bg-pink-700 transition-colors">
+                      <Instagram className="w-5 h-5" />
+                    </a>
+                    <a href="#" className="w-10 h-10 bg-blue-400 text-white rounded-lg flex items-center justify-center hover:bg-blue-500 transition-colors">
+                      <Twitter className="w-5 h-5" />
+                    </a>
+                    <a href="#" className="w-10 h-10 bg-red-600 text-white rounded-lg flex items-center justify-center hover:bg-red-700 transition-colors">
+                      <Youtube className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Form */}
+              <div className="bg-gray-50 p-8 rounded-2xl">
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                  {t('contact.form.title')}
+                </h3>
+
+                <form onSubmit={handleContactSubmit} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {t('contact.form.name')}
+                    </label>
+                    <input
+                      type="text"
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder={t('contact.form.name.placeholder')}
+                      required
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {t('contact.form.email')}
+                      </label>
+                      <input
+                        type="email"
+                        value={contactForm.email}
+                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder={t('contact.form.email.placeholder')}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {t('contact.form.phone')}
+                      </label>
+                      <input
+                        type="tel"
+                        value={contactForm.phone}
+                        onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder={t('contact.form.phone.placeholder')}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {t('contact.form.subject')}
+                    </label>
+                    <input
+                      type="text"
+                      value={contactForm.subject}
+                      onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder={t('contact.form.subject.placeholder')}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {t('contact.form.message')}
+                    </label>
+                    <textarea
+                      value={contactForm.message}
+                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                      rows={4}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder={t('contact.form.message.placeholder')}
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={contactStatus === 'sending'}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2 disabled:opacity-50"
+                  >
+                    {contactStatus === 'sending' ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>{t('common.loading')}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        <span>{t('contact.form.send')}</span>
+                      </>
+                    )}
+                  </button>
+
+                  {contactStatus === 'success' && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center space-x-3">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <span className="text-green-700">{t('contact.form.success')}</span>
+                    </div>
+                  )}
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
