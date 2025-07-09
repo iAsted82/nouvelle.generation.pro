@@ -1029,8 +1029,15 @@ const Footer = () => {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <div className="relative">
-                  <Globe className="w-8 h-8 text-blue-400 animate-spin" style={{ animationDuration: '8s' }} />
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
+                  <img 
+                    src="/Photoroom_20250708_233005 copy.PNG" 
+                    alt="Logo Nouvelle Génération Pro" 
+                    className="w-10 h-10 object-contain transition-transform duration-300 hover:scale-110"
+                    style={{ 
+                      filter: 'drop-shadow(0 2px 8px rgba(59, 130, 246, 0.3))',
+                      margin: '2px'
+                    }}
+                  />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold">NOUVELLE GÉNÉRATION PRO</h3>
