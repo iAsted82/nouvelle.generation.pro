@@ -4,7 +4,7 @@ import {
   Users, 
   Calendar, 
   FileText, 
-  Settings, 
+  Settings as SettingsIcon, 
   BarChart3, 
   Mail, 
   Phone, 
@@ -1056,7 +1056,7 @@ const AdminDashboard: React.FC = () => {
     { id: 'students', label: 'Élèves', icon: <Users className="w-5 h-5" /> },
     { id: 'staff', label: 'Personnel', icon: <UserCheck className="w-5 h-5" /> },
     { id: 'registrations', label: 'Inscriptions', icon: <FileText className="w-5 h-5" /> },
-    { id: 'settings', label: 'Paramètres', icon: <Settings className="w-5 h-5" /> }
+    { id: 'settings', label: 'Paramètres', icon: <SettingsIcon className="w-5 h-5" /> }
   ];
 
   const renderContent = () => {
