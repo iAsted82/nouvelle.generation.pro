@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Globe, BookOpen, Monitor, Users, UserCheck, Palette, Shield, Phone, Mail, MapPin, Clock, Calendar, Star, ArrowRight, CheckCircle, Camera, Play, Image as ImageIcon, Award, Heart, GraduationCap, Sparkles } from 'lucide-react';
+import { Menu, X, BookOpen, Monitor, Users, UserCheck, Palette, Shield, Phone, Mail, MapPin, Clock, Calendar, Star, ArrowRight, CheckCircle, Camera, Play, Image as ImageIcon, Award, Heart, GraduationCap, Sparkles } from 'lucide-react';
 import AdminDashboard from './components/AdminDashboard';
 import FormManager from './components/Forms/FormManager';
+import Logo from './components/Logo';
 
 // Header Component
 const Header = () => {
@@ -48,12 +49,14 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
-          <div className="flex items-center space-x-2 flex-shrink-0">
-            <div className="relative">
-              <Globe className="w-8 h-8 text-blue-600 animate-spin" style={{ animationDuration: '8s' }} />
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
-            </div>
-            <div className="hidden sm:block">
+          <div className="flex items-center space-x-3 flex-shrink-0">
+            <Logo 
+              variant="default" 
+              size="sm" 
+              clickable={true}
+              className="transition-transform hover:scale-110"
+            />
+            <div className="hidden sm:block ml-2">
               <h1 className="text-lg lg:text-xl font-bold text-gray-800">NOUVELLE GÉNÉRATION</h1>
               <p className="text-xs lg:text-sm text-orange-500 font-medium">PRO</p>
             </div>
@@ -277,6 +280,9 @@ const Hero = () => {
               <div className="bg-white rounded-3xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-500">
                 <div className="space-y-6">
                   <div className="text-center">
+                    <div className="flex justify-center mb-4">
+                      <Logo variant="default" size="md" />
+                    </div>
                     <div className="w-full h-48 rounded-xl overflow-hidden mb-4">
                       <img 
                         src="/istockphoto-952059200-1024x1024.jpg"
@@ -960,8 +966,8 @@ const Footer = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <Globe className="w-8 h-8 text-blue-400" />
+              <div className="flex items-center space-x-3 mb-4">
+                <Logo variant="default" size="sm" />
                 <div>
                   <h3 className="text-xl font-bold">NOUVELLE GÉNÉRATION PRO</h3>
                   <p className="text-gray-400">École Maternelle d'Excellence</p>
@@ -976,19 +982,37 @@ const Footer = () => {
             <div>
               <h4 className="text-lg font-semibold mb-4">Contact</h4>
               <div className="space-y-2 text-gray-400">
-                <p>📍 Résidence Essafa 4, Salé</p>
-                <p>📞 05 37 00 00 00</p>
-                <p>📱 WhatsApp disponible</p>
-                <p>✉️ info@nouvellegeneration.pro</p>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>Résidence Essafa 4, Salé</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4" />
+                  <span>05 37 00 00 00</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4" />
+                  <span>WhatsApp disponible</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4" />
+                  <span>info@nouvellegenerationpro.ma</span>
+                </div>
               </div>
             </div>
             
             <div>
               <h4 className="text-lg font-semibold mb-4">Horaires</h4>
               <div className="space-y-2 text-gray-400">
-                <p>Lundi - Vendredi: 8h00 - 18h00</p>
-                <p>Samedi: 9h00 - 13h00</p>
-                <p>(sur rendez-vous uniquement)</p>
+                <div className="flex items-center space-x-2">
+                  <Clock className="w-4 h-4" />
+                  <span>Lundi - Vendredi: 8h00 - 18h00</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="w-4 h-4" />
+                  <span>Samedi: 9h00 - 13h00</span>
+                </div>
+                <p className="text-sm">(sur rendez-vous uniquement)</p>
               </div>
             </div>
           </div>
@@ -996,8 +1020,11 @@ const Footer = () => {
           <div className="border-t border-gray-700 mt-8 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="text-center md:text-left text-gray-400">
-                <p>&copy; 2025 Nouvelle Génération Pro. Tous droits réservés.</p>
-                <p className="mt-2 text-sm">École maternelle moderne • Éducation bilingue • Valeurs culturelles marocaines</p>
+                <div className="flex items-center space-x-2 mb-2">
+                  <Logo variant="monochrome" size="xs" />
+                  <span>&copy; 2025 Nouvelle Génération Pro. Tous droits réservés.</span>
+                </div>
+                <p className="text-sm">École maternelle moderne • Éducation bilingue • Valeurs culturelles marocaines</p>
               </div>
               <div className="mt-4 md:mt-0">
                 <button
