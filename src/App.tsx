@@ -305,6 +305,28 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Fermer le menu mobile quand on clique à l'extérieur
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMenuOpen && !(event.target as Element).closest('header')) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
+
+  // Empêcher le scroll quand le menu mobile est ouvert
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
   const navItems = [
     { href: '#accueil', label: 'Accueil' },
     { href: '#methodes', label: 'Nos Méthodes' },
@@ -314,6 +336,14 @@ const Header = () => {
     { href: '#contact', label: 'Contact' }
   ];
 
+  const handleNavClick = (href: string) => {
+    setIsMenuOpen(false);
+    // Smooth scroll vers la section
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   const smoothScroll = (targetId) => {
     const element = document.querySelector(targetId);
     if (element) {
@@ -323,20 +353,52 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
-    }`}>
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => smoothScroll('#accueil')}>
-            <div className="relative">
-              <Globe className="w-8 h-8 text-blue-600 animate-spin" style={{ animationDuration: '8s' }} />
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
+      }`}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 md:h-20">
+            {/* Logo */}
+            <div className="flex items-center space-x-3 flex-shrink-0">
+              <div className="relative">
+                <Globe className="w-8 h-8 md:w-10 md:h-10 text-blue-600 animate-spin" style={{ animationDuration: '8s' }} />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-lg md:text-xl font-bold text-gray-800 leading-tight">NOUVELLE GÉNÉRATION</h1>
+                <p className="text-xs md:text-sm text-orange-500 font-medium leading-none">PRO</p>
+              </div>
+              <div className="sm:hidden">
+                <h1 className="text-base font-bold text-gray-800">NGP</h1>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-800">NOUVELLE GÉNÉRATION</h1>
-              <p className="text-sm text-orange-500 font-medium">PRO</p>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+              {navItems.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={() => handleNavClick(item.href)}
+                  className="relative px-3 xl:px-4 py-2 text-sm xl:text-base font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+                >
+                  {item.label}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 group-hover:w-full"></span>
+                </button>
+              ))}
+            </nav>
+
+            {/* Desktop CTA Buttons */}
+            <div className="hidden lg:flex items-center space-x-3 xl:space-x-4 flex-shrink-0">
+              <button 
+                onClick={() => setShowForms(true)}
+                className="px-4 xl:px-6 py-2 xl:py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white text-sm xl:text-base font-medium rounded-full hover:from-green-700 hover:to-green-800 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform hover:scale-105"
+              >
+                Formulaires
+              </button>
+              <button className="px-4 xl:px-6 py-2 xl:py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm xl:text-base font-medium rounded-full hover:from-blue-700 hover:to-purple-700 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 animate-pulse">
+                Inscrivez-vous
+              </button>
             </div>
           </div>
 
@@ -346,83 +408,86 @@ const Header = () => {
               <button
                 key={item.href}
                 onClick={() => smoothScroll(item.href)}
-                className="text-gray-700 hover:text-blue-600 transition-colors relative group"
               >
-                {item.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
-              </button>
-            ))}
-          </nav>
-
-          {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <button 
-              onClick={() => setShowForms(true)}
-              className="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300"
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden p-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              aria-expanded={isMenuOpen}
             >
-              Formulaires
-            </button>
-            <button 
-              onClick={() => setShowRegistration(true)}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 animate-pulse"
-            >
-              Inscrivez-vous maintenant
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-gray-700"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
         </div>
+      </header>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t animate-slideDown">
-            <nav className="flex flex-col py-4">
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setIsMenuOpen(false)}></div>
+          <div className="relative bg-white shadow-xl">
+            {/* Mobile Menu Header */}
+            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200">
+              <div className="flex items-center space-x-3">
+                <Globe className="w-8 h-8 text-blue-600" />
+                <div>
+                  <h1 className="text-lg font-bold text-gray-800">NOUVELLE GÉNÉRATION</h1>
+                  <p className="text-sm text-orange-500 font-medium">PRO</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                aria-label="Fermer le menu"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Mobile Navigation */}
+            <nav className="px-4 py-6 space-y-2 max-h-screen overflow-y-auto">
               {navItems.map((item) => (
                 <button
                   key={item.href}
-                  onClick={() => smoothScroll(item.href)}
-                  className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
+                  onClick={() => handleNavClick(item.href)}
+                  className="w-full flex items-center px-4 py-3 text-left text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  {item.label}
+                  <span className="font-medium">{item.label}</span>
                 </button>
               ))}
-              <button
-                onClick={() => {
-                  setShowAdmin(true);
-                  setIsMenuOpen(false);
-                }}
-                className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
-              >
-                Admin
-              </button>
-              <button
-                onClick={() => {
-                  setShowForms(true);
-                  setIsMenuOpen(false);
-                }}
-                className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
-              >
-                Formulaires
-              </button>
-              <button 
-                onClick={() => {
-                  setShowRegistration(true);
-                  setIsMenuOpen(false);
-                }}
-                className="mx-4 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full"
-              >
-                Inscrivez-vous maintenant
-              </button>
+              
+              {/* Mobile Admin & Forms Buttons */}
+              <div className="pt-4 border-t border-gray-200 space-y-3">
+                <button
+                  onClick={() => {
+                    setShowAdmin(true);
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full flex items-center px-4 py-3 text-left text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  <span className="text-sm">Administration</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setShowForms(true);
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-3 rounded-lg font-medium hover:from-green-700 hover:to-green-800 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform hover:scale-105"
+                >
+                  Accéder aux Formulaires
+                </button>
+                <button 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105"
+                >
+                  Inscrivez-vous maintenant
+                </button>
+              </div>
             </nav>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Registration Modal */}
       {showRegistration && (
@@ -444,7 +509,7 @@ const Header = () => {
         </div>
       )}
 
-      {/* Forms Modal */}
+      {/* Modals */}
       {showForms && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
@@ -452,7 +517,7 @@ const Header = () => {
               <h2 className="text-2xl font-bold text-gray-800">Système de Formulaires</h2>
               <button
                 onClick={() => setShowForms(false)}
-                className="text-gray-500 hover:text-gray-700 p-2"
+                className="text-gray-500 hover:text-gray-700 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -464,7 +529,6 @@ const Header = () => {
         </div>
       )}
 
-      {/* Admin Dashboard Modal */}
       {showAdmin && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl w-full max-w-6xl h-[90vh] overflow-hidden">
@@ -472,7 +536,7 @@ const Header = () => {
               <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
               <button
                 onClick={() => setShowAdmin(false)}
-                className="text-gray-500 hover:text-gray-700 p-2"
+                className="text-gray-500 hover:text-gray-700 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -483,7 +547,7 @@ const Header = () => {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 };
 
