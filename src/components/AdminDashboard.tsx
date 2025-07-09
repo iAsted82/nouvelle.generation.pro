@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { DatabaseManager } from './Forms/FormManager';
 import { 
   Shield, 
   Users, 
@@ -39,7 +40,8 @@ import {
   BookOpen,
   Palette,
   Monitor,
-  UserCheck
+  UserCheck,
+  Database
 } from 'lucide-react';
 
 // Types
@@ -284,59 +286,83 @@ const AdminAuth: React.FC<{ onLogin: (credentials: any) => void }> = ({ onLogin 
 
 // Dashboard Overview Component
 const DashboardOverview: React.FC = () => {
+  const [dbStats, setDbStats] = useState({
+    appointments: 0,
+    registrations: 0,
+    childRegistrations: 0,
+    contacts: 0
+  });
+
+  useEffect(() => {
+    const db = DatabaseManager.getInstance();
+    const updateStats = () => {
+      setDbStats({
+        appointments: db.getAppointments().length,
+        registrations: db.getRegistrations().length,
+        childRegistrations: db.getChildRegistrations().length,
+        contacts: db.getContacts().length
+      });
+    };
+    
+    updateStats();
+    const interval = setInterval(updateStats, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const stats = [
     {
       icon: <Users className="w-8 h-8 text-blue-600" />,
       title: "Élèves Inscrits",
-      value: "48",
+      value: dbStats.childRegistrations.toString(),
       change: "+5 cette semaine",
       color: "blue"
     },
     {
       icon: <UserPlus className="w-8 h-8 text-green-600" />,
       title: "Nouvelles Demandes",
-      value: "12",
+      value: dbStats.contacts.toString(),
       change: "+3 aujourd'hui",
       color: "green"
     },
     {
       icon: <GraduationCap className="w-8 h-8 text-purple-600" />,
-      title: "Personnel",
-      value: "8",
-      change: "Équipe complète",
+      title: "Comptes Utilisateurs",
+      value: dbStats.registrations.toString(),
+      change: "Comptes créés",
       color: "purple"
     },
     {
-      icon: <Calendar className="w-8 h-8 text-orange-600" />,
-      title: "Places Restantes",
-      value: "32",
-      change: "Pour 2025-2026",
+      icon: <AlertCircle className="w-8 h-8 text-red-600" />,
+      title: "Rendez-vous Urgents",
+      value: dbStats.appointments.toString(),
+      change: "En attente",
       color: "orange"
     }
   ];
 
+  const db = DatabaseManager.getInstance();
   const recentActivities = [
-    {
-      id: 1,
-      type: 'inscription',
-      message: 'Nouvelle inscription : Omar Bousaid',
-      time: 'Il y a 2 heures',
-      icon: <UserPlus className="w-5 h-5 text-green-600" />
-    },
-    {
-      id: 2,
+    ...db.getAppointments().slice(0, 2).map(appointment => ({
+      id: appointment.id,
+      type: 'appointment',
+      message: `Rendez-vous urgent : ${appointment.firstName} ${appointment.lastName}`,
+      time: new Date(appointment.submissionDate).toLocaleString('fr-FR'),
+      icon: <AlertCircle className="w-5 h-5 text-red-600" />
+    })),
+    ...db.getChildRegistrations().slice(0, 2).map(registration => ({
+      id: registration.id,
+      type: 'childRegistration',
+      message: `Inscription enfant : ${registration.childFirstName} ${registration.childLastName}`,
+      time: new Date(registration.submissionDate).toLocaleString('fr-FR'),
+      icon: <Users className="w-5 h-5 text-green-600" />
+    })),
+    ...db.getContacts().slice(0, 2).map(contact => ({
+      id: contact.id,
       type: 'contact',
-      message: 'Demande de contact : Zineb Fassi',
-      time: 'Il y a 4 heures',
+      message: `Contact : ${contact.firstName} ${contact.lastName} - ${contact.subject}`,
+      time: new Date(contact.submissionDate).toLocaleString('fr-FR'),
       icon: <MessageSquare className="w-5 h-5 text-blue-600" />
-    },
-    {
-      id: 3,
-      type: 'staff',
-      message: 'Nouveau membre : Samira Idrissi',
-      time: 'Hier',
-      icon: <UserCheck className="w-5 h-5 text-purple-600" />
-    }
+    }))
   ];
 
   return (
@@ -388,7 +414,7 @@ const DashboardOverview: React.FC = () => {
         <div className="bg-white rounded-xl shadow-md p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Activité Récente</h3>
           <div className="space-y-4">
-            {recentActivities.map((activity) => (
+            {recentActivities.slice(0, 5).map((activity) => (
               <div key={activity.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
                 <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                   {activity.icon}
@@ -399,6 +425,32 @@ const DashboardOverview: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Nouvelle section : Données en temps réel */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <Database className="w-5 h-5 mr-2 text-blue-600" />
+            Données en Temps Réel
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+              <span className="text-sm text-red-800">Rendez-vous urgents</span>
+              <span className="font-semibold text-red-600">{dbStats.appointments}</span>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <span className="text-sm text-green-800">Inscriptions enfant</span>
+              <span className="font-semibold text-green-600">{dbStats.childRegistrations}</span>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+              <span className="text-sm text-blue-800">Comptes utilisateurs</span>
+              <span className="font-semibold text-blue-600">{dbStats.registrations}</span>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+              <span className="text-sm text-purple-800">Messages de contact</span>
+              <span className="font-semibold text-purple-600">{dbStats.contacts}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -777,17 +829,38 @@ const StaffManagement: React.FC = () => {
 
 // Registrations Management Component
 const RegistrationsManagement: React.FC = () => {
-  const [registrations, setRegistrations] = useState<Registration[]>(mockRegistrations);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [filterStatus, setFilterStatus] = useState('all');
+  const [realTimeData, setRealTimeData] = useState({
+    appointments: [],
+    childRegistrations: [],
+    contacts: []
+  });
 
-  const filteredRegistrations = registrations.filter(reg => 
+  useEffect(() => {
+    const db = DatabaseManager.getInstance();
+    const updateData = () => {
+      setRealTimeData({
+        appointments: db.getAppointments(),
+        childRegistrations: db.getChildRegistrations(),
+        contacts: db.getContacts()
+      });
+    };
+    
+    updateData();
+    const interval = setInterval(updateData, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const filteredRegistrations = [...registrations, ...realTimeData.appointments, ...realTimeData.childRegistrations, ...realTimeData.contacts].filter(reg => 
     filterStatus === 'all' || reg.status === filterStatus
   );
 
   const updateRegistrationStatus = (id: string, status: Registration['status']) => {
-    setRegistrations(registrations.map(reg => 
-      reg.id === id ? { ...reg, status } : reg
-    ));
+    const db = DatabaseManager.getInstance();
+    db.updateAppointmentStatus(id, status as any);
+    db.updateContactStatus(id, status as any);
+    db.updateChildRegistrationStatus(id, status as any);
   };
 
   return (
@@ -795,6 +868,9 @@ const RegistrationsManagement: React.FC = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-800">Demandes d'Inscription</h1>
         <div className="flex items-center space-x-4">
+          <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+            {filteredRegistrations.length} demandes
+          </div>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
@@ -812,33 +888,35 @@ const RegistrationsManagement: React.FC = () => {
       {/* Registrations List */}
       <div className="space-y-4">
         {filteredRegistrations.map((registration) => (
-          <div key={registration.id} className="bg-white rounded-xl shadow-md p-6">
+          <div key={registration.id} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {registration.childName} ({registration.childAge} ans)
+                  {registration.childName || registration.firstName} 
+                  {registration.childAge && ` (${registration.childAge} ans)`}
+                  {registration.childFirstName && ` - ${registration.childFirstName} ${registration.childLastName}`}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
                   <div className="flex items-center">
                     <UserCheck className="w-4 h-4 mr-2" />
-                    Parent: {registration.parentName}
+                    Parent: {registration.parentName || registration.parentFirstName}
                   </div>
                   <div className="flex items-center">
                     <Phone className="w-4 h-4 mr-2" />
-                    {registration.parentPhone}
+                    {registration.parentPhone || registration.phone}
                   </div>
                   <div className="flex items-center">
                     <Mail className="w-4 h-4 mr-2" />
-                    {registration.parentEmail}
+                    {registration.parentEmail || registration.email}
                   </div>
                   <div className="flex items-center">
                     <Clock className="w-4 h-4 mr-2" />
-                    {registration.submissionDate}
+                    {new Date(registration.submissionDate).toLocaleString('fr-FR')}
                   </div>
                 </div>
-                {registration.message && (
+                {(registration.message || registration.urgentReason) && (
                   <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-700">{registration.message}</p>
+                    <p className="text-sm text-gray-700">{registration.message || registration.urgentReason}</p>
                   </div>
                 )}
               </div>
@@ -1040,6 +1118,15 @@ const Settings: React.FC = () => {
 const AdminDashboard: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // Actualiser automatiquement les données
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefreshKey(prev => prev + 1);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogin = (userData: any) => {
     setUser(userData);
@@ -1113,6 +1200,12 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="absolute bottom-0 w-64 p-6 border-t border-gray-200">
+          <div className="mb-4 p-3 bg-green-50 rounded-lg">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-green-700">Données en temps réel</span>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
               <span className="text-white font-medium">A</span>
@@ -1134,7 +1227,7 @@ const AdminDashboard: React.FC = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        <div className="p-8">
+        <div className="p-8" key={refreshKey}>
           {renderContent()}
         </div>
       </div>
