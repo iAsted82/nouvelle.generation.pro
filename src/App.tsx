@@ -1,7 +1,293 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Globe, BookOpen, Monitor, Users, UserCheck, Palette, Shield, Phone, Mail, MapPin, Clock, Calendar, Star, ArrowRight, CheckCircle, Camera, Play, Image as ImageIcon, Award, Heart, GraduationCap, Sparkles } from 'lucide-react';
+import { Menu, X, Globe, BookOpen, Monitor, Users, UserCheck, Palette, Shield, Phone, Mail, MapPin, Clock, Calendar, Star, ArrowRight, CheckCircle, Camera, Play, Image as ImageIcon, Award, Heart, GraduationCap, Sparkles, ExternalLink, Info, Video, ChevronLeft, ChevronRight } from 'lucide-react';
 import AdminDashboard from './components/AdminDashboard';
 import FormManager from './components/Forms/FormManager';
+
+// Notification Toast Component
+const Toast = ({ message, type, onClose }) => (
+  <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg flex items-center space-x-3 animate-slideDown ${
+    type === 'success' ? 'bg-green-600 text-white' : 
+    type === 'error' ? 'bg-red-600 text-white' : 
+    'bg-blue-600 text-white'
+  }`}>
+    {type === 'success' && <CheckCircle className="w-5 h-5" />}
+    {type === 'error' && <X className="w-5 h-5" />}
+    {type === 'info' && <Info className="w-5 h-5" />}
+    <span>{message}</span>
+    <button onClick={onClose} className="ml-4 hover:opacity-75">
+      <X className="w-4 h-4" />
+    </button>
+  </div>
+);
+
+// Video Modal Component
+const VideoModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl w-full max-w-4xl overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-800">Vidéo de Présentation</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 p-2"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+        <div className="p-6">
+          <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+            <div className="text-center">
+              <Video className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Découvrez Nouvelle Génération Pro
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Plongez dans l'univers de notre école maternelle moderne
+              </p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-blue-800 text-sm">
+                  🎥 Vidéo de présentation complète disponible sur demande<br/>
+                  📞 Contactez-nous au 05 37 00 00 00 pour organiser une visite virtuelle
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <Camera className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+              <h4 className="font-semibold text-gray-800">Visite Virtuelle</h4>
+              <p className="text-sm text-gray-600">Découvrez nos locaux en 360°</p>
+            </div>
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <Users className="w-8 h-8 text-green-600 mx-auto mb-2" />
+              <h4 className="font-semibold text-gray-800">Témoignages</h4>
+              <p className="text-sm text-gray-600">Parents et élèves racontent</p>
+            </div>
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <GraduationCap className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+              <h4 className="font-semibold text-gray-800">Pédagogie</h4>
+              <p className="text-sm text-gray-600">Nos méthodes en action</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// School Info Modal Component
+const SchoolInfoModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl w-full max-w-5xl h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-800">Découvrez Notre École</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 p-2"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+        <div className="h-full overflow-auto p-6">
+          <div className="space-y-8">
+            {/* Mission et Vision */}
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Notre Mission</h3>
+              <p className="text-gray-700 text-lg leading-relaxed mb-4">
+                Nouvelle Génération Pro s'engage à offrir une éducation d'excellence qui respecte et valorise 
+                la culture marocaine tout en préparant nos enfants aux défis du monde moderne.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Heart className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h4 className="font-semibold text-gray-800">Bienveillance</h4>
+                  <p className="text-sm text-gray-600">Un environnement sécurisant et chaleureux</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Award className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h4 className="font-semibold text-gray-800">Excellence</h4>
+                  <p className="text-sm text-gray-600">Des standards éducatifs élevés</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Globe className="w-8 h-8 text-purple-600" />
+                  </div>
+                  <h4 className="font-semibold text-gray-800">Ouverture</h4>
+                  <p className="text-sm text-gray-600">Une vision internationale</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Nos Installations */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Nos Installations</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                  <BookOpen className="w-10 h-10 text-blue-600 mb-4" />
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">Salles de Classe Modernes</h4>
+                  <p className="text-gray-600">
+                    Espaces lumineux et colorés, équipés de tableaux interactifs et de matériel pédagogique adapté.
+                  </p>
+                </div>
+                <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                  <Users className="w-10 h-10 text-green-600 mb-4" />
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">Cour de Récréation</h4>
+                  <p className="text-gray-600">
+                    Espace sécurisé avec jeux adaptés aux différents âges et zones d'activités variées.
+                  </p>
+                </div>
+                <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                  <Palette className="w-10 h-10 text-purple-600 mb-4" />
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">Ateliers Créatifs</h4>
+                  <p className="text-gray-600">
+                    Espaces dédiés aux activités artistiques, musicales et d'expression corporelle.
+                  </p>
+                </div>
+                <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                  <Shield className="w-10 h-10 text-red-600 mb-4" />
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">Sécurité Renforcée</h4>
+                  <p className="text-gray-600">
+                    Système de sécurité complet avec contrôle d'accès et surveillance continue.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Notre Équipe */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Notre Équipe Pédagogique</h3>
+              <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-white font-bold text-lg">KM</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-800">Karima Mansouri</h4>
+                    <p className="text-sm text-gray-600 mb-2">Directrice Pédagogique</p>
+                    <p className="text-xs text-gray-500">15 ans d'expérience en éducation maternelle</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-white font-bold text-lg">SA</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-800">Samira Alaoui</h4>
+                    <p className="text-sm text-gray-600 mb-2">Enseignante Bilingue</p>
+                    <p className="text-xs text-gray-500">Spécialisée en pédagogie Montessori</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-white font-bold text-lg">HZ</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-800">Hassan Zemrani</h4>
+                    <p className="text-sm text-gray-600 mb-2">Coordinateur Activités</p>
+                    <p className="text-xs text-gray-500">Expert en développement moteur</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Horaires et Informations Pratiques */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Informations Pratiques</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                  <Clock className="w-8 h-8 text-blue-600 mb-4" />
+                  <h4 className="text-lg font-semibold text-gray-800 mb-3">Horaires</h4>
+                  <div className="space-y-2 text-sm text-gray-700">
+                    <p><strong>Lundi - Vendredi:</strong> 8h00 - 18h00</p>
+                    <p><strong>Accueil:</strong> 7h30 - 8h30</p>
+                    <p><strong>Activités:</strong> 8h30 - 16h00</p>
+                    <p><strong>Garderie:</strong> 16h00 - 18h00</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+                  <MapPin className="w-8 h-8 text-green-600 mb-4" />
+                  <h4 className="text-lg font-semibold text-gray-800 mb-3">Adresse</h4>
+                  <div className="space-y-2 text-sm text-gray-700">
+                    <p><strong>Résidence Essafa 4</strong></p>
+                    <p>Salé, Maroc</p>
+                    <p className="text-orange-600">
+                      ⚠️ Contactez-nous pour confirmer l'adresse exacte de visite
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Image Gallery Modal Component
+const ImageGalleryModal = ({ isOpen, onClose, images, startIndex = 0 }) => {
+  const [currentIndex, setCurrentIndex] = useState(startIndex);
+
+  useEffect(() => {
+    setCurrentIndex(startIndex);
+  }, [startIndex, isOpen]);
+
+  const nextImage = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white hover:text-gray-300 p-2"
+      >
+        <X className="w-8 h-8" />
+      </button>
+      
+      <button
+        onClick={prevImage}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 p-2"
+      >
+        <ChevronLeft className="w-8 h-8" />
+      </button>
+      
+      <button
+        onClick={nextImage}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 p-2"
+      >
+        <ChevronRight className="w-8 h-8" />
+      </button>
+
+      <div className="max-w-4xl max-h-full p-4">
+        <img
+          src={images[currentIndex].src}
+          alt={images[currentIndex].alt}
+          className="max-w-full max-h-full object-contain rounded-lg"
+        />
+        <div className="text-center mt-4">
+          <h3 className="text-white text-xl font-semibold">{images[currentIndex].title}</h3>
+          <p className="text-gray-300 mt-2">{images[currentIndex].description}</p>
+          <p className="text-gray-400 text-sm mt-2">
+            {currentIndex + 1} / {images.length}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Header Component
 const Header = () => {
@@ -9,6 +295,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [showForms, setShowForms] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +314,14 @@ const Header = () => {
     { href: '#contact', label: 'Contact' }
   ];
 
+  const smoothScroll = (targetId) => {
+    const element = document.querySelector(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setIsMenuOpen(false);
+    }
+  };
+
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${
       isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
@@ -34,7 +329,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => smoothScroll('#accueil')}>
             <div className="relative">
               <Globe className="w-8 h-8 text-blue-600 animate-spin" style={{ animationDuration: '8s' }} />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
@@ -48,18 +343,18 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <a
+              <button
                 key={item.href}
-                href={item.href}
+                onClick={() => smoothScroll(item.href)}
                 className="text-gray-700 hover:text-blue-600 transition-colors relative group"
               >
                 {item.label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
-              </a>
+              </button>
             ))}
           </nav>
 
-          {/* CTA Button */}
+          {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <button 
               onClick={() => setShowForms(true)}
@@ -67,7 +362,10 @@ const Header = () => {
             >
               Formulaires
             </button>
-            <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 animate-pulse">
+            <button 
+              onClick={() => setShowRegistration(true)}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 animate-pulse"
+            >
               Inscrivez-vous maintenant
             </button>
           </div>
@@ -83,17 +381,16 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t">
+          <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t animate-slideDown">
             <nav className="flex flex-col py-4">
               {navItems.map((item) => (
-                <a
+                <button
                   key={item.href}
-                  href={item.href}
-                  className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => smoothScroll(item.href)}
+                  className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
                 >
                   {item.label}
-                </a>
+                </button>
               ))}
               <button
                 onClick={() => {
@@ -113,13 +410,39 @@ const Header = () => {
               >
                 Formulaires
               </button>
-              <button className="mx-4 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full">
+              <button 
+                onClick={() => {
+                  setShowRegistration(true);
+                  setIsMenuOpen(false);
+                }}
+                className="mx-4 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full"
+              >
                 Inscrivez-vous maintenant
               </button>
             </nav>
           </div>
         )}
       </div>
+
+      {/* Registration Modal */}
+      {showRegistration && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Inscription Utilisateur</h2>
+              <button
+                onClick={() => setShowRegistration(false)}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full overflow-auto">
+              <FormManager />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Forms Modal */}
       {showForms && (
@@ -175,9 +498,36 @@ const FloatingShape = ({ size, color, animationDelay, position }) => (
 // Hero Section
 const Hero = () => {
   const [showForms, setShowForms] = useState(false);
+  const [showSchoolInfo, setShowSchoolInfo] = useState(false);
+  const [showChildRegistration, setShowChildRegistration] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  const handleChildRegistration = () => {
+    setShowChildRegistration(true);
+    showToast('Ouverture du formulaire d\'inscription enfant', 'info');
+  };
+
+  const handleDiscoverSchool = () => {
+    setShowSchoolInfo(true);
+    showToast('Découvrez tout sur notre école !', 'info');
+  };
 
   return (
     <section id="accueil" className="relative min-h-screen flex items-center bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50 overflow-hidden">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       {/* Floating Shapes */}
       <FloatingShape size="20" color="bg-blue-300" animationDelay="0" position="top-20 left-20" />
       <FloatingShape size="16" color="bg-purple-300" animationDelay="1" position="top-40 right-40" />
@@ -204,7 +554,10 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2">
+              <button 
+                onClick={handleChildRegistration}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+              >
                 <span>Inscrire mon enfant</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
@@ -215,7 +568,10 @@ const Hero = () => {
                 <span>Accéder aux formulaires</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2">
+              <button 
+                onClick={handleDiscoverSchool}
+                className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2"
+              >
                 <Camera className="w-5 h-5" />
                 <span>Découvrir notre école</span>
               </button>
@@ -273,6 +629,29 @@ const Hero = () => {
         </div>
       </div>
 
+      {/* Child Registration Modal */}
+      {showChildRegistration && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Inscription Enfant</h2>
+              <button
+                onClick={() => setShowChildRegistration(false)}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full overflow-auto">
+              <FormManager />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* School Info Modal */}
+      <SchoolInfoModal isOpen={showSchoolInfo} onClose={() => setShowSchoolInfo(false)} />
+
       {/* Forms Modal */}
       {showForms && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -299,7 +678,7 @@ const Hero = () => {
 // Feature Card Component
 const FeatureCard = ({ icon, title, description, delay }) => (
   <div 
-    className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group"
+    className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group card-hover"
     style={{ animationDelay: `${delay}s` }}
   >
     <div className="flex items-center space-x-4 mb-4">
@@ -378,32 +757,44 @@ const Features = () => {
 
 // Gallery Section
 const Gallery = () => {
+  const [showImageGallery, setShowImageGallery] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
   const galleryItems = [
     {
       title: "Salle de Classe Moderne",
       description: "Nos classes colorées avec affichages bilingues",
       type: "classroom",
-      placeholder: "Salle avec tableaux d'alphabet arabe et français"
+      src: "/istockphoto-1044045462-1024x1024.jpg",
+      alt: "Salle avec tableaux d'alphabet arabe et français"
     },
     {
       title: "Moment d'Apprentissage",
       description: "Enfants en activité d'écriture arabe",
       type: "learning",
-      placeholder: "Enfants avec tabliers apprenant l'écriture"
+      src: "/istockphoto-1500447955-1024x1024.jpg",
+      alt: "Enfants avec tabliers apprenant l'écriture"
     },
     {
       title: "Cour de Récréation",
       description: "Espace de jeu sécurisé avec structures adaptées",
       type: "playground",
-      placeholder: "Cour avec jeux et arcades traditionnelles"
+      src: "/istockphoto-1458807880-1024x1024.jpg",
+      alt: "Cour avec jeux et arcades traditionnelles"
     },
     {
       title: "Activités Artistiques",
       description: "Ateliers créatifs et expression artistique",
       type: "arts",
-      placeholder: "Enfants en atelier peinture et arts"
+      src: "/istockphoto-952059200-1024x1024.jpg",
+      alt: "Enfants en atelier peinture et arts"
     }
   ];
+
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+    setShowImageGallery(true);
+  };
 
   return (
     <section id="galerie" className="py-20 bg-white">
@@ -420,11 +811,15 @@ const Gallery = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {galleryItems.map((item, index) => (
-            <div key={index} className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+            <div 
+              key={index} 
+              className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+              onClick={() => handleImageClick(index)}
+            >
               <div className="aspect-video overflow-hidden">
                 <img 
-                  src={getGalleryImage(item.type)}
-                  alt={item.title}
+                  src={item.src}
+                  alt={item.alt}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -434,18 +829,68 @@ const Gallery = () => {
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-200">{item.description}</p>
               </div>
+              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                  <ImageIcon className="w-4 h-4 text-white" />
+                </div>
+              </div>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 mx-auto">
-            <Play className="w-5 h-5" />
-            <span>Voir notre vidéo de présentation</span>
-          </button>
+          <VideoButton />
         </div>
       </div>
+
+      {/* Image Gallery Modal */}
+      <ImageGalleryModal
+        isOpen={showImageGallery}
+        onClose={() => setShowImageGallery(false)}
+        images={galleryItems}
+        startIndex={selectedImageIndex}
+      />
     </section>
+  );
+};
+
+// Video Button Component
+const VideoButton = () => {
+  const [showVideo, setShowVideo] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  const handleVideoClick = () => {
+    setShowVideo(true);
+    showToast('Ouverture de la présentation vidéo', 'info');
+  };
+
+  return (
+    <>
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
+      <button 
+        onClick={handleVideoClick}
+        className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 mx-auto btn-hover"
+      >
+        <Play className="w-5 h-5" />
+        <span>Voir notre vidéo de présentation</span>
+      </button>
+
+      {/* Video Modal */}
+      <VideoModal isOpen={showVideo} onClose={() => setShowVideo(false)} />
+    </>
   );
 };
 
@@ -493,7 +938,7 @@ const SchoolLife = () => {
 
         <div className="grid md:grid-cols-2 gap-8">
           {activities.map((activity, index) => (
-            <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+            <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 card-hover">
               <div className="flex items-start space-x-6">
                 <div className="flex-shrink-0">
                   <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
@@ -519,19 +964,6 @@ const SchoolLife = () => {
       </div>
     </section>
   );
-};
-
-// Helper function to get gallery images
-const getGalleryImage = (type) => {
-  const images = {
-    classroom: "/istockphoto-1044045462-1024x1024.jpg",
-    learning: "/istockphoto-1500447955-1024x1024.jpg",
-    playground: "/istockphoto-1458807880-1024x1024.jpg",
-    arts: "/istockphoto-952059200-1024x1024.jpg",
-    reading: "/istockphoto-1044045462-1024x1024.jpg",
-    teachers: "/istockphoto-1500447955-1024x1024.jpg"
-  };
-  return images[type] || images.classroom;
 };
 
 // Helper function to get activity images
@@ -577,9 +1009,30 @@ const Counter = ({ value, label, icon }) => {
 // Urgent Registration Section
 const UrgentRegistration = () => {
   const [showForms, setShowForms] = useState(false);
+  const [showAppointment, setShowAppointment] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  const handleUrgentAppointment = () => {
+    setShowAppointment(true);
+    showToast('Ouverture du formulaire de rendez-vous urgent', 'success');
+  };
 
   return (
     <section id="inscription" className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 relative overflow-hidden">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       {/* Background Animation */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 animate-pulse"></div>
@@ -613,21 +1066,44 @@ const UrgentRegistration = () => {
           />
         </div>
 
-        <div className="text-center">
-          <button className="bg-white text-blue-600 px-12 py-4 rounded-full text-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
+        <div className="text-center space-y-4">
+          <button 
+            onClick={handleUrgentAppointment}
+            className="bg-white text-blue-600 px-12 py-4 rounded-full text-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg btn-hover"
+          >
             Demander un Rendez-vous Urgent
           </button>
           <button 
             onClick={() => setShowForms(true)}
-            className="mt-4 bg-gradient-to-r from-green-600 to-green-700 text-white px-12 py-4 rounded-full text-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105 block mx-auto"
+            className="bg-gradient-to-r from-green-600 to-green-700 text-white px-12 py-4 rounded-full text-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105 block mx-auto btn-hover"
           >
             Accéder aux Formulaires
           </button>
-          <p className="text-white/80 mt-4">
+          <p className="text-white/80">
             Contactez-nous dès maintenant pour visiter notre nouveau campus
           </p>
         </div>
       </div>
+
+      {/* Appointment Modal */}
+      {showAppointment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-7xl h-[95vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Rendez-vous Urgent</h2>
+              <button
+                onClick={() => setShowAppointment(false)}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full overflow-auto">
+              <FormManager />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Forms Modal */}
       {showForms && (
@@ -654,8 +1130,35 @@ const UrgentRegistration = () => {
 
 // Info Section
 const InfoSection = () => {
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  const handleCall = () => {
+    showToast('Numéro copié dans le presse-papier: 05 37 00 00 00', 'success');
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText('05 37 00 00 00');
+    }
+  };
+
+  const handleLocationConfirm = () => {
+    showToast('Contactez-nous pour confirmer l\'adresse exacte de visite', 'info');
+  };
+
   return (
     <section className="py-16 bg-gradient-to-r from-orange-50 to-yellow-50">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-orange-500">
@@ -670,11 +1173,17 @@ const InfoSection = () => {
                   Cette modernisation nous permet d'offrir des installations plus modernes et un service encore plus personnalisé.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="bg-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2">
+                  <button 
+                    onClick={handleCall}
+                    className="bg-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2 btn-hover"
+                  >
                     <Phone className="w-5 h-5" />
                     <span>Appeler le 05 37 00 00 00</span>
                   </button>
-                  <button className="border-2 border-orange-500 text-orange-500 px-6 py-3 rounded-full font-semibold hover:bg-orange-500 hover:text-white transition-colors flex items-center space-x-2">
+                  <button 
+                    onClick={handleLocationConfirm}
+                    className="border-2 border-orange-500 text-orange-500 px-6 py-3 rounded-full font-semibold hover:bg-orange-500 hover:text-white transition-colors flex items-center space-x-2 btn-hover"
+                  >
                     <MapPin className="w-5 h-5" />
                     <span>Confirmer l'adresse de visite</span>
                   </button>
@@ -699,12 +1208,29 @@ const Contact = () => {
     contactPreference: '',
     message: ''
   });
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
     console.log('Form submitted:', formData);
-    alert('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
+    showToast('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.', 'success');
+    
+    // Reset form
+    setFormData({
+      parentName: '',
+      childName: '',
+      childAge: '',
+      phone: '',
+      email: '',
+      contactPreference: '',
+      message: ''
+    });
   };
 
   const handleChange = (e) => {
@@ -716,6 +1242,15 @@ const Contact = () => {
 
   return (
     <section id="contact" className="py-20 bg-gray-50">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-800 mb-6">
@@ -902,7 +1437,7 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 btn-hover"
               >
                 Envoyer la Demande
               </button>
@@ -996,63 +1531,6 @@ const Footer = () => {
         </div>
       )}
     </>
-  );
-};
-
-// Image Upload Helper Component
-const ImageUploader = ({ onImageUpload, placeholder, className = "" }) => {
-  const [dragActive, setDragActive] = useState(false);
-
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      onImageUpload(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      onImageUpload(e.target.files[0]);
-    }
-  };
-
-  return (
-    <div 
-      className={`relative border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors ${className} ${dragActive ? 'border-blue-400 bg-blue-50' : ''}`}
-      onDragEnter={handleDrag}
-      onDragLeave={handleDrag}
-      onDragOver={handleDrag}
-      onDrop={handleDrop}
-    >
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleChange}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-      />
-      <div className="flex flex-col items-center space-y-2">
-        <Camera className="w-12 h-12 text-gray-400" />
-        <p className="text-gray-600 font-medium">Glisser une image ici</p>
-        <p className="text-sm text-gray-500">{placeholder}</p>
-        <button type="button" className="text-blue-600 hover:text-blue-700 underline">
-          ou cliquer pour sélectionner
-        </button>
-      </div>
-    </div>
   );
 };
 
