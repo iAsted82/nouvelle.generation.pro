@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { AlertCircle, Calendar, Users, MessageSquare, UserPlus, Database } from 'lucide-react';
+import { AlertCircle, Calendar, Users, MessageSquare, UserPlus, Database, UsersRound } from 'lucide-react';
 import AppointmentForm from './AppointmentForm';
 import RegistrationForm from './RegistrationForm';
 import ChildRegistrationForm from './ChildRegistrationForm';
 import ContactForm from './ContactForm';
+import CompleteRegistrationForm from './CompleteRegistrationForm';
+import { registrationService } from '../../services/registrationService';
 
 // Types pour les données
 interface AppointmentData {
@@ -222,7 +224,7 @@ class DatabaseManager {
 
 // Composant principal pour gérer les formulaires
 const FormManager: React.FC = () => {
-  const [activeForm, setActiveForm] = useState<'appointment' | 'registration' | 'childRegistration' | 'contact'>('appointment');
+  const [activeForm, setActiveForm] = useState<'appointment' | 'registration' | 'childRegistration' | 'contact' | 'completeRegistration'>('appointment');
   const [isLoading, setIsLoading] = useState(false);
   const db = DatabaseManager.getInstance();
 
@@ -274,6 +276,16 @@ const FormManager: React.FC = () => {
     }
   };
 
+  const handleCompleteRegistrationSubmit = async (result: any) => {
+    console.log('Inscription complète réussie:', result);
+    // Ici vous pouvez ajouter une logique supplémentaire après l'inscription
+  };
+
+  const handleCompleteRegistrationError = (error: string) => {
+    console.error('Erreur lors de l\'inscription complète:', error);
+    // Ici vous pouvez ajouter une logique de gestion d'erreur
+  };
+
   const formTabs = [
     {
       id: 'appointment',
@@ -298,6 +310,12 @@ const FormManager: React.FC = () => {
       label: 'Contact',
       icon: <MessageSquare className="w-5 h-5" />,
       color: 'purple'
+    },
+    {
+      id: 'completeRegistration',
+      label: 'Inscription Complète',
+      icon: <UsersRound className="w-5 h-5" />,
+      color: 'indigo'
     }
   ];
 
@@ -360,6 +378,12 @@ const FormManager: React.FC = () => {
               isLoading={isLoading}
             />
           )}
+          {activeForm === 'completeRegistration' && (
+            <CompleteRegistrationForm
+              onSuccess={handleCompleteRegistrationSubmit}
+              onError={handleCompleteRegistrationError}
+            />
+          )}
         </div>
 
         {/* Database Info */}
@@ -369,7 +393,7 @@ const FormManager: React.FC = () => {
             <h3 className="text-xl font-semibold text-gray-800">État de la Base de Données</h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
               <h4 className="font-medium text-red-800 mb-2">Rendez-vous Urgents</h4>
               <p className="text-2xl font-bold text-red-600">{db.getAppointments().length}</p>
@@ -386,6 +410,10 @@ const FormManager: React.FC = () => {
               <h4 className="font-medium text-purple-800 mb-2">Messages de Contact</h4>
               <p className="text-2xl font-bold text-purple-600">{db.getContacts().length}</p>
             </div>
+            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+              <h4 className="font-medium text-indigo-800 mb-2">Inscriptions Complètes</h4>
+              <p className="text-2xl font-bold text-indigo-600">{registrationService.getAllRegistrations().then(data => data.users.length)}</p>
+            </div>
           </div>
         </div>
 
@@ -401,6 +429,8 @@ const FormManager: React.FC = () => {
                 <li>• Protection anti-spam avec captcha</li>
                 <li>• Gestion des doublons d'inscription</li>
                 <li>• Validation des formats (email, téléphone)</li>
+                <li>• Cryptage sécurisé des mots de passe</li>
+                <li>• Validation des âges (parent/enfant)</li>
               </ul>
             </div>
             
@@ -411,26 +441,32 @@ const FormManager: React.FC = () => {
                 <li>• Accusés de réception automatiques</li>
                 <li>• Notifications à l'équipe administrative</li>
                 <li>• Traitement prioritaire des urgences</li>
+                <li>• Notifications de bienvenue</li>
+                <li>• Suivi des inscriptions</li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-medium text-gray-800 mb-3">💾 Stockage des Données</h4>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Base de données simulée en mémoire</li>
+                <li>• Persistance avec localStorage</li>
                 <li>• Horodatage de toutes les soumissions</li>
                 <li>• Gestion des statuts de traitement</li>
                 <li>• Upload et gestion des documents</li>
+                <li>• Relations parent-enfant</li>
+                <li>• Gestion des profils utilisateur</li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-medium text-gray-800 mb-3">🔐 Conformité RGPD</h4>
+              <h4 className="font-medium text-gray-800 mb-3">🔐 Sécurité & RGPD</h4>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Consentement explicite pour les données</li>
                 <li>• Politique de confidentialité</li>
                 <li>• Gestion des préférences de notification</li>
                 <li>• Sécurisation des données personnelles</li>
+                <li>• Authentification sécurisée</li>
+                <li>• Gestion des sessions utilisateur</li>
               </ul>
             </div>
           </div>
