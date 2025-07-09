@@ -1,81 +1,114 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Shield, Users, Calendar, FileText, Settings as SettingsIcon, BarChart3, Mail, Phone, Eye, Edit, Trash2, Plus, Search, Filter, Download, Upload, LogOut, Home, Bell, Clock, UserPlus, GraduationCap, Star, TrendingUp, AlertCircle, CheckCircle, X, Save, RefreshCw, MessageSquare, Camera, MapPin, Globe, Heart, Award, Target, BookOpen, Palette, Monitor, UserCheck, Database, Package, CreditCard, Activity, DollarSign, ShoppingCart, Zap, Menu, ChevronDown, ChevronRight, MoreHorizontal, ExternalLink, Copy, Archive, Bookmark, Flag, Share2, Printer, HelpCircle, Info, Lock, Unlock, Key, Shield as ShieldIcon, Loader2, AlertTriangle, CheckCircle2, XCircle, Clock as ClockIcon, Calendar as CalendarIcon, FileIcon, ImageIcon, VideoIcon, MusicIcon, Folder, FolderOpen, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Maximize, Minimize, RotateCcw, Repeat, Wifi, WifiOff, Server, HardDrive, Cpu, MemoryStick, Smartphone, Tablet, Monitor as MonitorIcon, Headphones, Printer as PrinterIcon, Camera as CameraIcon, Mic, Speaker, Volume2, VolumeX, Play, Pause, Store as Stop, SkipBack, SkipForward, Rewind, FastForward, List, Grid, Columns, Rows, MoreVertical, Layers, Layout, PanelLeft, PanelRight, PanelTop, PanelBottom } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  Users, 
+  Package, 
+  CreditCard, 
+  Bell, 
+  Settings, 
+  Search, 
+  Plus, 
+  Edit, 
+  Trash2, 
+  Eye,
+  Download,
+  Upload,
+  Filter,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Check,
+  AlertCircle,
+  CheckCircle,
+  Info,
+  LogOut,
+  Home,
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  DollarSign,
+  ShoppingCart,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Clock,
+  Star,
+  MoreHorizontal,
+  Save,
+  RefreshCw,
+  Shield,
+  Database,
+  Server,
+  Globe,
+  Lock,
+  User,
+  UserPlus,
+  UserMinus,
+  FileText,
+  PieChart,
+  BarChart,
+  LineChart
+} from 'lucide-react';
 
-// Types de données
+// Types pour les données
 interface User {
   id: string;
   name: string;
   email: string;
-  phone: string;
-  role: 'admin' | 'teacher' | 'parent' | 'student';
+  role: 'admin' | 'user' | 'moderator';
   status: 'active' | 'inactive' | 'suspended';
   lastLogin: string;
   createdAt: string;
   avatar?: string;
-  permissions: string[];
+  phone?: string;
+  address?: string;
 }
 
 interface Product {
   id: string;
   name: string;
-  description: string;
-  price: number;
   category: string;
-  status: 'active' | 'inactive' | 'draft';
+  price: number;
   stock: number;
-  createdAt: string;
-  updatedAt: string;
+  status: 'active' | 'inactive' | 'discontinued';
+  description: string;
   image?: string;
+  createdAt: string;
 }
 
 interface Transaction {
   id: string;
   userId: string;
+  userName: string;
   productId: string;
+  productName: string;
   amount: number;
-  type: 'payment' | 'refund' | 'subscription';
-  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  type: 'purchase' | 'refund' | 'subscription';
+  status: 'completed' | 'pending' | 'failed';
   date: string;
-  description: string;
   paymentMethod: string;
 }
 
 interface Notification {
   id: string;
+  type: 'info' | 'warning' | 'error' | 'success';
   title: string;
   message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
+  timestamp: string;
   read: boolean;
-  createdAt: string;
-  actionUrl?: string;
+  action?: string;
 }
 
-interface AdminSettings {
-  schoolName: string;
-  address: string;
-  phone: string;
-  email: string;
-  capacity: number;
-  pricePerMonth: number;
-  currency: string;
-  timezone: string;
-  language: string;
-  theme: 'light' | 'dark' | 'system';
-  notifications: {
-    email: boolean;
-    sms: boolean;
-    push: boolean;
-  };
-  security: {
-    twoFactor: boolean;
-    sessionTimeout: number;
-    passwordPolicy: {
-      minLength: number;
-      requireUppercase: boolean;
-      requireNumbers: boolean;
-      requireSymbols: boolean;
-    };
-  };
+interface DashboardStats {
+  totalUsers: number;
+  totalProducts: number;
+  totalRevenue: number;
+  totalTransactions: number;
+  activeUsers: number;
+  monthlyGrowth: number;
+  revenueGrowth: number;
+  conversionRate: number;
 }
 
 // Gestionnaire de données simulé
@@ -85,195 +118,160 @@ class AdminDataManager {
   private products: Product[] = [];
   private transactions: Transaction[] = [];
   private notifications: Notification[] = [];
-  private settings: AdminSettings;
-
-  private constructor() {
-    this.initializeData();
-  }
 
   static getInstance(): AdminDataManager {
     if (!AdminDataManager.instance) {
       AdminDataManager.instance = new AdminDataManager();
+      AdminDataManager.instance.initializeData();
     }
     return AdminDataManager.instance;
   }
 
   private initializeData() {
-    // Données simulées
+    // Données utilisateurs simulées
     this.users = [
       {
         id: '1',
-        name: 'Nadia Benjelloun',
-        email: 'nadia.benjelloun@nouvellegenerationpro.ma',
-        phone: '06 11 22 33 44',
-        role: 'admin',
+        name: 'Jean Dupont',
+        email: 'jean.dupont@example.com',
+        role: 'user',
         status: 'active',
-        lastLogin: '2024-12-27T10:30:00Z',
-        createdAt: '2020-01-15T08:00:00Z',
-        permissions: ['all']
+        lastLogin: '2024-01-15T10:30:00Z',
+        createdAt: '2024-01-01T00:00:00Z',
+        phone: '06 12 34 56 78',
+        address: '123 Rue de la Paix, Paris'
       },
       {
         id: '2',
-        name: 'Samira Idrissi',
-        email: 'samira.idrissi@nouvellegenerationpro.ma',
-        phone: '06 55 66 77 88',
-        role: 'teacher',
+        name: 'Marie Martin',
+        email: 'marie.martin@example.com',
+        role: 'moderator',
         status: 'active',
-        lastLogin: '2024-12-27T09:15:00Z',
-        createdAt: '2021-09-01T08:00:00Z',
-        permissions: ['read_students', 'write_students', 'read_courses']
+        lastLogin: '2024-01-14T15:45:00Z',
+        createdAt: '2024-01-02T00:00:00Z',
+        phone: '06 98 76 54 32',
+        address: '456 Avenue des Champs, Lyon'
       },
       {
         id: '3',
-        name: 'Fatima Benali',
-        email: 'fatima.benali@gmail.com',
-        phone: '06 12 34 56 78',
-        role: 'parent',
-        status: 'active',
-        lastLogin: '2024-12-26T18:45:00Z',
-        createdAt: '2024-09-15T10:00:00Z',
-        permissions: ['read_child_info']
+        name: 'Pierre Durand',
+        email: 'pierre.durand@example.com',
+        role: 'user',
+        status: 'suspended',
+        lastLogin: '2024-01-10T08:20:00Z',
+        createdAt: '2024-01-03T00:00:00Z',
+        phone: '06 11 22 33 44',
+        address: '789 Boulevard du Centre, Marseille'
       }
     ];
 
+    // Données produits simulées
     this.products = [
       {
         id: '1',
-        name: 'Inscription Annuelle',
-        description: 'Frais d\'inscription pour l\'année scolaire 2025-2026',
-        price: 800,
-        category: 'education',
+        name: 'Inscription Maternelle',
+        category: 'Services',
+        price: 150,
+        stock: 50,
         status: 'active',
-        stock: 30,
-        createdAt: '2024-01-01T00:00:00Z',
-        updatedAt: '2024-12-01T00:00:00Z'
+        description: 'Inscription pour la maternelle avec dossier complet',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: '2',
-        name: 'Matériel Scolaire',
-        description: 'Kit complet de matériel scolaire pour maternelle',
-        price: 150,
-        category: 'supplies',
+        name: 'Rendez-vous Urgent',
+        category: 'Services',
+        price: 25,
+        stock: 100,
         status: 'active',
-        stock: 50,
-        createdAt: '2024-08-15T00:00:00Z',
-        updatedAt: '2024-12-15T00:00:00Z'
+        description: 'Service de rendez-vous prioritaire',
+        createdAt: '2024-01-02T00:00:00Z'
       },
       {
         id: '3',
-        name: 'Transport Scolaire',
-        description: 'Service de transport aller-retour mensuel',
-        price: 200,
-        category: 'transport',
+        name: 'Consultation Pédagogique',
+        category: 'Services',
+        price: 75,
+        stock: 30,
         status: 'active',
-        stock: 100,
-        createdAt: '2024-02-01T00:00:00Z',
-        updatedAt: '2024-12-01T00:00:00Z'
+        description: 'Consultation avec un expert pédagogique',
+        createdAt: '2024-01-03T00:00:00Z'
       }
     ];
 
+    // Transactions simulées
     this.transactions = [
       {
         id: '1',
-        userId: '3',
+        userId: '1',
+        userName: 'Jean Dupont',
         productId: '1',
-        amount: 800,
-        type: 'payment',
+        productName: 'Inscription Maternelle',
+        amount: 150,
+        type: 'purchase',
         status: 'completed',
-        date: '2024-12-25T14:30:00Z',
-        description: 'Paiement inscription annuelle - Amina Benali',
-        paymentMethod: 'carte_bancaire'
+        date: '2024-01-15T10:30:00Z',
+        paymentMethod: 'Carte bancaire'
       },
       {
         id: '2',
-        userId: '3',
+        userId: '2',
+        userName: 'Marie Martin',
         productId: '2',
-        amount: 150,
-        type: 'payment',
+        productName: 'Rendez-vous Urgent',
+        amount: 25,
+        type: 'purchase',
         status: 'pending',
-        date: '2024-12-26T09:15:00Z',
-        description: 'Commande matériel scolaire',
-        paymentMethod: 'virement'
+        date: '2024-01-14T15:45:00Z',
+        paymentMethod: 'PayPal'
       }
     ];
 
+    // Notifications simulées
     this.notifications = [
       {
         id: '1',
-        title: 'Nouvelle inscription',
-        message: 'Une nouvelle demande d\'inscription vient d\'être soumise',
         type: 'info',
-        read: false,
-        createdAt: '2024-12-27T10:00:00Z'
+        title: 'Nouvelle inscription',
+        message: 'Jean Dupont s\'est inscrit pour la maternelle',
+        timestamp: '2024-01-15T10:30:00Z',
+        read: false
       },
       {
         id: '2',
-        title: 'Paiement reçu',
-        message: 'Paiement de 800 MAD reçu pour l\'inscription d\'Amina Benali',
-        type: 'success',
-        read: false,
-        createdAt: '2024-12-27T09:30:00Z'
+        type: 'warning',
+        title: 'Stock faible',
+        message: 'Le stock de consultations pédagogiques est faible',
+        timestamp: '2024-01-14T15:45:00Z',
+        read: false
       },
       {
         id: '3',
-        title: 'Maintenance système',
-        message: 'Maintenance programmée demain de 2h à 4h du matin',
-        type: 'warning',
-        read: true,
-        createdAt: '2024-12-26T16:00:00Z'
+        type: 'success',
+        title: 'Paiement reçu',
+        message: 'Paiement de 150€ reçu de Jean Dupont',
+        timestamp: '2024-01-13T12:20:00Z',
+        read: true
       }
     ];
-
-    this.settings = {
-      schoolName: 'Nouvelle Génération Pro',
-      address: 'Résidence Essafa 4, Salé',
-      phone: '05 37 00 00 00',
-      email: 'info@nouvellegenerationpro.ma',
-      capacity: 80,
-      pricePerMonth: 800,
-      currency: 'MAD',
-      timezone: 'Africa/Casablanca',
-      language: 'fr',
-      theme: 'light',
-      notifications: {
-        email: true,
-        sms: true,
-        push: true
-      },
-      security: {
-        twoFactor: true,
-        sessionTimeout: 30,
-        passwordPolicy: {
-          minLength: 8,
-          requireUppercase: true,
-          requireNumbers: true,
-          requireSymbols: true
-        }
-      }
-    };
   }
 
   // Méthodes pour les utilisateurs
   getUsers(): User[] {
-    return this.users;
+    return [...this.users];
   }
 
-  getUserById(id: string): User | undefined {
-    return this.users.find(user => user.id === id);
-  }
-
-  createUser(userData: Omit<User, 'id' | 'createdAt'>): User {
+  addUser(user: Omit<User, 'id'>): User {
     const newUser: User = {
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      ...userData
+      ...user,
+      id: Date.now().toString()
     };
     this.users.push(newUser);
     return newUser;
   }
 
   updateUser(id: string, updates: Partial<User>): User | null {
-    const index = this.users.findIndex(user => user.id === id);
+    const index = this.users.findIndex(u => u.id === id);
     if (index === -1) return null;
     
     this.users[index] = { ...this.users[index], ...updates };
@@ -281,7 +279,7 @@ class AdminDataManager {
   }
 
   deleteUser(id: string): boolean {
-    const index = this.users.findIndex(user => user.id === id);
+    const index = this.users.findIndex(u => u.id === id);
     if (index === -1) return false;
     
     this.users.splice(index, 1);
@@ -290,38 +288,28 @@ class AdminDataManager {
 
   // Méthodes pour les produits
   getProducts(): Product[] {
-    return this.products;
+    return [...this.products];
   }
 
-  getProductById(id: string): Product | undefined {
-    return this.products.find(product => product.id === id);
-  }
-
-  createProduct(productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Product {
+  addProduct(product: Omit<Product, 'id'>): Product {
     const newProduct: Product = {
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      ...productData
+      ...product,
+      id: Date.now().toString()
     };
     this.products.push(newProduct);
     return newProduct;
   }
 
   updateProduct(id: string, updates: Partial<Product>): Product | null {
-    const index = this.products.findIndex(product => product.id === id);
+    const index = this.products.findIndex(p => p.id === id);
     if (index === -1) return null;
     
-    this.products[index] = { 
-      ...this.products[index], 
-      ...updates, 
-      updatedAt: new Date().toISOString() 
-    };
+    this.products[index] = { ...this.products[index], ...updates };
     return this.products[index];
   }
 
   deleteProduct(id: string): boolean {
-    const index = this.products.findIndex(product => product.id === id);
+    const index = this.products.findIndex(p => p.id === id);
     if (index === -1) return false;
     
     this.products.splice(index, 1);
@@ -330,267 +318,119 @@ class AdminDataManager {
 
   // Méthodes pour les transactions
   getTransactions(): Transaction[] {
-    return this.transactions;
-  }
-
-  getTransactionById(id: string): Transaction | undefined {
-    return this.transactions.find(transaction => transaction.id === id);
-  }
-
-  createTransaction(transactionData: Omit<Transaction, 'id'>): Transaction {
-    const newTransaction: Transaction = {
-      id: Date.now().toString(),
-      ...transactionData
-    };
-    this.transactions.push(newTransaction);
-    return newTransaction;
-  }
-
-  updateTransaction(id: string, updates: Partial<Transaction>): Transaction | null {
-    const index = this.transactions.findIndex(transaction => transaction.id === id);
-    if (index === -1) return null;
-    
-    this.transactions[index] = { ...this.transactions[index], ...updates };
-    return this.transactions[index];
+    return [...this.transactions];
   }
 
   // Méthodes pour les notifications
   getNotifications(): Notification[] {
-    return this.notifications.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return [...this.notifications];
   }
 
   markNotificationAsRead(id: string): boolean {
-    const index = this.notifications.findIndex(notification => notification.id === id);
-    if (index === -1) return false;
+    const notification = this.notifications.find(n => n.id === id);
+    if (!notification) return false;
     
-    this.notifications[index].read = true;
+    notification.read = true;
     return true;
   }
 
-  markAllNotificationsAsRead(): void {
-    this.notifications.forEach(notification => {
-      notification.read = true;
-    });
-  }
-
-  createNotification(notificationData: Omit<Notification, 'id' | 'createdAt' | 'read'>): Notification {
-    const newNotification: Notification = {
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      read: false,
-      ...notificationData
-    };
-    this.notifications.push(newNotification);
-    return newNotification;
-  }
-
-  deleteNotification(id: string): boolean {
-    const index = this.notifications.findIndex(notification => notification.id === id);
-    if (index === -1) return false;
-    
-    this.notifications.splice(index, 1);
-    return true;
-  }
-
-  // Méthodes pour les paramètres
-  getSettings(): AdminSettings {
-    return this.settings;
-  }
-
-  updateSettings(updates: Partial<AdminSettings>): AdminSettings {
-    this.settings = { ...this.settings, ...updates };
-    return this.settings;
-  }
-
-  // Méthodes pour les statistiques
-  getDashboardStats() {
-    const totalUsers = this.users.length;
-    const activeUsers = this.users.filter(user => user.status === 'active').length;
-    const totalProducts = this.products.length;
-    const totalTransactions = this.transactions.length;
+  // Statistiques
+  getStats(): DashboardStats {
+    const activeUsers = this.users.filter(u => u.status === 'active').length;
     const totalRevenue = this.transactions
       .filter(t => t.status === 'completed')
       .reduce((sum, t) => sum + t.amount, 0);
-    const pendingTransactions = this.transactions.filter(t => t.status === 'pending').length;
-    const unreadNotifications = this.notifications.filter(n => !n.read).length;
 
     return {
-      totalUsers,
-      activeUsers,
-      totalProducts,
-      totalTransactions,
+      totalUsers: this.users.length,
+      totalProducts: this.products.length,
       totalRevenue,
-      pendingTransactions,
-      unreadNotifications,
-      growthRate: 12.5, // Simulé
-      conversionRate: 8.3 // Simulé
+      totalTransactions: this.transactions.length,
+      activeUsers,
+      monthlyGrowth: 12.5,
+      revenueGrowth: 8.7,
+      conversionRate: 3.2
     };
   }
 }
 
-// Composant d'authentification admin
-const AdminAuth: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) => {
-  const [credentials, setCredentials] = useState({
-    email: '',
-    password: ''
-  });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
-    // Simulation d'authentification
-    setTimeout(() => {
-      if (credentials.email === 'info@nouvellegeneration.pro' && credentials.password === 'Karima1982*') {
-        const adminUser: User = {
-          id: '1',
-          name: 'Administrateur',
-          email: 'info@nouvellegeneration.pro',
-          phone: '05 37 00 00 00',
-          role: 'admin',
-          status: 'active',
-          lastLogin: new Date().toISOString(),
-          createdAt: '2020-01-15T08:00:00Z',
-          permissions: ['all']
-        };
-        onLogin(adminUser);
-      } else {
-        setError('Email ou mot de passe incorrect');
-      }
-      setIsLoading(false);
-    }, 1000);
-  };
+// Composants UI réutilisables
+const Modal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}> = ({ isOpen, onClose, title, children }) => {
+  if (!isOpen) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <img 
-                src="/logo-ngp.png" 
-                alt="Logo Nouvelle Génération Pro" 
-                className="w-8 h-8 object-contain"
-                style={{ filter: 'brightness(0) invert(1)' }}
-              />
-            </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Administration</h1>
-            <p className="text-gray-600">Nouvelle Génération Pro</p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={credentials.email}
-                onChange={(e) => setCredentials({...credentials, email: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Entrez votre email"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mot de passe
-              </label>
-              <input
-                type="password"
-                value={credentials.password}
-                onChange={(e) => setCredentials({...credentials, password: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Entrez votre mot de passe"
-                required
-              />
-            </div>
-
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center space-x-2">
-                <AlertCircle className="w-5 h-5 text-red-500" />
-                <span className="text-red-700">{error}</span>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>Connexion...</span>
-                </div>
-              ) : (
-                'Se connecter'
-              )}
-            </button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500">
-              Accès restreint aux administrateurs autorisés
-            </p>
-            <p className="text-xs text-gray-400 mt-2">
-              Informations sécurisées - Ne partagez jamais vos identifiants
-            </p>
-          </div>
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center animate-fadeIn">
+      <div className="bg-white rounded-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="max-h-[calc(90vh-80px)] overflow-y-auto">
+          {children}
         </div>
       </div>
     </div>
   );
 };
 
-// Composant pour les notifications toast
 const Toast: React.FC<{
-  message: string;
   type: 'success' | 'error' | 'info' | 'warning';
+  message: string;
+  isVisible: boolean;
   onClose: () => void;
-}> = ({ message, type, onClose }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose();
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [onClose]);
+}> = ({ type, message, isVisible, onClose }) => {
+  const [shouldRender, setShouldRender] = useState(isVisible);
 
-  const getIcon = () => {
-    switch (type) {
-      case 'success':
-        return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case 'error':
-        return <XCircle className="w-5 h-5 text-red-500" />;
-      case 'warning':
-        return <AlertTriangle className="w-5 h-5 text-yellow-500" />;
-      default:
-        return <Info className="w-5 h-5 text-blue-500" />;
+  useEffect(() => {
+    if (isVisible) {
+      setShouldRender(true);
+      const timer = setTimeout(() => {
+        onClose();
+      }, 4000);
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 300);
+      return () => clearTimeout(timer);
     }
+  }, [isVisible, onClose]);
+
+  if (!shouldRender) return null;
+
+  const icons = {
+    success: <CheckCircle className="w-5 h-5 text-green-600" />,
+    error: <AlertCircle className="w-5 h-5 text-red-600" />,
+    info: <Info className="w-5 h-5 text-blue-600" />,
+    warning: <AlertCircle className="w-5 h-5 text-yellow-600" />
   };
 
-  const getBackgroundColor = () => {
-    switch (type) {
-      case 'success':
-        return 'bg-green-50 border-green-200';
-      case 'error':
-        return 'bg-red-50 border-red-200';
-      case 'warning':
-        return 'bg-yellow-50 border-yellow-200';
-      default:
-        return 'bg-blue-50 border-blue-200';
-    }
+  const colors = {
+    success: 'bg-green-50 border-green-200',
+    error: 'bg-red-50 border-red-200',
+    info: 'bg-blue-50 border-blue-200',
+    warning: 'bg-yellow-50 border-yellow-200'
   };
 
   return (
-    <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg border shadow-lg max-w-md ${getBackgroundColor()}`}>
+    <div 
+      className={`fixed top-4 right-4 z-50 max-w-sm w-full ${colors[type]} border rounded-lg p-4 shadow-lg transition-all duration-300 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+      }`}
+    >
       <div className="flex items-center space-x-3">
-        {getIcon()}
-        <span className="text-sm font-medium text-gray-800">{message}</span>
+        {icons[type]}
+        <p className="text-sm font-medium text-gray-800">{message}</p>
         <button
           onClick={onClose}
           className="text-gray-500 hover:text-gray-700 ml-auto"
@@ -602,261 +442,447 @@ const Toast: React.FC<{
   );
 };
 
-// Composant pour les modales de confirmation
-const ConfirmationModal: React.FC<{
-  isOpen: boolean;
+const StatsCard: React.FC<{
   title: string;
-  message: string;
-  confirmLabel?: string;
-  cancelLabel?: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-  type?: 'danger' | 'warning' | 'info';
-}> = ({ 
-  isOpen, 
-  title, 
-  message, 
-  confirmLabel = 'Confirmer', 
-  cancelLabel = 'Annuler',
-  onConfirm, 
-  onCancel,
-  type = 'danger'
-}) => {
-  if (!isOpen) return null;
-
-  const getIcon = () => {
-    switch (type) {
-      case 'danger':
-        return <AlertTriangle className="w-6 h-6 text-red-500" />;
-      case 'warning':
-        return <AlertCircle className="w-6 h-6 text-yellow-500" />;
-      default:
-        return <Info className="w-6 h-6 text-blue-500" />;
-    }
-  };
-
-  const getConfirmButtonColor = () => {
-    switch (type) {
-      case 'danger':
-        return 'bg-red-600 hover:bg-red-700';
-      case 'warning':
-        return 'bg-yellow-600 hover:bg-yellow-700';
-      default:
-        return 'bg-blue-600 hover:bg-blue-700';
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-        <div className="flex items-start space-x-4 mb-4">
-          {getIcon()}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">{title}</h3>
-            <p className="text-gray-600">{message}</p>
+  value: string | number;
+  change?: string;
+  trend?: 'up' | 'down' | 'neutral';
+  icon: React.ReactNode;
+  color: string;
+}> = ({ title, value, change, trend, icon, color }) => (
+  <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm text-gray-600 mb-1">{title}</p>
+        <p className="text-2xl font-bold text-gray-800">{value}</p>
+        {change && (
+          <div className="flex items-center space-x-1 mt-2">
+            {trend === 'up' && <TrendingUp className="w-4 h-4 text-green-500" />}
+            {trend === 'down' && <TrendingDown className="w-4 h-4 text-red-500" />}
+            <span className={`text-sm font-medium ${
+              trend === 'up' ? 'text-green-600' : 
+              trend === 'down' ? 'text-red-600' : 'text-gray-600'
+            }`}>
+              {change}
+            </span>
           </div>
-        </div>
-        
-        <div className="flex justify-end space-x-3 mt-6">
-          <button
-            onClick={onCancel}
-            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            {cancelLabel}
-          </button>
-          <button
-            onClick={onConfirm}
-            className={`px-4 py-2 text-white rounded-lg transition-colors ${getConfirmButtonColor()}`}
-          >
-            {confirmLabel}
-          </button>
-        </div>
+        )}
+      </div>
+      <div className={`w-12 h-12 rounded-full ${color} flex items-center justify-center`}>
+        {icon}
       </div>
     </div>
-  );
-};
+  </div>
+);
 
-// Composant pour la pagination
-const Pagination: React.FC<{
+const DataTable: React.FC<{
+  columns: Array<{
+    key: string;
+    label: string;
+    render?: (value: any, row: any) => React.ReactNode;
+  }>;
+  data: any[];
+  onEdit?: (item: any) => void;
+  onDelete?: (item: any) => void;
+  onView?: (item: any) => void;
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-}> = ({ currentPage, totalPages, onPageChange }) => {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
-  return (
-    <div className="flex items-center justify-center space-x-2 mt-6">
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <ArrowLeft className="w-4 h-4" />
-      </button>
-      
-      {pages.map(page => (
-        <button
-          key={page}
-          onClick={() => onPageChange(page)}
-          className={`px-3 py-2 rounded-lg ${
-            currentPage === page
-              ? 'bg-blue-600 text-white'
-              : 'border border-gray-300 hover:bg-gray-50'
-          }`}
-        >
-          {page}
-        </button>
-      ))}
-      
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <ArrowRight className="w-4 h-4" />
-      </button>
+}> = ({ columns, data, onEdit, onDelete, onView, currentPage, totalPages, onPageChange }) => (
+  <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="overflow-x-auto">
+      <table className="w-full">
+        <thead className="bg-gray-50 border-b border-gray-200">
+          <tr>
+            {columns.map((column) => (
+              <th key={column.key} className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {column.label}
+              </th>
+            ))}
+            <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {data.map((row, index) => (
+            <tr key={index} className="hover:bg-gray-50">
+              {columns.map((column) => (
+                <td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {column.render ? column.render(row[column.key], row) : row[column.key]}
+                </td>
+              ))}
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <div className="flex items-center space-x-2">
+                  {onView && (
+                    <button
+                      onClick={() => onView(row)}
+                      className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                  )}
+                  {onEdit && (
+                    <button
+                      onClick={() => onEdit(row)}
+                      className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                  )}
+                  {onDelete && (
+                    <button
+                      onClick={() => onDelete(row)}
+                      className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-  );
-};
+    
+    {/* Pagination */}
+    <div className="flex items-center justify-between px-6 py-4 bg-gray-50 border-t border-gray-200">
+      <div className="text-sm text-gray-700">
+        Page {currentPage} sur {totalPages}
+      </div>
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  </div>
+);
 
-// Composant tableau de bord
-const Dashboard: React.FC = () => {
-  const [stats, setStats] = useState<any>({});
-  const [recentActivities, setRecentActivities] = useState<any[]>([]);
+// Composant principal AdminDashboard
+const AdminDashboard: React.FC = () => {
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState<'user' | 'product' | 'delete' | null>(null);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [toast, setToast] = useState<{
+    type: 'success' | 'error' | 'info' | 'warning';
+    message: string;
+    isVisible: boolean;
+  }>({
+    type: 'info',
+    message: '',
+    isVisible: false
+  });
+
   const dataManager = AdminDataManager.getInstance();
+  const [users, setUsers] = useState<User[]>(dataManager.getUsers());
+  const [products, setProducts] = useState<Product[]>(dataManager.getProducts());
+  const [transactions, setTransactions] = useState<Transaction[]>(dataManager.getTransactions());
+  const [notifications, setNotifications] = useState<Notification[]>(dataManager.getNotifications());
+  const [stats, setStats] = useState<DashboardStats>(dataManager.getStats());
 
-  useEffect(() => {
-    const loadStats = () => {
-      const dashboardStats = dataManager.getDashboardStats();
-      setStats(dashboardStats);
-      
-      // Activités récentes simulées
-      const activities = [
-        {
-          id: '1',
-          type: 'user_registered',
-          message: 'Nouvel utilisateur inscrit: Fatima Benali',
-          time: '2024-12-27T10:00:00Z',
-          icon: <UserPlus className="w-5 h-5 text-green-600" />
-        },
-        {
-          id: '2',
-          type: 'payment_received',
-          message: 'Paiement reçu: 800 MAD',
-          time: '2024-12-27T09:30:00Z',
-          icon: <CreditCard className="w-5 h-5 text-blue-600" />
-        },
-        {
-          id: '3',
-          type: 'product_updated',
-          message: 'Produit mis à jour: Inscription Annuelle',
-          time: '2024-12-27T09:00:00Z',
-          icon: <Edit className="w-5 h-5 text-purple-600" />
-        }
-      ];
-      setRecentActivities(activities);
-    };
+  const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: string) => {
+    setToast({ type, message, isVisible: true });
+  };
 
-    loadStats();
-    const interval = setInterval(loadStats, 30000);
-    return () => clearInterval(interval);
-  }, [dataManager]);
+  const hideToast = () => {
+    setToast(prev => ({ ...prev, isVisible: false }));
+  };
 
-  const statCards = [
-    {
-      title: 'Utilisateurs Total',
-      value: stats.totalUsers || 0,
-      change: '+12%',
-      icon: <Users className="w-8 h-8 text-blue-600" />,
-      color: 'blue'
-    },
-    {
-      title: 'Revenus Total',
-      value: `${stats.totalRevenue || 0} MAD`,
-      change: '+8%',
-      icon: <DollarSign className="w-8 h-8 text-green-600" />,
-      color: 'green'
-    },
-    {
-      title: 'Produits Actifs',
-      value: stats.totalProducts || 0,
-      change: '+3%',
-      icon: <Package className="w-8 h-8 text-purple-600" />,
-      color: 'purple'
-    },
-    {
-      title: 'Transactions',
-      value: stats.totalTransactions || 0,
-      change: '+15%',
-      icon: <TrendingUp className="w-8 h-8 text-orange-600" />,
-      color: 'orange'
+  const refreshData = () => {
+    setUsers(dataManager.getUsers());
+    setProducts(dataManager.getProducts());
+    setTransactions(dataManager.getTransactions());
+    setNotifications(dataManager.getNotifications());
+    setStats(dataManager.getStats());
+  };
+
+  const handleAddUser = (userData: Omit<User, 'id'>) => {
+    try {
+      dataManager.addUser(userData);
+      refreshData();
+      setShowModal(false);
+      showToast('success', 'Utilisateur ajouté avec succès');
+    } catch (error) {
+      showToast('error', 'Erreur lors de l\'ajout de l\'utilisateur');
     }
-  ];
+  };
 
-  return (
-    <div className="space-y-6">
-      {/* En-tête */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Tableau de Bord</h1>
-          <p className="text-gray-600">Aperçu de votre école</p>
+  const handleUpdateUser = (id: string, userData: Partial<User>) => {
+    try {
+      dataManager.updateUser(id, userData);
+      refreshData();
+      setShowModal(false);
+      showToast('success', 'Utilisateur mis à jour avec succès');
+    } catch (error) {
+      showToast('error', 'Erreur lors de la mise à jour de l\'utilisateur');
+    }
+  };
+
+  const handleDeleteUser = (id: string) => {
+    try {
+      dataManager.deleteUser(id);
+      refreshData();
+      setShowModal(false);
+      showToast('success', 'Utilisateur supprimé avec succès');
+    } catch (error) {
+      showToast('error', 'Erreur lors de la suppression de l\'utilisateur');
+    }
+  };
+
+  const handleAddProduct = (productData: Omit<Product, 'id'>) => {
+    try {
+      dataManager.addProduct(productData);
+      refreshData();
+      setShowModal(false);
+      showToast('success', 'Produit ajouté avec succès');
+    } catch (error) {
+      showToast('error', 'Erreur lors de l\'ajout du produit');
+    }
+  };
+
+  const handleUpdateProduct = (id: string, productData: Partial<Product>) => {
+    try {
+      dataManager.updateProduct(id, productData);
+      refreshData();
+      setShowModal(false);
+      showToast('success', 'Produit mis à jour avec succès');
+    } catch (error) {
+      showToast('error', 'Erreur lors de la mise à jour du produit');
+    }
+  };
+
+  const handleDeleteProduct = (id: string) => {
+    try {
+      dataManager.deleteProduct(id);
+      refreshData();
+      setShowModal(false);
+      showToast('success', 'Produit supprimé avec succès');
+    } catch (error) {
+      showToast('error', 'Erreur lors de la suppression du produit');
+    }
+  };
+
+  const openModal = (type: 'user' | 'product' | 'delete', item: any = null) => {
+    setModalType(type);
+    setSelectedItem(item);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setModalType(null);
+    setSelectedItem(null);
+  };
+
+  // Menu de navigation latéral
+  const AdminSidebar: React.FC<{
+    activeTab: string;
+    onTabChange: (tab: string) => void;
+    user: User;
+  }> = ({ activeTab, onTabChange, user }) => {
+    const menuItems = [
+      { id: 'dashboard', label: 'Tableau de bord', icon: <BarChart3 className="w-5 h-5" /> },
+      { id: 'users', label: 'Utilisateurs', icon: <Users className="w-5 h-5" /> },
+      { id: 'products', label: 'Produits/Services', icon: <Package className="w-5 h-5" /> },
+      { id: 'transactions', label: 'Transactions', icon: <CreditCard className="w-5 h-5" /> },
+      { id: 'notifications', label: 'Notifications', icon: <Bell className="w-5 h-5" /> },
+      { id: 'settings', label: 'Paramètres', icon: <Settings className="w-5 h-5" /> }
+    ];
+
+    return (
+      <div className="w-64 bg-gray-900 text-white h-screen flex flex-col">
+        <div className="p-6 border-b border-gray-800">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+              <User className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold">Admin Panel</h2>
+              <p className="text-sm text-gray-400">Nouvelle Génération Pro</p>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center space-x-4">
-          <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
-            <Download className="w-4 h-4" />
-            <span>Exporter</span>
-          </button>
-          <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
-            <Plus className="w-4 h-4" />
-            <span>Nouveau</span>
+
+        <nav className="flex-1 py-6">
+          <ul className="space-y-2 px-4">
+            {menuItems.map((item) => (
+              <li key={item.id}>
+                <button
+                  onClick={() => onTabChange(item.id)}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                    activeTab === item.id
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                  }`}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="p-4 border-t border-gray-800">
+          <button className="w-full flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors">
+            <LogOut className="w-5 h-5" />
+            <span>Déconnexion</span>
           </button>
         </div>
       </div>
+    );
+  };
 
-      {/* Cartes statistiques */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((card, index) => (
-          <div key={index} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">{card.title}</p>
-                <p className="text-2xl font-bold text-gray-800">{card.value}</p>
-                <p className="text-sm text-green-600 mt-1">{card.change}</p>
-              </div>
-              <div className={`w-12 h-12 bg-${card.color}-100 rounded-lg flex items-center justify-center`}>
-                {card.icon}
-              </div>
-            </div>
+  // En-tête avec barre de recherche
+  const AdminHeader: React.FC = () => {
+    const unreadNotifications = notifications.filter(n => !n.read).length;
+
+    return (
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <h1 className="text-2xl font-bold text-gray-800">
+              {activeTab === 'dashboard' && 'Tableau de bord'}
+              {activeTab === 'users' && 'Gestion des utilisateurs'}
+              {activeTab === 'products' && 'Gestion des produits'}
+              {activeTab === 'transactions' && 'Historique des transactions'}
+              {activeTab === 'notifications' && 'Notifications'}
+              {activeTab === 'settings' && 'Paramètres'}
+            </h1>
           </div>
-        ))}
-      </div>
 
-      {/* Graphiques et activités */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Graphique des revenus */}
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Revenus Mensuels</h3>
-          <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">Graphique des revenus</p>
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Rechercher..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
             </div>
+
+            <button className="relative p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg">
+              <Bell className="w-5 h-5" />
+              {unreadNotifications > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                  {unreadNotifications}
+                </span>
+              )}
+            </button>
+
+            <button className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg">
+              <Settings className="w-5 h-5" />
+            </button>
           </div>
         </div>
+      </header>
+    );
+  };
 
-        {/* Activités récentes */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Activités Récentes</h3>
+  // Tableau de bord principal
+  const DashboardContent: React.FC = () => (
+    <div className="p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <StatsCard
+          title="Total Utilisateurs"
+          value={stats.totalUsers}
+          change={`+${stats.monthlyGrowth}%`}
+          trend="up"
+          icon={<Users className="w-6 h-6 text-blue-600" />}
+          color="bg-blue-100"
+        />
+        <StatsCard
+          title="Produits/Services"
+          value={stats.totalProducts}
+          icon={<Package className="w-6 h-6 text-green-600" />}
+          color="bg-green-100"
+        />
+        <StatsCard
+          title="Chiffre d'affaires"
+          value={`${stats.totalRevenue}€`}
+          change={`+${stats.revenueGrowth}%`}
+          trend="up"
+          icon={<DollarSign className="w-6 h-6 text-purple-600" />}
+          color="bg-purple-100"
+        />
+        <StatsCard
+          title="Transactions"
+          value={stats.totalTransactions}
+          change={`${stats.conversionRate}%`}
+          trend="up"
+          icon={<CreditCard className="w-6 h-6 text-orange-600" />}
+          color="bg-orange-100"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Activité récente</h3>
           <div className="space-y-4">
-            {recentActivities.map((activity) => (
-              <div key={activity.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                  {activity.icon}
+            {transactions.slice(0, 5).map((transaction) => (
+              <div key={transaction.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <CreditCard className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-800">{transaction.productName}</p>
+                    <p className="text-sm text-gray-600">{transaction.userName}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium text-gray-800">{transaction.amount}€</p>
+                  <p className={`text-sm ${
+                    transaction.status === 'completed' ? 'text-green-600' :
+                    transaction.status === 'pending' ? 'text-yellow-600' : 'text-red-600'
+                  }`}>
+                    {transaction.status}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Notifications récentes</h3>
+          <div className="space-y-4">
+            {notifications.slice(0, 5).map((notification) => (
+              <div key={notification.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  notification.type === 'success' ? 'bg-green-100' :
+                  notification.type === 'warning' ? 'bg-yellow-100' :
+                  notification.type === 'error' ? 'bg-red-100' : 'bg-blue-100'
+                }`}>
+                  {notification.type === 'success' && <CheckCircle className="w-4 h-4 text-green-600" />}
+                  {notification.type === 'warning' && <AlertCircle className="w-4 h-4 text-yellow-600" />}
+                  {notification.type === 'error' && <AlertCircle className="w-4 h-4 text-red-600" />}
+                  {notification.type === 'info' && <Info className="w-4 h-4 text-blue-600" />}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-800">{activity.message}</p>
-                  <p className="text-xs text-gray-500">
-                    {new Date(activity.time).toLocaleString('fr-FR')}
+                  <p className="font-medium text-gray-800">{notification.title}</p>
+                  <p className="text-sm text-gray-600">{notification.message}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {new Date(notification.timestamp).toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -864,2144 +890,808 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Alertes système */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Alertes Système</h3>
-        <div className="space-y-3">
-          <div className="flex items-center space-x-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <AlertTriangle className="w-5 h-5 text-yellow-600" />
-            <div>
-              <p className="text-sm font-medium text-yellow-800">Sauvegarde en attente</p>
-              <p className="text-xs text-yellow-700">Dernière sauvegarde: il y a 2 heures</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <Info className="w-5 h-5 text-blue-600" />
-            <div>
-              <p className="text-sm font-medium text-blue-800">Mise à jour disponible</p>
-              <p className="text-xs text-blue-700">Version 2.1.0 disponible</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
-};
 
-// Composant gestion des utilisateurs
-const UsersManagement: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [roleFilter, setRoleFilter] = useState('all');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showUserModal, setShowUserModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' | 'warning' } | null>(null);
+  // Gestion des utilisateurs
+  const UsersContent: React.FC = () => {
+    const filteredUsers = users.filter(user =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-  const dataManager = AdminDataManager.getInstance();
-  const usersPerPage = 10;
+    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [users, searchTerm, roleFilter, statusFilter]);
-
-  const loadUsers = () => {
-    const allUsers = dataManager.getUsers();
-    setUsers(allUsers);
-  };
-
-  const applyFilters = () => {
-    let filtered = users;
-
-    if (searchTerm) {
-      filtered = filtered.filter(user => 
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (roleFilter !== 'all') {
-      filtered = filtered.filter(user => user.role === roleFilter);
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(user => user.status === statusFilter);
-    }
-
-    setFilteredUsers(filtered);
-    setCurrentPage(1);
-  };
-
-  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-  const startIndex = (currentPage - 1) * usersPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + usersPerPage);
-
-  const handleCreateUser = () => {
-    setSelectedUser(null);
-    setShowUserModal(true);
-  };
-
-  const handleEditUser = (user: User) => {
-    setSelectedUser(user);
-    setShowUserModal(true);
-  };
-
-  const handleDeleteUser = (userId: string) => {
-    setConfirmDelete(userId);
-  };
-
-  const confirmUserDelete = () => {
-    if (confirmDelete) {
-      const success = dataManager.deleteUser(confirmDelete);
-      if (success) {
-        loadUsers();
-        setToast({ message: 'Utilisateur supprimé avec succès', type: 'success' });
-      } else {
-        setToast({ message: 'Erreur lors de la suppression', type: 'error' });
+    const userColumns = [
+      { key: 'name', label: 'Nom' },
+      { key: 'email', label: 'Email' },
+      { 
+        key: 'role', 
+        label: 'Rôle',
+        render: (value: string) => (
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+            value === 'admin' ? 'bg-red-100 text-red-800' :
+            value === 'moderator' ? 'bg-yellow-100 text-yellow-800' :
+            'bg-gray-100 text-gray-800'
+          }`}>
+            {value}
+          </span>
+        )
+      },
+      { 
+        key: 'status', 
+        label: 'Statut',
+        render: (value: string) => (
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+            value === 'active' ? 'bg-green-100 text-green-800' :
+            value === 'inactive' ? 'bg-gray-100 text-gray-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            {value}
+          </span>
+        )
+      },
+      { 
+        key: 'lastLogin', 
+        label: 'Dernière connexion',
+        render: (value: string) => new Date(value).toLocaleDateString()
       }
-      setConfirmDelete(null);
-    }
-  };
+    ];
 
-  const handleUserSubmit = (userData: Partial<User>) => {
-    try {
-      if (selectedUser) {
-        // Mise à jour
-        const updated = dataManager.updateUser(selectedUser.id, userData);
-        if (updated) {
-          loadUsers();
-          setToast({ message: 'Utilisateur mis à jour avec succès', type: 'success' });
-        }
-      } else {
-        // Création
-        const created = dataManager.createUser(userData as Omit<User, 'id' | 'createdAt'>);
-        if (created) {
-          loadUsers();
-          setToast({ message: 'Utilisateur créé avec succès', type: 'success' });
-        }
-      }
-      setShowUserModal(false);
-    } catch (error) {
-      setToast({ message: 'Erreur lors de la sauvegarde', type: 'error' });
-    }
-  };
-
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'admin': return 'bg-red-100 text-red-800';
-      case 'teacher': return 'bg-blue-100 text-blue-800';
-      case 'parent': return 'bg-green-100 text-green-800';
-      case 'student': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-gray-100 text-gray-800';
-      case 'suspended': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* En-tête */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Gestion des Utilisateurs</h1>
-          <p className="text-gray-600">{filteredUsers.length} utilisateurs trouvés</p>
+    return (
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-800">Gestion des utilisateurs</h2>
+          <button
+            onClick={() => openModal('user')}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Ajouter un utilisateur</span>
+          </button>
         </div>
-        <button
-          onClick={handleCreateUser}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-        >
-          <Plus className="w-5 h-5" />
-          <span>Nouvel utilisateur</span>
-        </button>
-      </div>
 
-      {/* Barre de recherche et filtres */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Rechercher un utilisateur..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div className="flex items-center space-x-4">
-            <select
-              value={roleFilter}
-              onChange={(e) => setRoleFilter(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">Tous les rôles</option>
-              <option value="admin">Administrateur</option>
-              <option value="teacher">Enseignant</option>
-              <option value="parent">Parent</option>
-              <option value="student">Étudiant</option>
-            </select>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">Tous les statuts</option>
-              <option value="active">Actif</option>
-              <option value="inactive">Inactif</option>
-              <option value="suspended">Suspendu</option>
-            </select>
-            <button className="bg-gray-100 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-2">
-              <Filter className="w-4 h-4" />
-              <span>Filtrer</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Tableau des utilisateurs */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Utilisateur
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Contact
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rôle
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Statut
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Dernière connexion
-                </th>
-                <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {paginatedUsers.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-                        <span className="text-white font-medium">
-                          {user.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                        <div className="text-sm text-gray-500">{user.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{user.phone}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRoleColor(user.role)}`}>
-                      {user.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(user.status)}`}>
-                      {user.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(user.lastLogin).toLocaleDateString('fr-FR')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end space-x-2">
-                      <button
-                        onClick={() => handleEditUser(user)}
-                        className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteUser(user.id)}
-                        className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <Pagination
+        <DataTable
+          columns={userColumns}
+          data={paginatedUsers}
+          onEdit={(user) => openModal('user', user)}
+          onDelete={(user) => openModal('delete', { type: 'user', item: user })}
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
-      )}
-
-      {/* Modal utilisateur */}
-      {showUserModal && (
-        <UserModal
-          user={selectedUser}
-          onClose={() => setShowUserModal(false)}
-          onSubmit={handleUserSubmit}
-        />
-      )}
-
-      {/* Modal de confirmation */}
-      <ConfirmationModal
-        isOpen={!!confirmDelete}
-        title="Supprimer l'utilisateur"
-        message="Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible."
-        onConfirm={confirmUserDelete}
-        onCancel={() => setConfirmDelete(null)}
-        type="danger"
-      />
-
-      {/* Toast notifications */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-    </div>
-  );
-};
-
-// Modal pour créer/modifier un utilisateur
-const UserModal: React.FC<{
-  user: User | null;
-  onClose: () => void;
-  onSubmit: (userData: Partial<User>) => void;
-}> = ({ user, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState<Partial<User>>({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    role: user?.role || 'parent',
-    status: user?.status || 'active',
-    permissions: user?.permissions || []
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.name?.trim()) {
-      newErrors.name = 'Le nom est requis';
-    }
-
-    if (!formData.email?.trim()) {
-      newErrors.email = 'L\'email est requis';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'L\'email n\'est pas valide';
-    }
-
-    if (!formData.phone?.trim()) {
-      newErrors.phone = 'Le téléphone est requis';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+      </div>
+    );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validate()) return;
+  // Gestion des produits
+  const ProductsContent: React.FC = () => {
+    const filteredProducts = products.filter(product =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-    setIsSubmitting(true);
-    
-    try {
-      await onSubmit(formData);
-    } catch (error) {
-      console.error('Erreur lors de la soumission:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
+    const productColumns = [
+      { key: 'name', label: 'Nom' },
+      { key: 'category', label: 'Catégorie' },
+      { 
+        key: 'price', 
+        label: 'Prix',
+        render: (value: number) => `${value}€`
+      },
+      { key: 'stock', label: 'Stock' },
+      { 
+        key: 'status', 
+        label: 'Statut',
+        render: (value: string) => (
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+            value === 'active' ? 'bg-green-100 text-green-800' :
+            value === 'inactive' ? 'bg-gray-100 text-gray-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            {value}
+          </span>
+        )
+      }
+    ];
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full">
+    return (
+      <div className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-800">
-            {user ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur'}
-          </h3>
+          <h2 className="text-xl font-semibold text-gray-800">Gestion des produits/services</h2>
           <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100"
+            onClick={() => openModal('product')}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
           >
-            <X className="w-5 h-5" />
+            <Plus className="w-4 h-4" />
+            <span>Ajouter un produit</span>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <DataTable
+          columns={productColumns}
+          data={paginatedProducts}
+          onEdit={(product) => openModal('product', product)}
+          onDelete={(product) => openModal('delete', { type: 'product', item: product })}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+    );
+  };
+
+  // Historique des transactions
+  const TransactionsContent: React.FC = () => {
+    const filteredTransactions = transactions.filter(transaction =>
+      transaction.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transaction.productName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedTransactions = filteredTransactions.slice(startIndex, startIndex + itemsPerPage);
+
+    const transactionColumns = [
+      { key: 'userName', label: 'Utilisateur' },
+      { key: 'productName', label: 'Produit/Service' },
+      { 
+        key: 'amount', 
+        label: 'Montant',
+        render: (value: number) => `${value}€`
+      },
+      { 
+        key: 'type', 
+        label: 'Type',
+        render: (value: string) => (
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+            value === 'purchase' ? 'bg-green-100 text-green-800' :
+            value === 'refund' ? 'bg-red-100 text-red-800' :
+            'bg-blue-100 text-blue-800'
+          }`}>
+            {value}
+          </span>
+        )
+      },
+      { 
+        key: 'status', 
+        label: 'Statut',
+        render: (value: string) => (
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+            value === 'completed' ? 'bg-green-100 text-green-800' :
+            value === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            {value}
+          </span>
+        )
+      },
+      { 
+        key: 'date', 
+        label: 'Date',
+        render: (value: string) => new Date(value).toLocaleDateString()
+      }
+    ];
+
+    return (
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-800">Historique des transactions</h2>
+          <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
+            <Download className="w-4 h-4" />
+            <span>Exporter</span>
+          </button>
+        </div>
+
+        <DataTable
+          columns={transactionColumns}
+          data={paginatedTransactions}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+    );
+  };
+
+  // Notifications
+  const NotificationsContent: React.FC = () => (
+    <div className="p-6">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-semibold text-gray-800">Notifications</h2>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          Marquer toutes comme lues
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {notifications.map((notification) => (
+          <div
+            key={notification.id}
+            className={`p-4 rounded-lg border ${
+              notification.read ? 'bg-gray-50 border-gray-200' : 'bg-white border-blue-200'
+            }`}
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-start space-x-3">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  notification.type === 'success' ? 'bg-green-100' :
+                  notification.type === 'warning' ? 'bg-yellow-100' :
+                  notification.type === 'error' ? 'bg-red-100' : 'bg-blue-100'
+                }`}>
+                  {notification.type === 'success' && <CheckCircle className="w-4 h-4 text-green-600" />}
+                  {notification.type === 'warning' && <AlertCircle className="w-4 h-4 text-yellow-600" />}
+                  {notification.type === 'error' && <AlertCircle className="w-4 h-4 text-red-600" />}
+                  {notification.type === 'info' && <Info className="w-4 h-4 text-blue-600" />}
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-800">{notification.title}</h4>
+                  <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    {new Date(notification.timestamp).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+              {!notification.read && (
+                <button
+                  onClick={() => {
+                    dataManager.markNotificationAsRead(notification.id);
+                    setNotifications(dataManager.getNotifications());
+                  }}
+                  className="text-blue-600 hover:text-blue-800 text-sm"
+                >
+                  Marquer comme lue
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Paramètres
+  const SettingsContent: React.FC = () => (
+    <div className="p-6">
+      <h2 className="text-xl font-semibold text-gray-800 mb-6">Paramètres du compte</h2>
+      
+      <div className="space-y-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-medium text-gray-800 mb-4">Paramètres généraux</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nom de l'école
+              </label>
+              <input
+                type="text"
+                defaultValue="Nouvelle Génération Pro"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email de contact
+              </label>
+              <input
+                type="email"
+                defaultValue="admin@nouvellegeneration.pro"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Téléphone
+              </label>
+              <input
+                type="tel"
+                defaultValue="05 37 00 00 00"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-medium text-gray-800 mb-4">Sécurité</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Mot de passe actuel
+              </label>
+              <input
+                type="password"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nouveau mot de passe
+              </label>
+              <input
+                type="password"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Confirmer le nouveau mot de passe
+              </label>
+              <input
+                type="password"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-medium text-gray-800 mb-4">Notifications</h3>
+          <div className="space-y-4">
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                defaultChecked
+                className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700">
+                Recevoir les notifications par email
+              </span>
+            </label>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                defaultChecked
+                className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700">
+                Notifications de nouvelles inscriptions
+              </span>
+            </label>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700">
+                Notifications de paiement
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div className="flex justify-end space-x-4">
+          <button className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+            Annuler
+          </button>
+          <button
+            onClick={() => showToast('success', 'Paramètres sauvegardés avec succès')}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+          >
+            <Save className="w-4 h-4" />
+            <span>Sauvegarder</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Formulaires de gestion
+  const UserForm: React.FC<{ user?: User; onSubmit: (data: any) => void; onCancel: () => void }> = ({ 
+    user, 
+    onSubmit, 
+    onCancel 
+  }) => {
+    const [formData, setFormData] = useState({
+      name: user?.name || '',
+      email: user?.email || '',
+      role: user?.role || 'user',
+      status: user?.status || 'active',
+      phone: user?.phone || '',
+      address: user?.address || ''
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      onSubmit(formData);
+    };
+
+    return (
+      <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Nom complet *
             </label>
             <input
               type="text"
-              value={formData.name || ''}
-              onChange={(e) => handleChange('name', e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                errors.name ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Nom complet"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-            )}
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Email *
             </label>
             <input
               type="email"
-              value={formData.email || ''}
-              onChange={(e) => handleChange('email', e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="email@exemple.com"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-            )}
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Téléphone *
-            </label>
-            <input
-              type="tel"
-              value={formData.phone || ''}
-              onChange={(e) => handleChange('phone', e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                errors.phone ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="06 12 34 56 78"
-            />
-            {errors.phone && (
-              <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
-            )}
-          </div>
-
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Rôle *
             </label>
             <select
-              value={formData.role || ''}
-              onChange={(e) => handleChange('role', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={formData.role}
+              onChange={(e) => setFormData({ ...formData, role: e.target.value as User['role'] })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="parent">Parent</option>
-              <option value="teacher">Enseignant</option>
+              <option value="user">Utilisateur</option>
+              <option value="moderator">Modérateur</option>
               <option value="admin">Administrateur</option>
-              <option value="student">Étudiant</option>
             </select>
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Statut *
             </label>
             <select
-              value={formData.status || ''}
-              onChange={(e) => handleChange('status', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value as User['status'] })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="active">Actif</option>
               <option value="inactive">Inactif</option>
               <option value="suspended">Suspendu</option>
             </select>
           </div>
+        </div>
 
-          <div className="flex space-x-4 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 border border-gray-300 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              Annuler
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-            >
-              {isSubmitting ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Sauvegarde...</span>
-                </div>
-              ) : (
-                user ? 'Mettre à jour' : 'Créer'
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-// Composant gestion des produits
-const ProductsManagement: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showProductModal, setShowProductModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' | 'warning' } | null>(null);
-
-  const dataManager = AdminDataManager.getInstance();
-  const productsPerPage = 10;
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [products, searchTerm, categoryFilter, statusFilter]);
-
-  const loadProducts = () => {
-    const allProducts = dataManager.getProducts();
-    setProducts(allProducts);
-  };
-
-  const applyFilters = () => {
-    let filtered = products;
-
-    if (searchTerm) {
-      filtered = filtered.filter(product => 
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (categoryFilter !== 'all') {
-      filtered = filtered.filter(product => product.category === categoryFilter);
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(product => product.status === statusFilter);
-    }
-
-    setFilteredProducts(filtered);
-    setCurrentPage(1);
-  };
-
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
-
-  const handleCreateProduct = () => {
-    setSelectedProduct(null);
-    setShowProductModal(true);
-  };
-
-  const handleEditProduct = (product: Product) => {
-    setSelectedProduct(product);
-    setShowProductModal(true);
-  };
-
-  const handleDeleteProduct = (productId: string) => {
-    setConfirmDelete(productId);
-  };
-
-  const confirmProductDelete = () => {
-    if (confirmDelete) {
-      const success = dataManager.deleteProduct(confirmDelete);
-      if (success) {
-        loadProducts();
-        setToast({ message: 'Produit supprimé avec succès', type: 'success' });
-      } else {
-        setToast({ message: 'Erreur lors de la suppression', type: 'error' });
-      }
-      setConfirmDelete(null);
-    }
-  };
-
-  const handleProductSubmit = (productData: Partial<Product>) => {
-    try {
-      if (selectedProduct) {
-        const updated = dataManager.updateProduct(selectedProduct.id, productData);
-        if (updated) {
-          loadProducts();
-          setToast({ message: 'Produit mis à jour avec succès', type: 'success' });
-        }
-      } else {
-        const created = dataManager.createProduct(productData as Omit<Product, 'id' | 'createdAt' | 'updatedAt'>);
-        if (created) {
-          loadProducts();
-          setToast({ message: 'Produit créé avec succès', type: 'success' });
-        }
-      }
-      setShowProductModal(false);
-    } catch (error) {
-      setToast({ message: 'Erreur lors de la sauvegarde', type: 'error' });
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'education': return 'bg-blue-100 text-blue-800';
-      case 'supplies': return 'bg-green-100 text-green-800';
-      case 'transport': return 'bg-yellow-100 text-yellow-800';
-      case 'food': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-red-100 text-red-800';
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* En-tête */}
-      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Gestion des Produits</h1>
-          <p className="text-gray-600">{filteredProducts.length} produits trouvés</p>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Téléphone
+          </label>
+          <input
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
         </div>
-        <button
-          onClick={handleCreateProduct}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-        >
-          <Plus className="w-5 h-5" />
-          <span>Nouveau produit</span>
-        </button>
-      </div>
 
-      {/* Barre de recherche et filtres */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Rechercher un produit..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div className="flex items-center space-x-4">
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">Toutes les catégories</option>
-              <option value="education">Éducation</option>
-              <option value="supplies">Fournitures</option>
-              <option value="transport">Transport</option>
-              <option value="food">Restauration</option>
-            </select>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">Tous les statuts</option>
-              <option value="active">Actif</option>
-              <option value="inactive">Inactif</option>
-              <option value="draft">Brouillon</option>
-            </select>
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Adresse
+          </label>
+          <textarea
+            value={formData.address}
+            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            rows={3}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
         </div>
-      </div>
 
-      {/* Grille des produits */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {paginatedProducts.map((product) => (
-          <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getCategoryColor(product.category)}`}>
-                  {product.category}
-                </span>
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(product.status)}`}>
-                  {product.status}
-                </span>
-              </div>
-              
-              <h3 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h3>
-              <p className="text-gray-600 mb-4 text-sm">{product.description}</p>
-              
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-2xl font-bold text-green-600">{product.price} MAD</div>
-                <div className="text-sm text-gray-500">Stock: {product.stock}</div>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="text-xs text-gray-500">
-                  Créé le {new Date(product.createdAt).toLocaleDateString('fr-FR')}
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => handleEditProduct(product)}
-                    className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteProduct(product.id)}
-                    className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      )}
-
-      {/* Modal produit */}
-      {showProductModal && (
-        <ProductModal
-          product={selectedProduct}
-          onClose={() => setShowProductModal(false)}
-          onSubmit={handleProductSubmit}
-        />
-      )}
-
-      {/* Modal de confirmation */}
-      <ConfirmationModal
-        isOpen={!!confirmDelete}
-        title="Supprimer le produit"
-        message="Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible."
-        onConfirm={confirmProductDelete}
-        onCancel={() => setConfirmDelete(null)}
-        type="danger"
-      />
-
-      {/* Toast notifications */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-    </div>
-  );
-};
-
-// Modal pour créer/modifier un produit
-const ProductModal: React.FC<{
-  product: Product | null;
-  onClose: () => void;
-  onSubmit: (productData: Partial<Product>) => void;
-}> = ({ product, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState<Partial<Product>>({
-    name: product?.name || '',
-    description: product?.description || '',
-    price: product?.price || 0,
-    category: product?.category || 'education',
-    status: product?.status || 'active',
-    stock: product?.stock || 0
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.name?.trim()) {
-      newErrors.name = 'Le nom est requis';
-    }
-
-    if (!formData.description?.trim()) {
-      newErrors.description = 'La description est requise';
-    }
-
-    if (!formData.price || formData.price <= 0) {
-      newErrors.price = 'Le prix doit être supérieur à 0';
-    }
-
-    if (!formData.stock || formData.stock < 0) {
-      newErrors.stock = 'Le stock ne peut pas être négatif';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validate()) return;
-
-    setIsSubmitting(true);
-    
-    try {
-      await onSubmit(formData);
-    } catch (error) {
-      console.error('Erreur lors de la soumission:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-800">
-            {product ? 'Modifier le produit' : 'Nouveau produit'}
-          </h3>
+        <div className="flex justify-end space-x-4 pt-4">
           <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100"
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
           >
-            <X className="w-5 h-5" />
+            Annuler
+          </button>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            {user ? 'Modifier' : 'Ajouter'}
           </button>
         </div>
+      </form>
+    );
+  };
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+  const ProductForm: React.FC<{ product?: Product; onSubmit: (data: any) => void; onCancel: () => void }> = ({ 
+    product, 
+    onSubmit, 
+    onCancel 
+  }) => {
+    const [formData, setFormData] = useState({
+      name: product?.name || '',
+      category: product?.category || '',
+      price: product?.price || 0,
+      stock: product?.stock || 0,
+      status: product?.status || 'active',
+      description: product?.description || ''
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      onSubmit(formData);
+    };
+
+    return (
+      <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Nom du produit *
+              Nom du produit/service *
             </label>
             <input
               type="text"
-              value={formData.name || ''}
-              onChange={(e) => handleChange('name', e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                errors.name ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Nom du produit"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-            )}
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description *
-            </label>
-            <textarea
-              value={formData.description || ''}
-              onChange={(e) => handleChange('description', e.target.value)}
-              rows={3}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                errors.description ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Description du produit"
-            />
-            {errors.description && (
-              <p className="mt-1 text-sm text-red-600">{errors.description}</p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Prix (MAD) *
-              </label>
-              <input
-                type="number"
-                value={formData.price || ''}
-                onChange={(e) => handleChange('price', parseFloat(e.target.value))}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.price ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="0"
-                min="0"
-                step="0.01"
-              />
-              {errors.price && (
-                <p className="mt-1 text-sm text-red-600">{errors.price}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Stock *
-              </label>
-              <input
-                type="number"
-                value={formData.stock || ''}
-                onChange={(e) => handleChange('stock', parseInt(e.target.value))}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.stock ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="0"
-                min="0"
-              />
-              {errors.stock && (
-                <p className="mt-1 text-sm text-red-600">{errors.stock}</p>
-              )}
-            </div>
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Catégorie *
             </label>
-            <select
-              value={formData.category || ''}
-              onChange={(e) => handleChange('category', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="education">Éducation</option>
-              <option value="supplies">Fournitures</option>
-              <option value="transport">Transport</option>
-              <option value="food">Restauration</option>
-            </select>
+            <input
+              type="text"
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
           </div>
+        </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Prix (€) *
+            </label>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Stock *
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={formData.stock}
+              onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) })}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Statut *
             </label>
             <select
-              value={formData.status || ''}
-              onChange={(e) => handleChange('status', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value as Product['status'] })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="active">Actif</option>
               <option value="inactive">Inactif</option>
-              <option value="draft">Brouillon</option>
-            </select>
-          </div>
-
-          <div className="flex space-x-4 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 border border-gray-300 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              Annuler
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-            >
-              {isSubmitting ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Sauvegarde...</span>
-                </div>
-              ) : (
-                product ? 'Mettre à jour' : 'Créer'
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-// Composant pour l'historique des transactions
-const TransactionsHistory: React.FC = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const dataManager = AdminDataManager.getInstance();
-  const transactionsPerPage = 10;
-
-  useEffect(() => {
-    loadTransactions();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [transactions, searchTerm, statusFilter, typeFilter]);
-
-  const loadTransactions = () => {
-    const allTransactions = dataManager.getTransactions();
-    setTransactions(allTransactions);
-  };
-
-  const applyFilters = () => {
-    let filtered = transactions;
-
-    if (searchTerm) {
-      filtered = filtered.filter(transaction => 
-        transaction.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(transaction => transaction.status === statusFilter);
-    }
-
-    if (typeFilter !== 'all') {
-      filtered = filtered.filter(transaction => transaction.type === typeFilter);
-    }
-
-    setFilteredTransactions(filtered);
-    setCurrentPage(1);
-  };
-
-  const totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);
-  const startIndex = (currentPage - 1) * transactionsPerPage;
-  const paginatedTransactions = filteredTransactions.slice(startIndex, startIndex + transactionsPerPage);
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'failed': return 'bg-red-100 text-red-800';
-      case 'cancelled': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'payment': return 'bg-blue-100 text-blue-800';
-      case 'refund': return 'bg-orange-100 text-orange-800';
-      case 'subscription': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'payment': return <CreditCard className="w-4 h-4" />;
-      case 'refund': return <RefreshCw className="w-4 h-4" />;
-      case 'subscription': return <Repeat className="w-4 h-4" />;
-      default: return <DollarSign className="w-4 h-4" />;
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* En-tête */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Historique des Transactions</h1>
-          <p className="text-gray-600">{filteredTransactions.length} transactions trouvées</p>
-        </div>
-        <div className="flex items-center space-x-4">
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
-            <Download className="w-5 h-5" />
-            <span>Exporter</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Barre de recherche et filtres */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Rechercher une transaction..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div className="flex items-center space-x-4">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">Tous les statuts</option>
-              <option value="completed">Complétée</option>
-              <option value="pending">En attente</option>
-              <option value="failed">Échouée</option>
-              <option value="cancelled">Annulée</option>
-            </select>
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">Tous les types</option>
-              <option value="payment">Paiement</option>
-              <option value="refund">Remboursement</option>
-              <option value="subscription">Abonnement</option>
+              <option value="discontinued">Discontinué</option>
             </select>
           </div>
         </div>
-      </div>
 
-      {/* Tableau des transactions */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Transaction
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Montant
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Statut
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Méthode
-                </th>
-                <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {paginatedTransactions.map((transaction) => (
-                <tr key={transaction.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">#{transaction.id}</div>
-                      <div className="text-sm text-gray-500">{transaction.description}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center space-x-2">
-                      <span className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${getTypeColor(transaction.type)}`}>
-                        {getTypeIcon(transaction.type)}
-                        <span className="ml-1">{transaction.type}</span>
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{transaction.amount} MAD</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(transaction.status)}`}>
-                      {transaction.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(transaction.date).toLocaleDateString('fr-FR')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {transaction.paymentMethod}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50">
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button className="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50">
-                        <Download className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      )}
-    </div>
-  );
-};
-
-// Composant pour les notifications
-const NotificationsPanel: React.FC = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [filteredNotifications, setFilteredNotifications] = useState<Notification[]>([]);
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' | 'warning' } | null>(null);
-
-  const dataManager = AdminDataManager.getInstance();
-
-  useEffect(() => {
-    loadNotifications();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [notifications, typeFilter, statusFilter]);
-
-  const loadNotifications = () => {
-    const allNotifications = dataManager.getNotifications();
-    setNotifications(allNotifications);
-  };
-
-  const applyFilters = () => {
-    let filtered = notifications;
-
-    if (typeFilter !== 'all') {
-      filtered = filtered.filter(notification => notification.type === typeFilter);
-    }
-
-    if (statusFilter !== 'all') {
-      const isRead = statusFilter === 'read';
-      filtered = filtered.filter(notification => notification.read === isRead);
-    }
-
-    setFilteredNotifications(filtered);
-  };
-
-  const handleMarkAsRead = (notificationId: string) => {
-    const success = dataManager.markNotificationAsRead(notificationId);
-    if (success) {
-      loadNotifications();
-      setToast({ message: 'Notification marquée comme lue', type: 'success' });
-    }
-  };
-
-  const handleMarkAllAsRead = () => {
-    dataManager.markAllNotificationsAsRead();
-    loadNotifications();
-    setToast({ message: 'Toutes les notifications marquées comme lues', type: 'success' });
-  };
-
-  const handleDeleteNotification = (notificationId: string) => {
-    const success = dataManager.deleteNotification(notificationId);
-    if (success) {
-      loadNotifications();
-      setToast({ message: 'Notification supprimée', type: 'success' });
-    }
-  };
-
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case 'success': return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case 'error': return <XCircle className="w-5 h-5 text-red-500" />;
-      case 'warning': return <AlertTriangle className="w-5 h-5 text-yellow-500" />;
-      default: return <Info className="w-5 h-5 text-blue-500" />;
-    }
-  };
-
-  const getNotificationBg = (type: string) => {
-    switch (type) {
-      case 'success': return 'bg-green-50 border-green-200';
-      case 'error': return 'bg-red-50 border-red-200';
-      case 'warning': return 'bg-yellow-50 border-yellow-200';
-      default: return 'bg-blue-50 border-blue-200';
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* En-tête */}
-      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Notifications</h1>
-          <p className="text-gray-600">{filteredNotifications.length} notifications</p>
-        </div>
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={handleMarkAllAsRead}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-          >
-            <CheckCircle className="w-5 h-5" />
-            <span>Tout marquer comme lu</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Filtres */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <select
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="all">Tous les types</option>
-            <option value="info">Information</option>
-            <option value="success">Succès</option>
-            <option value="warning">Avertissement</option>
-            <option value="error">Erreur</option>
-          </select>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="all">Tous les statuts</option>
-            <option value="unread">Non lues</option>
-            <option value="read">Lues</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Liste des notifications */}
-      <div className="space-y-4">
-        {filteredNotifications.map((notification) => (
-          <div
-            key={notification.id}
-            className={`p-6 rounded-xl border ${getNotificationBg(notification.type)} ${
-              notification.read ? 'opacity-75' : ''
-            }`}
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-4">
-                {getNotificationIcon(notification.type)}
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                    {notification.title}
-                    {!notification.read && (
-                      <span className="ml-2 w-2 h-2 bg-blue-500 rounded-full inline-block"></span>
-                    )}
-                  </h3>
-                  <p className="text-gray-600 mb-3">{notification.message}</p>
-                  <div className="text-sm text-gray-500">
-                    {new Date(notification.createdAt).toLocaleString('fr-FR')}
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                {!notification.read && (
-                  <button
-                    onClick={() => handleMarkAsRead(notification.id)}
-                    className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-100"
-                    title="Marquer comme lu"
-                  >
-                    <CheckCircle className="w-4 h-4" />
-                  </button>
-                )}
-                <button
-                  onClick={() => handleDeleteNotification(notification.id)}
-                  className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-100"
-                  title="Supprimer"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Message vide */}
-      {filteredNotifications.length === 0 && (
-        <div className="text-center py-12">
-          <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-800 mb-2">Aucune notification</h3>
-          <p className="text-gray-600">Vous n'avez aucune notification pour le moment.</p>
-        </div>
-      )}
-
-      {/* Toast notifications */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-    </div>
-  );
-};
-
-// Composant pour les paramètres
-const SettingsPanel: React.FC = () => {
-  const [settings, setSettings] = useState<AdminSettings | null>(null);
-  const [activeTab, setActiveTab] = useState('general');
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' | 'warning' } | null>(null);
-
-  const dataManager = AdminDataManager.getInstance();
-
-  useEffect(() => {
-    loadSettings();
-  }, []);
-
-  const loadSettings = async () => {
-    setIsLoading(true);
-    try {
-      const adminSettings = dataManager.getSettings();
-      setSettings(adminSettings);
-    } catch (error) {
-      console.error('Erreur lors du chargement des paramètres:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSave = async () => {
-    if (!settings) return;
-
-    setIsSaving(true);
-    try {
-      dataManager.updateSettings(settings);
-      setToast({ message: 'Paramètres sauvegardés avec succès', type: 'success' });
-    } catch (error) {
-      setToast({ message: 'Erreur lors de la sauvegarde', type: 'error' });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const updateSetting = (key: keyof AdminSettings, value: any) => {
-    if (!settings) return;
-    setSettings({ ...settings, [key]: value });
-  };
-
-  const updateNestedSetting = (parent: keyof AdminSettings, key: string, value: any) => {
-    if (!settings) return;
-    setSettings({
-      ...settings,
-      [parent]: {
-        ...settings[parent],
-        [key]: value
-      }
-    });
-  };
-
-  const tabs = [
-    { id: 'general', label: 'Général', icon: <SettingsIcon className="w-4 h-4" /> },
-    { id: 'security', label: 'Sécurité', icon: <Shield className="w-4 h-4" /> },
-    { id: 'notifications', label: 'Notifications', icon: <Bell className="w-4 h-4" /> },
-    { id: 'appearance', label: 'Apparence', icon: <Palette className="w-4 h-4" /> }
-  ];
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
-    );
-  }
-
-  if (!settings) {
-    return (
-      <div className="text-center py-12">
-        <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-800 mb-2">Erreur de chargement</h3>
-        <p className="text-gray-600">Impossible de charger les paramètres.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      {/* En-tête */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Paramètres</h1>
-          <p className="text-gray-600">Configurez votre école</p>
-        </div>
-        <button
-          onClick={handleSave}
-          disabled={isSaving}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
-        >
-          {isSaving ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Sauvegarde...</span>
-            </>
-          ) : (
-            <>
-              <Save className="w-5 h-5" />
-              <span>Sauvegarder</span>
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Onglets */}
-      <div className="bg-white rounded-xl shadow-lg">
-        <div className="border-b border-gray-200">
-          <nav className="flex space-x-8 px-6">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm ${
-                  activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                {tab.icon}
-                <span>{tab.label}</span>
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        <div className="p-6">
-          {activeTab === 'general' && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800">Informations générales</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nom de l'école
-                  </label>
-                  <input
-                    type="text"
-                    value={settings.schoolName}
-                    onChange={(e) => updateSetting('schoolName', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={settings.email}
-                    onChange={(e) => updateSetting('email', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Téléphone
-                  </label>
-                  <input
-                    type="tel"
-                    value={settings.phone}
-                    onChange={(e) => updateSetting('phone', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Capacité totale
-                  </label>
-                  <input
-                    type="number"
-                    value={settings.capacity}
-                    onChange={(e) => updateSetting('capacity', parseInt(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Frais mensuels
-                  </label>
-                  <input
-                    type="number"
-                    value={settings.pricePerMonth}
-                    onChange={(e) => updateSetting('pricePerMonth', parseInt(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Devise
-                  </label>
-                  <select
-                    value={settings.currency}
-                    onChange={(e) => updateSetting('currency', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="MAD">MAD (Dirham)</option>
-                    <option value="EUR">EUR (Euro)</option>
-                    <option value="USD">USD (Dollar)</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Adresse
-                </label>
-                <textarea
-                  value={settings.address}
-                  onChange={(e) => updateSetting('address', e.target.value)}
-                  rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'security' && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800">Paramètres de sécurité</h3>
-              
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium text-gray-800">Authentification à deux facteurs</h4>
-                    <p className="text-sm text-gray-600">Ajouter une couche de sécurité supplémentaire</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.security.twoFactor}
-                      onChange={(e) => updateNestedSetting('security', 'twoFactor', e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Timeout de session (minutes)
-                  </label>
-                  <input
-                    type="number"
-                    value={settings.security.sessionTimeout}
-                    onChange={(e) => updateNestedSetting('security', 'sessionTimeout', parseInt(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                
-                <div>
-                  <h4 className="font-medium text-gray-800 mb-3">Politique de mots de passe</h4>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Longueur minimum
-                      </label>
-                      <input
-                        type="number"
-                        value={settings.security.passwordPolicy.minLength}
-                        onChange={(e) => updateNestedSetting('security', 'passwordPolicy', { 
-                          ...settings.security.passwordPolicy, 
-                          minLength: parseInt(e.target.value) 
-                        })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={settings.security.passwordPolicy.requireUppercase}
-                          onChange={(e) => updateNestedSetting('security', 'passwordPolicy', { 
-                            ...settings.security.passwordPolicy, 
-                            requireUppercase: e.target.checked 
-                          })}
-                          className="mr-2"
-                        />
-                        <span className="text-sm text-gray-700">Requiert des majuscules</span>
-                      </label>
-                      
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={settings.security.passwordPolicy.requireNumbers}
-                          onChange={(e) => updateNestedSetting('security', 'passwordPolicy', { 
-                            ...settings.security.passwordPolicy, 
-                            requireNumbers: e.target.checked 
-                          })}
-                          className="mr-2"
-                        />
-                        <span className="text-sm text-gray-700">Requiert des chiffres</span>
-                      </label>
-                      
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={settings.security.passwordPolicy.requireSymbols}
-                          onChange={(e) => updateNestedSetting('security', 'passwordPolicy', { 
-                            ...settings.security.passwordPolicy, 
-                            requireSymbols: e.target.checked 
-                          })}
-                          className="mr-2"
-                        />
-                        <span className="text-sm text-gray-700">Requiert des symboles</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'notifications' && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800">Préférences de notifications</h3>
-              
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium text-gray-800">Notifications par email</h4>
-                    <p className="text-sm text-gray-600">Recevoir les notifications par email</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.notifications.email}
-                      onChange={(e) => updateNestedSetting('notifications', 'email', e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium text-gray-800">Notifications par SMS</h4>
-                    <p className="text-sm text-gray-600">Recevoir les notifications par SMS</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.notifications.sms}
-                      onChange={(e) => updateNestedSetting('notifications', 'sms', e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium text-gray-800">Notifications push</h4>
-                    <p className="text-sm text-gray-600">Recevoir les notifications push sur le navigateur</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.notifications.push}
-                      onChange={(e) => updateNestedSetting('notifications', 'push', e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'appearance' && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800">Apparence</h3>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Thème
-                  </label>
-                  <select
-                    value={settings.theme}
-                    onChange={(e) => updateSetting('theme', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="light">Clair</option>
-                    <option value="dark">Sombre</option>
-                    <option value="system">Système</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Langue
-                  </label>
-                  <select
-                    value={settings.language}
-                    onChange={(e) => updateSetting('language', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="fr">Français</option>
-                    <option value="ar">العربية</option>
-                    <option value="en">English</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Fuseau horaire
-                  </label>
-                  <select
-                    value={settings.timezone}
-                    onChange={(e) => updateSetting('timezone', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="Africa/Casablanca">Afrique/Casablanca</option>
-                    <option value="Europe/Paris">Europe/Paris</option>
-                    <option value="UTC">UTC</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Toast notifications */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-    </div>
-  );
-};
-
-// Menu de navigation latéral
-const Sidebar: React.FC<{
-  activeTab: string;
-  onTabChange: (tab: string) => void;
-  user: User;
-  onLogout: () => void;
-}> = ({ activeTab, onTabChange, user, onLogout }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  const menuItems = [
-    { id: 'dashboard', label: 'Tableau de bord', icon: <BarChart3 className="w-5 h-5" /> },
-    { id: 'users', label: 'Utilisateurs', icon: <Users className="w-5 h-5" /> },
-    { id: 'products', label: 'Produits', icon: <Package className="w-5 h-5" /> },
-    { id: 'transactions', label: 'Transactions', icon: <CreditCard className="w-5 h-5" /> },
-    { id: 'notifications', label: 'Notifications', icon: <Bell className="w-5 h-5" /> },
-    { id: 'settings', label: 'Paramètres', icon: <SettingsIcon className="w-5 h-5" /> }
-  ];
-
-  return (
-    <div className={`bg-white shadow-lg transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`}>
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-8">
-          <div className={`flex items-center space-x-2 ${isCollapsed ? 'justify-center' : ''}`}>
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-              <img 
-                src="/logo-ngp.png" 
-                alt="Logo Nouvelle Génération Pro" 
-                className="w-6 h-6 object-contain"
-                style={{ filter: 'brightness(0) invert(1)' }}
-              />
-            </div>
-            {!isCollapsed && (
-              <div>
-                <h1 className="text-lg font-bold text-gray-800">Admin Panel</h1>
-                <p className="text-sm text-gray-600">Nouvelle Génération Pro</p>
-              </div>
-            )}
-          </div>
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-          </button>
-        </div>
-
-        <nav className="space-y-2">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => onTabChange(item.id)}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                activeTab === item.id
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-gray-700 hover:bg-gray-100'
-              } ${isCollapsed ? 'justify-center' : ''}`}
-              title={isCollapsed ? item.label : undefined}
-            >
-              {item.icon}
-              {!isCollapsed && <span className="font-medium">{item.label}</span>}
-            </button>
-          ))}
-        </nav>
-      </div>
-
-      <div className="absolute bottom-0 w-full p-6 border-t border-gray-200">
-        <div className={`flex items-center space-x-3 mb-4 ${isCollapsed ? 'justify-center' : ''}`}>
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-            <span className="text-white font-medium">
-              {user.name.split(' ').map(n => n[0]).join('')}
-            </span>
-          </div>
-          {!isCollapsed && (
-            <div>
-              <p className="text-sm font-medium text-gray-800">{user.name}</p>
-              <p className="text-xs text-gray-500">{user.role}</p>
-            </div>
-          )}
-        </div>
-        <button
-          onClick={onLogout}
-          className={`w-full flex items-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors ${
-            isCollapsed ? 'justify-center' : ''
-          }`}
-          title={isCollapsed ? 'Déconnexion' : undefined}
-        >
-          <LogOut className="w-4 h-4" />
-          {!isCollapsed && <span>Déconnexion</span>}
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// En-tête avec recherche et notifications
-const AdminHeader: React.FC<{
-  user: User;
-  onSearch: (query: string) => void;
-}> = ({ user, onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [showNotifications, setShowNotifications] = useState(false);
-
-  const dataManager = AdminDataManager.getInstance();
-
-  useEffect(() => {
-    const loadNotifications = () => {
-      const allNotifications = dataManager.getNotifications();
-      setNotifications(allNotifications.slice(0, 5)); // Dernières 5 notifications
-    };
-    loadNotifications();
-  }, []);
-
-  const unreadCount = notifications.filter(n => !n.read).length;
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    onSearch(query);
-  };
-
-  const handleNotificationClick = (notification: Notification) => {
-    if (!notification.read) {
-      dataManager.markNotificationAsRead(notification.id);
-    }
-    setShowNotifications(false);
-  };
-
-  return (
-    <header className="bg-white shadow-sm border-b border-gray-200 p-4">
-      <div className="flex items-center justify-between">
-        {/* Barre de recherche */}
-        <div className="flex-1 max-w-xl relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Rechercher..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Description
+          </label>
+          <textarea
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            rows={4}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center space-x-4">
-          {/* Notifications */}
-          <div className="relative">
-            <button
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative"
-            >
-              <Bell className="w-5 h-5" />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {unreadCount}
-                </span>
-              )}
-            </button>
-
-            {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                <div className="p-4 border-b border-gray-200">
-                  <h3 className="font-medium text-gray-800">Notifications</h3>
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  {notifications.length > 0 ? (
-                    notifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        onClick={() => handleNotificationClick(notification)}
-                        className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-                      >
-                        <div className="flex items-start space-x-3">
-                          <div className={`w-2 h-2 rounded-full mt-2 ${notification.read ? 'bg-gray-300' : 'bg-blue-500'}`} />
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-800">{notification.title}</p>
-                            <p className="text-xs text-gray-600 mt-1">{notification.message}</p>
-                            <p className="text-xs text-gray-500 mt-1">
-                              {new Date(notification.createdAt).toLocaleString('fr-FR')}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="p-4 text-center text-gray-500">
-                      Aucune notification
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Profil utilisateur */}
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-medium text-sm">
-                {user.name.split(' ').map(n => n[0]).join('')}
-              </span>
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-sm font-medium text-gray-800">{user.name}</p>
-              <p className="text-xs text-gray-500">{user.role}</p>
-            </div>
-          </div>
+        <div className="flex justify-end space-x-4 pt-4">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            {product ? 'Modifier' : 'Ajouter'}
+          </button>
         </div>
+      </form>
+    );
+  };
+
+  const DeleteConfirmation: React.FC<{ item: any; onConfirm: () => void; onCancel: () => void }> = ({ 
+    item, 
+    onConfirm, 
+    onCancel 
+  }) => (
+    <div className="p-6 text-center">
+      <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <AlertCircle className="w-8 h-8 text-red-600" />
       </div>
-    </header>
+      <h3 className="text-lg font-medium text-gray-800 mb-2">
+        Confirmer la suppression
+      </h3>
+      <p className="text-gray-600 mb-6">
+        Êtes-vous sûr de vouloir supprimer{' '}
+        <span className="font-medium">
+          {item.item.name || item.item.userName || item.item.title}
+        </span>
+        ? Cette action est irréversible.
+      </p>
+      <div className="flex justify-center space-x-4">
+        <button
+          onClick={onCancel}
+          className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+        >
+          Annuler
+        </button>
+        <button
+          onClick={onConfirm}
+          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
   );
-};
-
-// Composant principal AdminDashboard
-const AdminDashboard: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleLogin = (userData: User) => {
-    setUser(userData);
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    setActiveTab('dashboard');
-  };
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    // Implémenter la logique de recherche selon le contexte
-  };
-
-  if (!user) {
-    return <AdminAuth onLogin={handleLogin} />;
-  }
 
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard />;
+        return <DashboardContent />;
       case 'users':
-        return <UsersManagement />;
+        return <UsersContent />;
       case 'products':
-        return <ProductsManagement />;
+        return <ProductsContent />;
       case 'transactions':
-        return <TransactionsHistory />;
+        return <TransactionsContent />;
       case 'notifications':
-        return <NotificationsPanel />;
+        return <NotificationsContent />;
       case 'settings':
-        return <SettingsPanel />;
+        return <SettingsContent />;
       default:
-        return <Dashboard />;
+        return <DashboardContent />;
     }
   };
 
+  const renderModal = () => {
+    if (!showModal || !modalType) return null;
+
+    switch (modalType) {
+      case 'user':
+        return (
+          <Modal
+            isOpen={showModal}
+            onClose={closeModal}
+            title={selectedItem ? 'Modifier l\'utilisateur' : 'Ajouter un utilisateur'}
+          >
+            <UserForm
+              user={selectedItem}
+              onSubmit={(data) => {
+                if (selectedItem) {
+                  handleUpdateUser(selectedItem.id, data);
+                } else {
+                  handleAddUser({
+                    ...data,
+                    lastLogin: new Date().toISOString(),
+                    createdAt: new Date().toISOString()
+                  });
+                }
+              }}
+              onCancel={closeModal}
+            />
+          </Modal>
+        );
+      case 'product':
+        return (
+          <Modal
+            isOpen={showModal}
+            onClose={closeModal}
+            title={selectedItem ? 'Modifier le produit' : 'Ajouter un produit'}
+          >
+            <ProductForm
+              product={selectedItem}
+              onSubmit={(data) => {
+                if (selectedItem) {
+                  handleUpdateProduct(selectedItem.id, data);
+                } else {
+                  handleAddProduct({
+                    ...data,
+                    createdAt: new Date().toISOString()
+                  });
+                }
+              }}
+              onCancel={closeModal}
+            />
+          </Modal>
+        );
+      case 'delete':
+        return (
+          <Modal
+            isOpen={showModal}
+            onClose={closeModal}
+            title="Confirmer la suppression"
+          >
+            <DeleteConfirmation
+              item={selectedItem}
+              onConfirm={() => {
+                if (selectedItem.type === 'user') {
+                  handleDeleteUser(selectedItem.item.id);
+                } else if (selectedItem.type === 'product') {
+                  handleDeleteProduct(selectedItem.item.id);
+                }
+              }}
+              onCancel={closeModal}
+            />
+          </Modal>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const adminUser: User = {
+    id: 'admin',
+    name: 'Administrateur',
+    email: 'admin@nouvellegeneration.pro',
+    role: 'admin',
+    status: 'active',
+    lastLogin: new Date().toISOString(),
+    createdAt: new Date().toISOString()
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <Sidebar
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        user={user}
-        onLogout={handleLogout}
+    <div className="flex h-screen bg-gray-100">
+      <AdminSidebar 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab} 
+        user={adminUser}
       />
-
-      {/* Main Content */}
-      <div className="flex-1 overflow-hidden">
-        {/* Header */}
-        <AdminHeader
-          user={user}
-          onSearch={handleSearch}
-        />
-
-        {/* Content */}
-        <div className="p-6 overflow-auto h-full">
+      
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <AdminHeader />
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
           {renderContent()}
-        </div>
+        </main>
       </div>
+
+      {renderModal()}
+      
+      <Toast
+        type={toast.type}
+        message={toast.message}
+        isVisible={toast.isVisible}
+        onClose={hideToast}
+      />
     </div>
   );
 };
