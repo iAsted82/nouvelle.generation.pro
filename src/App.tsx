@@ -205,7 +205,7 @@ const Hero = () => {
                   <div className="text-center">
                     <div className="w-full h-48 rounded-xl overflow-hidden mb-4">
                       <img 
-                        src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=600&fit=crop&crop=center"
+                        src="/istockphoto-952059200-1024x1024.jpg"
                         alt="Enfants heureux dans une classe maternelle moderne"
                         className="w-full h-full object-cover"
                         loading="lazy"
@@ -475,12 +475,12 @@ const SchoolLife = () => {
 // Helper function to get gallery images
 const getGalleryImage = (type) => {
   const images = {
-    classroom: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center",
-    learning: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop&crop=center",
-    playground: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=800&h=600&fit=crop&crop=center",
-    arts: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop&crop=center",
-    reading: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop&crop=center",
-    teachers: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&h=600&fit=crop&crop=center"
+    classroom: "/istockphoto-1044045462-1024x1024.jpg",
+    learning: "/istockphoto-1500447955-1024x1024.jpg",
+    playground: "/istockphoto-1458807880-1024x1024.jpg",
+    arts: "/istockphoto-952059200-1024x1024.jpg",
+    reading: "/istockphoto-1044045462-1024x1024.jpg",
+    teachers: "/istockphoto-1500447955-1024x1024.jpg"
   };
   return images[type] || images.classroom;
 };
@@ -488,10 +488,10 @@ const getGalleryImage = (type) => {
 // Helper function to get activity images
 const getActivityImage = (index) => {
   const images = [
-    "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=400&fit=crop&crop=center", // Apprentissage bilingue
-    "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=800&h=400&fit=crop&crop=center", // Éducation spirituelle
-    "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=400&fit=crop&crop=center", // Activités créatives
-    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=400&fit=crop&crop=center"  // Développement social
+    "/istockphoto-1500447955-1024x1024.jpg", // Apprentissage bilingue
+    "/istockphoto-1458807880-1024x1024.jpg", // Éducation spirituelle
+    "/istockphoto-952059200-1024x1024.jpg", // Activités créatives
+    "/istockphoto-1044045462-1024x1024.jpg"  // Développement social
   ];
   return images[index] || images[0];
 };
