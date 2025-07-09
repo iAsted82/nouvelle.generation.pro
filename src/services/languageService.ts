@@ -495,9 +495,7 @@ export const TRANSLATIONS = {
     // Dashboard
     'dashboard.title': 'لوحة التحكم',
     'dashboard.overview': 'نظرة عامة على أنشطة المدرسة',
-    'dashboard.stats.
-  }
-}users': 'إجمالي المستخدمين',
+    'dashboard.stats.users': 'إجمالي المستخدمين',
     'dashboard.stats.children': 'الأطفال المسجلين',
     'dashboard.stats.pending': 'التسجيلات المعلقة',
     'dashboard.stats.active': 'المستخدمين النشطين',
@@ -1127,7 +1125,6 @@ export const TRANSLATIONS = {
     'months.november': 'November',
     'months.december': 'December'
   }
-  }
 };
 
 class LanguageService {
@@ -1169,7 +1166,6 @@ class LanguageService {
   setLanguage(language: Language): void {
     this.currentLanguage = language;
     this.saveLanguage();
-    this.notifyListeners();
     this.updateDocumentDirection();
     this.notifyListeners();
   }
@@ -1188,17 +1184,9 @@ class LanguageService {
   }
 
   t(key: string, fallback?: string): string {
-    return translation || fallback || this.translateFallback(key) || key;
+    return this.translate(key, fallback);
   }
 
-  private translateFallback(key: string): string | undefined {
-    // Try French as fallback
-    if (this.currentLanguage !== 'fr') {
-      return TRANSLATIONS.fr[key];
-    }
-    return undefined;
-  }
-  
   isRTL(): boolean {
     return this.getLanguageConfig().direction === 'rtl';
   }
@@ -1210,17 +1198,6 @@ class LanguageService {
     };
   }
 
-  private notifyListeners(): void {
-    this.listeners.forEach(listener => listener(this.currentLanguage));
-  }
-  
-  subscribe(listener: (language: Language) => void): () => void {
-    this.listeners.push(listener);
-    return () => {
-      this.listeners = this.listeners.filter(l => l !== listener);
-    };
-  }
-  
   private notifyListeners(): void {
     this.listeners.forEach(listener => listener(this.currentLanguage));
   }
