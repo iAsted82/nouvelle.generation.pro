@@ -495,7 +495,9 @@ export const TRANSLATIONS = {
     // Dashboard
     'dashboard.title': 'لوحة التحكم',
     'dashboard.overview': 'نظرة عامة على أنشطة المدرسة',
-    'dashboard.stats.users': 'إجمالي المستخدمين',
+    'dashboard.stats.
+  }
+}users': 'إجمالي المستخدمين',
     'dashboard.stats.children': 'الأطفال المسجلين',
     'dashboard.stats.pending': 'التسجيلات المعلقة',
     'dashboard.stats.active': 'المستخدمين النشطين',
