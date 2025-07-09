@@ -49,14 +49,6 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem; /* Compense la hauteur du header fixe */
-}
-
-/* Ajustement pour les sections avec header fixe */
-@media (min-width: 768px) {
-  html {
-    scroll-padding-top: 6rem;
-  }
 }
 
 /* Custom scrollbar */
