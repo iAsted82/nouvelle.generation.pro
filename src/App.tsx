@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Globe, BookOpen, Monitor, Users, UserCheck, Palette, Shield, Phone, Mail, MapPin, Clock, Calendar, Star, ArrowRight, CheckCircle, Camera, Play, Image as ImageIcon, Award, Heart, GraduationCap, Sparkles } from 'lucide-react';
+import AdminDashboard from './components/AdminDashboard';
 
 // Header Component
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,6 +55,13 @@ const Header = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
+            <button
+              onClick={() => setShowAdmin(true)}
+              className="text-gray-700 hover:text-blue-600 transition-colors relative group"
+            >
+              Admin
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
           </nav>
 
           {/* CTA Button */}
@@ -83,6 +92,15 @@ const Header = () => {
                   {item.label}
                 </a>
               ))}
+              <button
+                onClick={() => {
+                  setShowAdmin(true);
+                  setIsMenuOpen(false);
+                }}
+                className="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors text-left"
+              >
+                Admin
+              </button>
               <button className="mx-4 mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full">
                 Inscrivez-vous maintenant
               </button>
@@ -90,6 +108,26 @@ const Header = () => {
           </div>
         )}
       </div>
+
+      {/* Admin Dashboard Modal */}
+      {showAdmin && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-6xl h-[90vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Accès Administration</h2>
+              <button
+                onClick={() => setShowAdmin(false)}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="h-full overflow-auto">
+              <AdminDashboard />
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
@@ -907,6 +945,20 @@ const ImageUploader = ({ onImageUpload, placeholder, className = "" }) => {
 
 // Main App
 function App() {
+  const [showAdminDashboard, setShowAdminDashboard] = useState(false);
+
+  // Check for admin access via URL parameter
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'true') {
+      setShowAdminDashboard(true);
+    }
+  }, []);
+
+  if (showAdminDashboard) {
+    return <AdminDashboard />;
+  }
+
   return (
     <div className="min-h-screen">
       <Header />
