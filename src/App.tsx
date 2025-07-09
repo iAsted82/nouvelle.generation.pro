@@ -165,11 +165,13 @@ const Hero = () => {
               <div className="bg-white rounded-3xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-500">
                 <div className="space-y-6">
                   <div className="text-center">
-                    <div className="w-full h-48 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl flex items-center justify-center mb-4">
-                      <div className="text-center">
-                        <ImageIcon className="w-16 h-16 text-blue-400 mx-auto mb-2" />
-                        <p className="text-gray-500 text-sm">Photo : Enfants dans notre cour de récréation</p>
-                      </div>
+                    <div className="w-full h-48 rounded-xl overflow-hidden mb-4">
+                      <img 
+                        src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=600&fit=crop&crop=center"
+                        alt="Enfants heureux dans une classe maternelle moderne"
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-800">Nouvelle Génération Pro</h3>
                     <p className="text-gray-600">Excellence éducative depuis 2009</p>
@@ -332,11 +334,13 @@ const Gallery = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {galleryItems.map((item, index) => (
             <div key={index} className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                <div className="text-center p-6">
-                  <Camera className="w-12 h-12 text-blue-400 mx-auto mb-3" />
-                  <p className="text-gray-600 text-sm">{item.placeholder}</p>
-                </div>
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src={getGalleryImage(item.type)}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
@@ -412,9 +416,13 @@ const SchoolLife = () => {
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-gray-800 mb-4">{activity.title}</h3>
                   <p className="text-gray-600 mb-4">{activity.description}</p>
-                  <div className="bg-gray-100 rounded-lg p-4 text-center">
-                    <Camera className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                    <p className="text-sm text-gray-500">{activity.image}</p>
+                  <div className="bg-gray-100 rounded-lg overflow-hidden">
+                    <img 
+                      src={getActivityImage(index)}
+                      alt={activity.image}
+                      className="w-full h-32 object-cover"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
               </div>
@@ -424,6 +432,30 @@ const SchoolLife = () => {
       </div>
     </section>
   );
+};
+
+// Helper function to get gallery images
+const getGalleryImage = (type) => {
+  const images = {
+    classroom: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center",
+    learning: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop&crop=center",
+    playground: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=800&h=600&fit=crop&crop=center",
+    arts: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop&crop=center",
+    reading: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop&crop=center",
+    teachers: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&h=600&fit=crop&crop=center"
+  };
+  return images[type] || images.classroom;
+};
+
+// Helper function to get activity images
+const getActivityImage = (index) => {
+  const images = [
+    "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=400&fit=crop&crop=center", // Apprentissage bilingue
+    "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=800&h=400&fit=crop&crop=center", // Éducation spirituelle
+    "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=400&fit=crop&crop=center", // Activités créatives
+    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=400&fit=crop&crop=center"  // Développement social
+  ];
+  return images[index] || images[0];
 };
 
 // Counter Component
