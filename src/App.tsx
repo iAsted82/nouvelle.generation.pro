@@ -3,6 +3,7 @@ import { Menu, X, Globe, BookOpen, Monitor, Users, UserCheck, Palette, Shield, P
 import AdminDashboard from './components/AdminDashboard';
 import FormManager from './components/Forms/FormManager';
 import LanguageSelector from './components/LanguageSelector';
+import PWAManager from './components/PWA/PWAManager';
 import { languageService } from './services/languageService';
 
 // Header Component
@@ -12,6 +13,7 @@ const Header = () => {
   const [showAdmin, setShowAdmin] = useState(false);
   const [showForms, setShowForms] = useState(false);
   const [language, setLanguage] = useState(languageService.getCurrentLanguage());
+  const [currentView, setCurrentView] = useState('home');
 
   // Subscribe to language changes
   useEffect(() => {
@@ -19,6 +21,34 @@ const Header = () => {
       setLanguage(lang);
     });
     return unsubscribe;
+  }, []);
+
+  // Handle URL params for PWA shortcuts
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+    
+    if (action) {
+      switch (action) {
+        case 'inscription':
+          setCurrentView('inscription');
+          // Scroll to registration section
+          setTimeout(() => {
+            document.getElementById('registration')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+          break;
+        case 'contact':
+          setCurrentView('contact');
+          setTimeout(() => {
+            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+          break;
+        case 'appointment':
+          setCurrentView('appointment');
+          // Could open a modal or navigate to appointment form
+          break;
+      }
+    }
   }, []);
 
   const t = (key: string, fallback?: string) => languageService.translate(key, fallback);
@@ -1168,6 +1198,7 @@ function App() {
   const [language, setLanguage] = useState(languageService.getCurrentLanguage());
   const [showAdminDashboard, setShowAdminDashboard] = useState(false);
   const [showForms, setShowForms] = useState(false);
+  const [currentView, setCurrentView] = useState('home');
   const [contactForm, setContactForm] = useState({
     name: '',
     email: '',
@@ -1185,6 +1216,34 @@ function App() {
       setLanguage(lang);
     });
     return unsubscribe;
+  }, []);
+
+  // Handle URL params for PWA shortcuts
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+    
+    if (action) {
+      switch (action) {
+        case 'inscription':
+          setCurrentView('inscription');
+          // Scroll to registration section
+          setTimeout(() => {
+            document.getElementById('registration')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+          break;
+        case 'contact':
+          setCurrentView('contact');
+          setTimeout(() => {
+            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+          break;
+        case 'appointment':
+          setCurrentView('appointment');
+          // Could open a modal or navigate to appointment form
+          break;
+      }
+    }
   }, []);
 
   const t = (key: string, fallback?: string) => languageService.translate(key, fallback);
@@ -1211,6 +1270,9 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      {/* PWA Manager */}
+      <PWAManager />
+      
       <Header />
       <Hero />
       <Features />
