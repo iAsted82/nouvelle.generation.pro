@@ -30,7 +30,7 @@ export interface AuthResult {
 // Admin credentials
 const DEFAULT_ADMIN: AdminUser = {
   id: 'admin-ngp-001',
-  email: 'info@nouvellegeneration.pro',
+  email: 'periscolaire@nouvellegeneration.pro',
   passwordHash: '', // Will be set when service initializes
   role: 'super-admin',
   name: 'Administrateur NGP',

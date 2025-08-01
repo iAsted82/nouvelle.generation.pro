@@ -487,8 +487,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSubmit, isLoading = false }
           📞 Autres moyens de contact
         </h3>
         <ul className="text-sm text-purple-700 space-y-1">
-          <li>• Téléphone: 05 37 00 00 00</li>
-          <li>• Email: info@nouvellegeneration.pro</li>
+          <li>• Téléphone: +212 5 37 86 55 81</li>
+          <li>• Email: periscolaire@nouvellegeneration.pro</li>
           <li>• WhatsApp: Disponible aux horaires d'ouverture</li>
           <li>• Adresse: Résidence Essafa 4, Salé</li>
         </ul>

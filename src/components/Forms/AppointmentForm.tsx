@@ -324,8 +324,8 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onSubmit, isLoading =
           ⚡ Traitement prioritaire
         </h3>
         <ul className="text-sm text-blue-700 space-y-1">
-          <li>• Réponse sous 2 heures ouvrables</li>
-          <li>• Confirmation par SMS et email</li>
+          <li>• Téléphone: +212 5 37 86 55 81</li>
+          <li>• Email: periscolaire@nouvellegeneration.pro</li>
           <li>• Rendez-vous dans les 48h si possible</li>
         </ul>
       </div>

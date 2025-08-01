@@ -817,7 +817,7 @@ const InfoSection = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button className="bg-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2 btn-hover">
                     <Phone className="w-5 h-5" />
-                    <span>Appeler le 05 37 00 00 00</span>
+                    <span>Appeler le +212 5 37 86 55 81</span>
                   </button>
                   <button className="border-2 border-orange-500 text-orange-500 px-6 py-3 rounded-full font-semibold hover:bg-orange-500 hover:text-white transition-colors flex items-center space-x-2 btn-hover">
                     <MapPin className="w-5 h-5" />
@@ -895,7 +895,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800">Téléphone</h4>
-                    <p className="text-gray-600">05 37 00 00 00</p>
+                    <p className="text-gray-600">+212 5 37 86 55 81</p>
                     <p className="text-sm text-green-600 mt-1">Contact WhatsApp disponible</p>
                   </div>
                 </div>
@@ -906,7 +906,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800">Email</h4>
-                    <p className="text-gray-600">info@nouvellegeneration.pro</p>
+                    <p className="text-gray-600">periscolaire@nouvellegeneration.pro</p>
                   </div>
                 </div>
 
@@ -1096,9 +1096,9 @@ const Footer = () => {
               <h4 className="text-lg font-semibold mb-4">Contact</h4>
               <div className="space-y-2 text-gray-400">
                 <p>📍 Résidence Essafa 4, Salé</p>
-                <p>📞 05 37 00 00 00</p>
+                <p>📞 +212 5 37 86 55 81</p>
                 <p>📱 WhatsApp disponible</p>
-                <p>✉️ info@nouvellegeneration.pro</p>
+                <p>✉️ periscolaire@nouvellegeneration.pro</p>
               </div>
             </div>
             

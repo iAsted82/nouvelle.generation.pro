@@ -492,7 +492,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.phone', 'Téléphone')}</label>
               <input
                 type="tel"
-                defaultValue={t('school.phone', '05 37 00 00 00')}
+                defaultValue={t('school.phone', '+212 5 37 86 55 81')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
