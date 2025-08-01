@@ -29,7 +29,10 @@ import {
   Zap,
   Settings,
   LogIn,
-  UserPlus
+  UserPlus,
+  MessageCircle,
+  Palette,
+  Send
 } from 'lucide-react';
 import PWAManager from './components/PWA/PWAManager';
 import AdminAuth from './components/AdminAuth';
@@ -194,57 +197,99 @@ function App() {
         return (
           <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-orange-500 text-white py-20 px-4 overflow-hidden">
-              <div className="absolute inset-0 bg-black opacity-20"></div>
-              <div className="relative max-w-6xl mx-auto text-center">
-                <div className="animate-fadeInUp">
-                  <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-                    {t('hero.title', 'Nouvelle Génération Pro')}
-                  </h1>
-                  <p className="text-xl md:text-2xl mb-8 text-blue-100">
-                    {t('hero.subtitle', 'École Maternelle d\'Excellence à Salé')}
-                  </p>
-                  <p className="text-lg mb-12 max-w-3xl mx-auto opacity-90">
-                    {t('hero.description', 'Offrez à votre enfant un environnement d\'apprentissage moderne avec des méthodes pédagogiques innovantes et un encadrement personnalisé.')}
-                  </p>
+            <section className="py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50 relative overflow-hidden">
+              <div className="absolute inset-0 bg-white/60"></div>
+              <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div className="space-y-8">
+                    <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 leading-tight">
+                      Nouvelle Génération Pro
+                    </h1>
+                    <h2 className="text-xl lg:text-2xl text-gray-700 mb-6">
+                      École Maternelle d'Excellence à Salé
+                    </h2>
+                    <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                      Offrez à votre enfant un environnement d'apprentissage moderne avec des méthodes pédagogiques innovantes et un encadrement personnalisé. Notre équipe pédagogique expérimentée accompagne chaque enfant dans son développement global.
+                    </p>
+                    <div className="bg-green-100 border border-green-300 rounded-lg p-4 mb-8">
+                      <p className="text-green-800 font-semibold">📅 Inscriptions ouvertes toute l'année</p>
+                      <p className="text-green-700 text-sm">🎯 Places limitées - Réservez dès maintenant</p>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button
+                        onClick={() => handleQuickAction('inscription')}
+                        disabled={isLoading}
+                        className="btn-hover bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+                      >
+                        Inscrire Mon Enfant
+                      </button>
+                      <button
+                        onClick={() => handleQuickAction('contact')}
+                        disabled={isLoading}
+                        className="btn-hover bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-50 transition-all duration-300 disabled:opacity-50"
+                      >
+                        📞 Nous Contacter
+                      </button>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-4 pt-4">
+                      <button
+                        onClick={() => handleQuickAction('call')}
+                        className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                      >
+                        <Phone className="w-4 h-4" />
+                        <span>Appeler</span>
+                      </button>
+                      <button
+                        onClick={() => handleQuickAction('email')}
+                        className="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                      >
+                        <Mail className="w-4 h-4" />
+                        <span>Email</span>
+                      </button>
+                      <button
+                        onClick={() => handleQuickAction('whatsapp')}
+                        className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>WhatsApp</span>
+                      </button>
+                    </div>
+                  </div>
                   
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                    <button 
-                      onClick={() => handleQuickAction('inscription')}
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 btn-hover shadow-lg flex items-center space-x-2"
-                    >
-                      <UserPlus className="w-5 h-5" />
-                      <span>{t('cta.register', 'Inscrire Mon Enfant')}</span>
-                    </button>
-                    <button 
-                      onClick={() => setShowVideo(true)}
-                      className="bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 btn-hover border border-white border-opacity-30 flex items-center space-x-2"
-                    >
-                      <Play className="w-5 h-5" />
-                      <span>{t('cta.video', 'Découvrir l\'École')}</span>
-                    </button>
+                  <div className="relative">
+                    <div className="bg-white p-8 rounded-2xl shadow-2xl">
+                      <img 
+                        src="https://images.pexels.com/photos/8613059/pexels-photo-8613059.jpeg" 
+                        alt="École Nouvelle Génération Pro - Enfants heureux" 
+                        className="w-full h-64 object-cover rounded-lg mb-6"
+                      />
+                      <h3 className="text-xl font-bold text-gray-800 mb-4">Pourquoi Choisir NGP ?</h3>
+                      <ul className="space-y-3 text-gray-600">
+                        <li className="flex items-center space-x-3">
+                          <CheckCircle className="w-5 h-5 text-green-500" />
+                          <span>Méthodes pédagogiques modernes et adaptées</span>
+                        </li>
+                        <li className="flex items-center space-x-3">
+                          <CheckCircle className="w-5 h-5 text-green-500" />
+                          <span>Encadrement par une équipe qualifiée</span>
+                        </li>
+                        <li className="flex items-center space-x-3">
+                          <CheckCircle className="w-5 h-5 text-green-500" />
+                          <span>Suivi individualisé de chaque enfant</span>
+                        </li>
+                        <li className="flex items-center space-x-3">
+                          <CheckCircle className="w-5 h-5 text-green-500" />
+                          <span>Activités créatives et éducatives</span>
+                        </li>
+                        <li className="flex items-center space-x-3">
+                          <CheckCircle className="w-5 h-5 text-green-500" />
+                          <span>Environnement sécurisé et stimulant</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-
-                  <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto">
-                    <p className="text-orange-200 font-semibold text-lg mb-2">
-                      🎯 {t('hero.enrollment', 'Inscriptions ouvertes toute l\'année')}
-                    </p>
-                    <p className="text-blue-100">
-                      {t('hero.limited', 'Places Limitées - Inscrivez-vous Maintenant')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Floating elements */}
-              <div className="absolute top-20 left-10 animate-float">
-                <div className="w-16 h-16 bg-orange-400 bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Star className="w-8 h-8 text-orange-300" />
-                </div>
-              </div>
-              <div className="absolute bottom-20 right-10 animate-float" style={{ animationDelay: '1s' }}>
-                <div className="w-20 h-20 bg-blue-400 bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Heart className="w-10 h-10 text-blue-300" />
                 </div>
               </div>
             </section>
@@ -287,72 +332,59 @@ function App() {
 
             {/* Services Section */}
             <section className="py-20 bg-white">
-              <div className="max-w-6xl mx-auto px-4">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                    {t('services.title', 'Nos Services d\'Excellence')}
-                  </h2>
-                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                    {t('services.subtitle', 'Un accompagnement complet pour le développement optimal de votre enfant')}
-                  </p>
+                  <h2 className="text-4xl font-bold text-gray-800 mb-4">Nos Services d'Excellence</h2>
+                  <p className="text-xl text-gray-600">Un accompagnement complet pour le développement optimal de votre enfant</p>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 card-hover">
-                    <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="card-hover bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl">
+                    <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
                       <BookOpen className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                      {t('services.education.title', 'Éducation Moderne')}
-                    </h3>
-                    <p className="text-gray-600 mb-6">
-                      {t('services.education.description', 'Programmes éducatifs innovants adaptés à chaque niveau de développement.')}
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4">Programme Pédagogique</h3>
+                    <p className="text-gray-600">
+                      Méthodes d'apprentissage modernes basées sur le jeu et l'éveil sensoriel. 
+                      Développement des compétences linguistiques, mathématiques et artistiques.
                     </p>
-                    <button 
-                      onClick={() => handleSectionChange('services')}
-                      className="text-blue-600 font-semibold flex items-center space-x-2 hover:text-blue-800 transition-colors"
-                    >
-                      <span>{t('common.learn_more', 'En savoir plus')}</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <ul className="mt-4 space-y-2 text-sm text-gray-600">
+                      <li>• Apprentissage du français et de l'arabe</li>
+                      <li>• Initiation aux mathématiques ludiques</li>
+                      <li>• Éveil artistique et musical</li>
+                    </ul>
                   </div>
-
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 card-hover">
-                    <div className="w-16 h-16 bg-green-600 rounded-xl flex items-center justify-center mb-6">
-                      <Baby className="w-8 h-8 text-white" />
+                  
+                  <div className="card-hover bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl">
+                    <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mb-6">
+                      <Users className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                      {t('services.care.title', 'Encadrement Personnalisé')}
-                    </h3>
-                    <p className="text-gray-600 mb-6">
-                      {t('services.care.description', 'Suivi individuel avec une équipe pédagogique expérimentée et bienveillante.')}
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4">Encadrement Expert</h3>
+                    <p className="text-gray-600">
+                      Équipe pédagogique qualifiée et expérimentée. Ratio éducateur/enfants optimal 
+                      pour un suivi personnalisé et un accompagnement bienveillant.
                     </p>
-                    <button 
-                      onClick={() => handleSectionChange('services')}
-                      className="text-green-600 font-semibold flex items-center space-x-2 hover:text-green-800 transition-colors"
-                    >
-                      <span>{t('common.learn_more', 'En savoir plus')}</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <ul className="mt-4 space-y-2 text-sm text-gray-600">
+                      <li>• Éducatrices diplômées</li>
+                      <li>• Suivi psycho-pédagogique</li>
+                      <li>• Communication régulière avec les parents</li>
+                    </ul>
                   </div>
-
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 card-hover">
-                    <div className="w-16 h-16 bg-orange-600 rounded-xl flex items-center justify-center mb-6">
-                      <Sparkles className="w-8 h-8 text-white" />
+                  
+                  <div className="card-hover bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl">
+                    <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mb-6">
+                      <Palette className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                      {t('services.activities.title', 'Activités Créatives')}
-                    </h3>
-                    <p className="text-gray-600 mb-6">
-                      {t('services.activities.description', 'Ateliers artistiques, sportifs et ludiques pour développer tous les talents.')}
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4">Activités d'Éveil</h3>
+                    <p className="text-gray-600">
+                      Large gamme d'activités créatives et sportives adaptées à l'âge. 
+                      Développement de la motricité, de la créativité et de l'esprit d'équipe.
                     </p>
-                    <button 
-                      onClick={() => handleSectionChange('services')}
-                      className="text-orange-600 font-semibold flex items-center space-x-2 hover:text-orange-800 transition-colors"
-                    >
-                      <span>{t('common.learn_more', 'En savoir plus')}</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <ul className="mt-4 space-y-2 text-sm text-gray-600">
+                      <li>• Ateliers créatifs et manuels</li>
+                      <li>• Activités sportives adaptées</li>
+                      <li>• Sorties pédagogiques</li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -411,31 +443,240 @@ function App() {
               </div>
             </section>
 
+            {/* About Section */}
+            <section className="py-20 bg-gray-50">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div>
+                    <h2 className="text-4xl font-bold text-gray-800 mb-6">Notre Mission</h2>
+                    <p className="text-lg text-gray-600 mb-8">
+                      Chez <strong>Nouvelle Génération Pro</strong>, nous nous engageons à offrir une éducation préscolaire 
+                      de qualité exceptionnelle. Notre école maternelle, située dans la résidence Essafa 4 à Salé, 
+                      accueille les enfants de 3 à 6 ans dans un environnement sécurisé et stimulant.
+                    </p>
+                    <p className="text-lg text-gray-600 mb-8">
+                      Notre approche pédagogique moderne combine les meilleures pratiques éducatives internationales 
+                      avec les valeurs culturelles marocaines, préparant ainsi nos petits élèves à un avenir brillant.
+                    </p>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-start space-x-3">
+                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <CheckCircle className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800">Excellence Pédagogique</h4>
+                          <p className="text-gray-600 text-sm">Programmes adaptés au développement de l'enfant</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3">
+                        <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <CheckCircle className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800">Environnement Sécurisé</h4>
+                          <p className="text-gray-600 text-sm">Locaux modernes et sécurisés avec espaces adaptés</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3">
+                        <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <CheckCircle className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800">Suivi Personnalisé</h4>
+                          <p className="text-gray-600 text-sm">Accompagnement individuel de chaque enfant</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="relative">
+                    <div className="bg-white p-8 rounded-2xl shadow-xl">
+                      <img 
+                        src="https://images.pexels.com/photos/8613200/pexels-photo-8613200.jpeg" 
+                        alt="Enfants en activité pédagogique" 
+                        className="w-full h-64 object-cover rounded-lg mb-6"
+                      />
+                      <h3 className="text-xl font-bold text-gray-800 mb-4">Nos Valeurs</h3>
+                      <ul className="space-y-3 text-gray-600">
+                        <li className="flex items-center space-x-3">
+                          <Star className="w-5 h-5 text-yellow-500" />
+                          <span>Respect et bienveillance</span>
+                        </li>
+                        <li className="flex items-center space-x-3">
+                          <Star className="w-5 h-5 text-yellow-500" />
+                          <span>Innovation pédagogique</span>
+                        </li>
+                        <li className="flex items-center space-x-3">
+                          <Star className="w-5 h-5 text-yellow-500" />
+                          <span>Épanouissement de l'enfant</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
             {/* CTA Section */}
             <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-              <div className="max-w-4xl mx-auto text-center px-4">
-                <h2 className="text-4xl font-bold mb-6">
-                  {t('cta.title', 'Prêt à Offrir le Meilleur à Votre Enfant ?')}
-                </h2>
-                <p className="text-xl mb-8 text-blue-100">
-                  {t('cta.subtitle', 'Rejoignez notre communauté éducative d\'excellence dès aujourd\'hui')}
-                </p>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 className="text-4xl font-bold text-white mb-4">Prêt à Offrir le Meilleur à Votre Enfant ?</h2>
+                <p className="text-xl text-blue-100 mb-8">Rejoignez notre communauté éducative d'excellence dès aujourd'hui</p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button 
+                  <button
                     onClick={() => handleQuickAction('inscription')}
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 btn-hover flex items-center justify-center space-x-2"
+                    disabled={isLoading}
+                    className="btn-hover bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50"
                   >
-                    <UserPlus className="w-5 h-5" />
-                    <span>{t('cta.register', 'Inscription Maintenant')}</span>
+                    📋 Demande d'Inscription
                   </button>
-                  <button 
+                  <button
                     onClick={() => handleQuickAction('contact')}
-                    className="bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 btn-hover border border-white border-opacity-30 flex items-center justify-center space-x-2"
+                    disabled={isLoading}
+                    className="btn-hover bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300 disabled:opacity-50"
                   >
-                    <MessageSquare className="w-5 h-5" />
-                    <span>{t('cta.contact', 'Nous Contacter')}</span>
+                    📞 Prendre Rendez-vous
                   </button>
+                </div>
+              </div>
+            </section>
+
+            {/* Contact Section */}
+            <section className="py-20 bg-white">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold text-gray-800 mb-4">Contactez-nous</h2>
+                  <p className="text-xl text-gray-600">Nous sommes là pour répondre à toutes vos questions</p>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  <div className="space-y-8">
+                    <h3 className="text-2xl font-bold text-gray-800">Informations de Contact</h3>
+                    
+                    <div className="space-y-6">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                          <Phone className="w-6 h-6 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800">Téléphone</h4>
+                          <p className="text-gray-600">+212 5 37 86 55 81</p>
+                          <p className="text-sm text-gray-500">Lundi - Vendredi : 8h00 - 17h00</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                          <Mail className="w-6 h-6 text-green-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800">Email</h4>
+                          <p className="text-gray-600">periscolaire@nouvellegeneration.pro</p>
+                          <p className="text-sm text-gray-500">Réponse sous 24h</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                          <MapPin className="w-6 h-6 text-purple-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800">Adresse</h4>
+                          <p className="text-gray-600">Résidence Essafa 4, Salé</p>
+                          <p className="text-sm text-gray-500">Maroc</p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h4 className="font-semibold text-blue-800 mb-2">🏫 Horaires d'Ouverture</h4>
+                        <div className="text-sm text-blue-700 space-y-1">
+                          <p><strong>Lundi - Vendredi :</strong> 8h00 - 17h00</p>
+                          <p><strong>Samedi :</strong> 8h00 - 12h00</p>
+                          <p><strong>Dimanche :</strong> Fermé</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-50 p-8 rounded-2xl">
+                    <h3 className="text-2xl font-bold text-gray-800 mb-6">Envoyez-nous un Message</h3>
+                    
+                    <form onSubmit={handleContactSubmit} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Nom complet *</label>
+                          <input 
+                            type="text" 
+                            required 
+                            placeholder="Votre nom complet"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                          <input 
+                            type="email" 
+                            required 
+                            placeholder="votre@email.com"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                        <input 
+                          type="tel" 
+                          placeholder="06 12 34 56 78"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Sujet *</label>
+                        <select 
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="">Choisissez un sujet</option>
+                          <option value="inscription">Demande d'inscription</option>
+                          <option value="information">Demande d'information</option>
+                          <option value="visite">Visite de l'école</option>
+                          <option value="autre">Autre</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Message *</label>
+                        <textarea 
+                          required 
+                          rows={4} 
+                          placeholder="Décrivez votre demande..."
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        ></textarea>
+                      </div>
+                      
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 flex items-center justify-center space-x-2"
+                      >
+                        {isLoading ? (
+                          <>
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                            <span>Envoi en cours...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-5 h-5" />
+                            <span>Envoyer le Message</span>
+                          </>
+                        )}
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </section>
@@ -1032,38 +1273,57 @@ function App() {
       )}
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div>
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
-                <img 
-                  src="/logo-ngp.png" 
-                  alt="Logo Nouvelle Génération Pro" 
-                  className="w-10 h-10 object-contain"
-                />
-                <div>
-                  <h3 className="text-lg font-bold">
-                    {t('school.name', 'Nouvelle Génération Pro')}
-                  </h3>
-                </div>
+                <img src="/logo-ngp.png" alt="NGP" className="w-10 h-10" />
+                <h3 className="text-xl font-bold">Nouvelle Génération Pro</h3>
               </div>
               <p className="text-gray-300 mb-4">
-                {t('footer.description', 'École maternelle d\'excellence offrant un environnement d\'apprentissage moderne et stimulant.')}
+                École maternelle d'excellence située à Salé, offrant un environnement d'apprentissage moderne et stimulant 
+                pour les enfants de 3 à 6 ans. Notre mission est d'accompagner chaque enfant dans son développement global.
               </p>
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => handleQuickAction('call')}
+                  className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
+                >
+                  <Phone className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => handleQuickAction('email')}
+                  className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors"
+                >
+                  <Mail className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => handleQuickAction('whatsapp')}
+                  className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-
+            
             <div>
-              <h4 className="text-lg font-semibold mb-4">
-                {t('footer.quick_links', 'Liens Rapides')}
-              </h4>
+              <h4 className="text-lg font-semibold mb-4">Liens Rapides</h4>
               <ul className="space-y-2">
+                <li>
+                  <button 
+                    onClick={() => handleSectionChange('accueil')}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Accueil
+                  </button>
+                </li>
                 <li>
                   <button 
                     onClick={() => handleSectionChange('services')}
                     className="text-gray-300 hover:text-white transition-colors"
                   >
-                    {t('nav.services', 'Services')}
+                    Nos Services
                   </button>
                 </li>
                 <li>
@@ -1071,7 +1331,7 @@ function App() {
                     onClick={() => handleSectionChange('inscription')}
                     className="text-gray-300 hover:text-white transition-colors"
                   >
-                    {t('nav.inscription', 'Inscription')}
+                    Inscription
                   </button>
                 </li>
                 <li>
@@ -1079,64 +1339,41 @@ function App() {
                     onClick={() => handleSectionChange('contact')}
                     className="text-gray-300 hover:text-white transition-colors"
                   >
-                    {t('nav.contact', 'Contact')}
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => handleSectionChange('about')}
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    {t('nav.about', 'À Propos')}
+                    Contact
                   </button>
                 </li>
               </ul>
             </div>
-
+            
             <div>
-              <h4 className="text-lg font-semibold mb-4">
-                {t('footer.contact', 'Contact')}
-              </h4>
-              <ul className="space-y-3">
-                <li className="flex items-center space-x-3">
-                  <Phone className="w-5 h-5 text-blue-400" />
-                  <button 
-                    onClick={() => handleQuickAction('call')}
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    +212 5 37 86 55 81
-                  </button>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <Mail className="w-5 h-5 text-green-400" />
-                  <button 
-                    onClick={() => handleQuickAction('email')}
-                    className="text-gray-300 hover:text-white transition-colors break-all"
-                  >
-                    periscolaire@nouvellegeneration.pro
-                  </button>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-orange-400 mt-1" />
-                  <span className="text-gray-300">
-                    {t('school.location', 'Résidence Essafa 4, Salé')}
-                  </span>
-                </li>
-              </ul>
+              <h4 className="text-lg font-semibold mb-4">Contact</h4>
+              <div className="space-y-2 text-gray-300">
+                <p className="flex items-center space-x-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>Résidence Essafa 4, Salé</span>
+                </p>
+                <p className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4" />
+                  <span>+212 5 37 86 55 81</span>
+                </p>
+                <p className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4" />
+                  <span>periscolaire@nouvellegeneration.pro</span>
+                </p>
+                <div className="mt-4 pt-4 border-t border-gray-700">
+                  <p className="text-sm">
+                    <strong>Horaires d'ouverture :</strong><br/>
+                    Lun-Ven : 8h00-17h00<br/>
+                    Samedi : 8h00-12h00
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div className="border-t border-gray-700 pt-8 text-center">
-            <p className="text-gray-400">
-              &copy; 2025 {t('school.name', 'Nouvelle Génération Pro')}. {t('footer.rights', 'Tous droits réservés.')}{' '}
-              <button 
-                onClick={() => handleSectionChange('admin')}
-                className="text-gray-500 hover:text-gray-300 transition-colors ml-4"
-              >
-                <LogIn className="w-4 h-4 inline mr-1" />
-                {t('nav.admin', 'Administration')}
-              </button>
-            </p>
+          
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+            <p>&copy; 2025 Nouvelle Génération Pro. Tous droits réservés.</p>
+            <p className="text-sm mt-2">École maternelle d'excellence - Salé, Maroc</p>
           </div>
         </div>
       </footer>
