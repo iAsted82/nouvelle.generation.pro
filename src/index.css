@@ -297,6 +297,7 @@ textarea:focus {
   transform: translateY(0);
 }
 
+
 /* Notification styles */
 .notification-slide-enter {
   opacity: 0;
