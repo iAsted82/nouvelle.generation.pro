@@ -17,16 +17,6 @@ const Header = () => {
   useEffect(() => {
     const unsubscribe = languageService.subscribe((lang) => {
       setLanguage(lang);
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  });
-  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-  const [newsletter, setNewsletter] = useState('');
-  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
     });
     return unsubscribe;
   }, []);

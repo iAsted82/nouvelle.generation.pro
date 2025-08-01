@@ -302,6 +302,10 @@ export const TRANSLATIONS = {
     'registration.fees.meals': 'Repas (optionnel)',
     'registration.fees.payment': 'Facilités de paiement disponibles',
     
+    // Nouvelles informations de contact
+    'registration.deadline.removed': 'Inscriptions ouvertes toute l\'année',
+    'registration.cta.new': 'Places Limitées - Inscrivez-vous Maintenant',
+    
     // News Section
     'news.title': 'Notre École Évolue',
     'news.subtitle': 'Actualités et nouveautés de Nouvelle Génération Pro',
@@ -364,6 +368,9 @@ export const TRANSLATIONS = {
     'contact.form.phone.invalid': 'Numéro de téléphone invalide',
     'contact.social.title': 'Suivez-nous',
     'contact.map.title': 'Localisation',
+    'contact.phone': '05 37 00 00 00',
+    'contact.email': 'periscolaire@nouvellegeneration.pro',
+    'contact.address': 'Résidence Essafa 4, Salé',
     
     // Footer
     'footer.about.title': 'À Propos',
@@ -665,6 +672,8 @@ export const TRANSLATIONS = {
     'registration.fees.materials': 'المواد التعليمية',
     'registration.fees.meals': 'الوجبات (اختيارية)',
     'registration.fees.payment': 'تسهيلات الدفع متاحة',
+    'registration.deadline.removed': 'التسجيل مفتوح طوال السنة',
+    'registration.cta.new': 'أماكن محدودة - سجل الآن',
     
     // News Section
     'news.title': 'مدرستنا تتطور',
@@ -728,6 +737,13 @@ export const TRANSLATIONS = {
     'contact.form.phone.invalid': 'رقم هاتف غير صحيح',
     'contact.social.title': 'تابعنا',
     'contact.map.title': 'الموقع',
+    'contact.phone': '05 37 00 00 00',
+    'contact.email': 'periscolaire@nouvellegeneration.pro',
+    'school.phone': '+212 5 37 86 55 81',
+    'school.email': 'periscolaire@nouvellegeneration.pro',
+    'registration.deadline.removed': 'التسجيل مفتوح طوال السنة',
+    'registration.cta.new': 'أماكن محدودة - سجل الآن',
+    'contact.address': 'Résidence Essafa 4, Salé',
     
     // Footer
     'footer.about.title': 'حول',
@@ -1029,6 +1045,8 @@ export const TRANSLATIONS = {
     'registration.fees.materials': 'Educational materials',
     'registration.fees.meals': 'Meals (optional)',
     'registration.fees.payment': 'Payment facilities available',
+    'registration.deadline.removed': 'Registration open all year',
+    'registration.cta.new': 'Limited Spots - Register Now',
     
     // News Section
     'news.title': 'Our School Evolves',
@@ -1092,6 +1110,13 @@ export const TRANSLATIONS = {
     'contact.form.phone.invalid': 'Invalid phone number',
     'contact.social.title': 'Follow Us',
     'contact.map.title': 'Location',
+    'contact.phone': '05 37 00 00 00',
+    'contact.email': 'periscolaire@nouvellegeneration.pro',
+    'school.phone': '+212 5 37 86 55 81',
+    'school.email': 'periscolaire@nouvellegeneration.pro',
+    'registration.deadline.removed': 'Registration open all year',
+    'registration.cta.new': 'Limited Spots - Register Now',
+    'contact.address': 'Résidence Essafa 4, Salé',
     
     // Footer
     'footer.about.title': 'About',
