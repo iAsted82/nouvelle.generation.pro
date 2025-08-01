@@ -213,8 +213,8 @@ export const TRANSLATIONS = {
     'school.subtitle': 'École Maternelle d\'Excellence',
     'school.experience': '15 ans d\'expérience',
     'school.location': 'Résidence Essafa 4, Salé',
-    'school.phone': '05 37 00 00 00',
-    'school.email': 'info@nouvellegeneration.pro',
+    'school.phone': '+212 5 37 86 55 81',
+    'school.email': 'periscolaire@nouvellegeneration.pro',
     
     // Gallery Section
     'gallery.title': 'Découvrez Notre École en Images',
@@ -577,8 +577,8 @@ export const TRANSLATIONS = {
     'school.subtitle': 'روضة أطفال للتميز',
     'school.experience': '15 سنة خبرة',
     'school.location': 'إقامة الصفا 4، سلا',
-    'school.phone': '05 37 00 00 00',
-    'school.email': 'info@nouvellegeneration.pro',
+    'school.phone': '+212 5 37 86 55 81',
+    'school.email': 'periscolaire@nouvellegeneration.pro',
     
     // Gallery Section
     'gallery.title': 'اكتشف مدرستنا بالصور',
@@ -941,8 +941,8 @@ export const TRANSLATIONS = {
     'school.subtitle': 'Excellence Kindergarten',
     'school.experience': '15 years experience',
     'school.location': 'Residence Essafa 4, Salé',
-    'school.phone': '05 37 00 00 00',
-    'school.email': 'info@nouvellegeneration.pro',
+    'school.phone': '+212 5 37 86 55 81',
+    'school.email': 'periscolaire@nouvellegeneration.pro',
     
     // Gallery Section
     'gallery.title': 'Discover Our School in Pictures',
