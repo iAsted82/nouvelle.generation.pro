@@ -22,9 +22,92 @@
     <meta property="twitter:title" content="Nouvelle Génération Pro - École Maternelle d'Excellence">
     <meta property="twitter:description" content="La maternelle qui fait la différence. Inscriptions ouvertes 2025-2026. Places limitées!">
     <meta property="twitter:image" content="/twitter-image.jpg">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="background-color" content="#ffffff">
+    <meta name="display" content="standalone">
+    <meta name="orientation" content="portrait-primary">
+    
+    <!-- iOS Specific Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="NGP École">
+    <link rel="apple-touch-icon" href="/logo-ngp.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/logo-ngp.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/logo-ngp.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/logo-ngp.png">
+    
+    <!-- Splash screens for iOS -->
+    <link rel="apple-touch-startup-image" href="/logo-ngp.png">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#1e40af">
+    <meta name="msapplication-TileImage" content="/logo-ngp.png">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- PWA Registration Script -->
+    <script>
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (newWorker) {
+                  newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                      // New update available
+                      console.log('New content is available');
+                    }
+                  });
+                }
+              });
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+
+      // Handle install prompt
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log('Install prompt ready');
+      });
+
+      // Handle app installed
+      window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed');
+        deferredPrompt = null;
+      });
+
+      // Prevent zoom on double tap for iOS
+      document.addEventListener('touchend', (e) => {
+        const now = new Date().getTime();
+        const timeSince = now - (window.lastTouchEnd || now);
+        
+        if (timeSince < 300 && timeSince > 0) {
+          e.preventDefault();
+        }
+        
+        window.lastTouchEnd = now;
+      }, false);
+    </script>
   </body>
 </html>
